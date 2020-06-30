@@ -78,15 +78,4 @@ class ClientPolicy
         //
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     * @param User $client
-     * @return mixed
-     */
-    public function forceDelete(User $user, User $client)
-    {
-        //
-    }
 }

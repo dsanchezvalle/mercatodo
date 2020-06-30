@@ -38,7 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function isActive()
+    public function isActive(): string
     {
         if($this->is_active){
             return 'Yes';

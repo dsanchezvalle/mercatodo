@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
 {
+    /**
+     * ClientController constructor.
+     */
     public function __construct()
     {
         $this->authorizeResource(User::class, 'client');
@@ -27,33 +31,12 @@ class ClientController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param User $user
+     * @param User $client
      * @return Response
      */
-    public function show(User $client)
+    public function show(User $client): Response
     {
         return response()->view('admin.client.show', compact('client'));
     }
@@ -61,7 +44,7 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param User $user
+     * @param User $client
      * @return Response
      */
     public function edit(User $client): Response
@@ -73,9 +56,10 @@ class ClientController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param User $user
+     * @param User $client
+     * @return RedirectResponse
      */
-    public function update(Request $request, User $client)
+    public function update(Request $request, User $client): RedirectResponse
     {
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -99,14 +83,4 @@ class ClientController extends Controller
         return response()->redirectToRoute('clients.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param User $user
-     * @return Response
-     */
-    public function destroy(User $client)
-    {
-        //
-    }
 }
