@@ -21,7 +21,7 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::withTrashed()->where('is_admin',false)->get();
+        $clients = User::where('is_admin',false)->paginate(10);
 
         return response()->view('admin.client.index',compact('clients'));
     }
@@ -53,9 +53,9 @@ class ClientController extends Controller
      * @param User $user
      * @return Response
      */
-    public function show(User $user)
+    public function show(User $client)
     {
-        //
+        return response()->view('admin.client.show', compact('client'));
     }
 
     /**
@@ -77,7 +77,6 @@ class ClientController extends Controller
      */
     public function update(Request $request, User $client)
     {
-
         $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
@@ -94,11 +93,8 @@ class ClientController extends Controller
             'document_number' => $validatedData['document_number'],
             'email' => $validatedData['email'],
             'phone_number' => $validatedData['phone_number'],
+            'is_active' => $request->is_active ? true : false,
         ]);
-
-        if (!$request->is_active){
-            $client->delete();
-        }
 
         return response()->redirectToRoute('clients.index');
     }

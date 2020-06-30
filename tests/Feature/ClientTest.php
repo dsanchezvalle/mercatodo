@@ -101,12 +101,14 @@ class ClientTest extends TestCase
             'surname' => 'Delgado',
             'document_type' => 'CC',
             'document_number' => '12345',
+            'is_active' => 'on',
             'email' => 'many@hotm.com',
             'phone_number' => '1234546'
         ]);
 
         $response->assertRedirect(route('clients.index'));
         $expectedData = User::find(2);
+
         $this->assertEquals('Many',$expectedData->name);
         $this->assertEquals('Delgado',$expectedData->surname);
         $this->assertEquals('CC',$expectedData->document_type);

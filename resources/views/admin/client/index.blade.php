@@ -19,7 +19,7 @@
                         </tr>
                         @foreach($clients as $client)
                             <tr>
-                                <td>{{ $client->name  }} {{ $client->surname }}</td>
+                                <td><a href="{{ route('clients.show', $client) }}">{{ $client->name  }} {{ $client->surname }}</a></td>
                                 <td>{{ $client->document_type }} {{ $client->document_number }}</td>
                                 <td>{{ $client->email }}</td>
                                 <td>{{ $client->phone_number }}</td>
@@ -28,6 +28,7 @@
                             </tr>
                         @endforeach
                     </table>
+                    {{ $clients->links() }}
                 </div>
             </div>
         </div>

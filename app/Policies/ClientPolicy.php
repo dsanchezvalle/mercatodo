@@ -24,10 +24,9 @@ class ClientPolicy
      * Determine whether the user can view the model.
      *
      * @param User $user
-     * @param User $model
      * @return mixed
      */
-    public function view(User $user, User $client)
+    public function view(User $user): bool
     {
         return $user->is_admin;
     }
@@ -38,7 +37,7 @@ class ClientPolicy
      * @param User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->is_admin;
 
@@ -48,10 +47,9 @@ class ClientPolicy
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param User $model
      * @return mixed
      */
-    public function update(User $user, User $client)
+    public function update(User $user): bool 
     {
         return $user->is_admin;
     }
@@ -60,7 +58,7 @@ class ClientPolicy
      * Determine whether the user can delete the model.
      *
      * @param User $user
-     * @param User $model
+     * @param User $client
      * @return mixed
      */
     public function delete(User $user, User $client)
@@ -72,7 +70,7 @@ class ClientPolicy
      * Determine whether the user can restore the model.
      *
      * @param User $user
-     * @param User $model
+     * @param User $client
      * @return mixed
      */
     public function restore(User $user, User $client)
@@ -84,7 +82,7 @@ class ClientPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param User $user
-     * @param User $model
+     * @param User $client
      * @return mixed
      */
     public function forceDelete(User $user, User $client)

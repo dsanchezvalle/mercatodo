@@ -15,6 +15,10 @@
                     @endif
 
                     You are logged in!
+
+                    <div class="m-2">
+                        <a href="{{ route('clients.index') }}" class="btn btn-primary">Clients</a>
+                    </div>
                 </div>
             </div>
         </div>

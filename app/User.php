@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable,SoftDeletes;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'document_type', 'document_number', 'email', 'phone_number', 'password',
+        'name', 'surname', 'document_type', 'document_number', 'email', 'phone_number', 'password', 'is_active',
     ];
 
     /**
@@ -40,9 +40,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isActive()
     {
-        if($this->deleted_at){
-            return 'No';
+        if($this->is_active){
+            return 'Yes';
         }
-        return 'Yes';
+        return 'No';
     }
 }
