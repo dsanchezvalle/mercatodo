@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Client information</div>
+                <div class="card-header h4">Client information</div>
 
                 <div class="card-body">
                     <table class="table table-striped table-hover">

@@ -98,11 +98,16 @@
                             <label for="is_active" class="col-md-4 col-form-label text-md-right">{{ __('User status') }}</label>
 
                             <div class="col-md-6">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" @if($client->isActive() === 'Yes') checked @endif>
-{{--                                    <span><label>Inactive</label></span>--}}
-                                    <label class="custom-control-label" for="is_active">Active</label>
-                                </div>
+                                <table>
+                                    <tr class="mt-2">
+                                        <td class="pr-2">Disable</td>
+                                        <td class="custom-control custom-switch justify-content-center">
+                                            <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" @if($client->isActive() === 'Yes') checked @endif>
+                                            <label class="custom-control-label" for="is_active"></label>
+                                        </td>
+                                        <td>Enable</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
 

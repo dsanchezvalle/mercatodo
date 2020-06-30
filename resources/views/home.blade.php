@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Dashboard</div>
+                <div class="card-header h4">Bienvenido a MercaTodo</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -18,7 +18,7 @@
 
                     @can('viewAny', \App\User::class)
                         <div class="m-2">
-                            <a href="{{ route('clients.index') }}" class="btn btn-primary">Clients</a>
+                            <a href="{{ route('clients.index') }}" class="btn btn-primary">Clients' Dashboard</a>
                         </div>
                     @endcan
                 </div>
