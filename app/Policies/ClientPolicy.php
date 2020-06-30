@@ -49,7 +49,7 @@ class ClientPolicy
      * @param User $user
      * @return mixed
      */
-    public function update(User $user): bool 
+    public function update(User $user): bool
     {
         return $user->is_admin;
     }

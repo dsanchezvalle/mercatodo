@@ -102,7 +102,7 @@
                             <div class="col-md-6">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" @if($client->isActive() === 'Yes') checked @endif>
-{{--                                    <label>Inactive</label>--}}
+{{--                                    <span><label>Inactive</label></span>--}}
                                     <label class="custom-control-label" for="is_active">Active</label>
                                 </div>
                             </div>
