@@ -43,13 +43,11 @@
                             <label for="document_type" class="col-md-4 col-form-label text-md-right">{{ __('Document type') }}</label>
 
                             <div class="col-md-6">
-                                <input id="document_type" type="text" class="form-control @error('document_type') is-invalid @enderror" name="document_type" value="{{ old('document_type') }}" required autocomplete="document_type" autofocus>
-
-                                @error('document_type')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <select id="document_type"class="form-control @error('document_type') is-invalid @enderror" name="document_type" required autofocus>
+                                    <option value="CC" >Cédula de Ciudadanía</option>
+                                    <option value="CE" >Cédula de Extranjería</option>
+                                    <option value="PP" >Pasaporte</option>
+                                </select>
                             </div>
                         </div>
 

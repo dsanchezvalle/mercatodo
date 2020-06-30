@@ -16,9 +16,11 @@
 
                     You are logged in!
 
-                    <div class="m-2">
-                        <a href="{{ route('clients.index') }}" class="btn btn-primary">Clients</a>
-                    </div>
+                    @can('viewAny', \App\User::class)
+                        <div class="m-2">
+                            <a href="{{ route('clients.index') }}" class="btn btn-primary">Clients</a>
+                        </div>
+                    @endcan
                 </div>
             </div>
         </div>
