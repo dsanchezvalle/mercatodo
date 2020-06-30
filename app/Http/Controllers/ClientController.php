@@ -21,7 +21,7 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::where('is_admin',false)->get();
+        $clients = User::withTrashed()->where('is_admin',false)->get();
 
         return response()->view('admin.client.index',compact('clients'));
     }
@@ -95,6 +95,10 @@ class ClientController extends Controller
             'email' => $validatedData['email'],
             'phone_number' => $validatedData['phone_number'],
         ]);
+
+        if (!$request->is_active){
+            $client->delete();
+        }
 
         return response()->redirectToRoute('clients.index');
     }

@@ -96,6 +96,17 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="is_active" class="col-md-4 col-form-label text-md-right">{{ __('User status') }}</label>
+
+                            <div class="col-md-6">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="is_active" name="is_active" @if($client->isActive() === 'Yes') checked @endif>
+                                    <label class="custom-control-label" for="is_active">Active</label>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
