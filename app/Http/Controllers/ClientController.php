@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class ClientController extends Controller
@@ -25,9 +26,9 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::where('is_admin',false)->paginate(10);
+        $clients = User::where('is_admin', false)->paginate(10);
 
-        return response()->view('admin.client.index',compact('clients'));
+        return response()->view('admin.client.index', compact('clients'));
     }
 
     /**
@@ -38,6 +39,7 @@ class ClientController extends Controller
      */
     public function show(User $client): Response
     {
+        Log::info('Showing user profile for user: '.$client->id);
         return response()->view('admin.client.show', compact('client'));
     }
 
