@@ -21,6 +21,7 @@
                             <a href="{{ route('clients.index') }}" class="btn btn-primary">Clients' Dashboard</a>
                         </div>
                     @endcan
+
                 </div>
             </div>
         </div>
