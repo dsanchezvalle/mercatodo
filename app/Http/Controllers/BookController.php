@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
@@ -59,7 +60,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        return response()->view('book.edit', compact('book'));
     }
 
     /**
@@ -71,7 +72,26 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $validatedData = $request->validate([
+            'isbn' => ['required', 'string', 'max:13', Rule::unique('books')->ignore($book)],
+            'title' => ['required', 'string', 'max:255'],
+            'author' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric', 'max:500000'],
+            'stock' => ['required', 'numeric', 'max:1000', ],
+            'image_path' => ['required', 'url'],
+        ]);
+
+        $book->update([
+            'isbn' => $validatedData['isbn'],
+            'title' => $validatedData['title'],
+            'author' => $validatedData['author'],
+            'price' => $validatedData['price'],
+            'stock' => $validatedData['stock'],
+            'image_path' => $validatedData['image_path'],
+            'is_active' => $request->is_active ? true : false,
+        ]);
+
+        return response()->redirectToRoute('books.index');
     }
 
     /**
