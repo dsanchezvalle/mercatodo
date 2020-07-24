@@ -22,6 +22,12 @@
                         </div>
                     @endcan
 
+                    @can('viewAny', \App\Book::class)
+                        <div class="m-2">
+                            <a href="{{ route('books.index') }}" class="btn btn-primary">Books' Dashboard</a>
+                        </div>
+                    @endcan
+
                 </div>
             </div>
         </div>

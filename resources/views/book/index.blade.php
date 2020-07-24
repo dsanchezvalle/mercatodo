@@ -6,7 +6,11 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header h4">Find the perfect Book for you! </div>
-
+                @can('viewAny', \App\Book::class)
+                    <div class="m-2">
+                        <a href="{{ route('books.create') }}" class="btn btn-primary">Create New Book</a>
+                    </div>
+                @endcan
                 <div class="card-body">
                     <table class="table table-striped table-hover">
                         <tr>
