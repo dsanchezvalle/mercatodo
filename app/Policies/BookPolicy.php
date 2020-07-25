@@ -41,7 +41,7 @@ class BookPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->is_admin;
     }
 
     /**
@@ -53,7 +53,7 @@ class BookPolicy
      */
     public function update(User $user, Book $book)
     {
-        //
+        return $user->is_admin;
     }
 
     /**

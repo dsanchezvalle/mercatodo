@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
+
+    /**
+     * BookController constructor.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Book::class, 'book');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -72,7 +82,7 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        $validatedData = $request->validate([
+       $validatedData = $request->validate([
             'isbn' => ['required', 'string', 'max:13', Rule::unique('books')->ignore($book)],
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
