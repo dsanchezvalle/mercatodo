@@ -96,10 +96,23 @@ class BookTest extends TestCase
         ]);
 
         $response->assertForbidden();
-
     }
 
+    /**
+     * A basic feature test example.
+     * @test
+     * @return void
+     */
 
+    public function admin_can_see_new_book_view()
+    {
+        $user = factory(User::class)->create(['is_admin' => true]);
+
+        $response = $this->actingAs($user)->get('/books/create');
+
+        $response->assertSuccessful();
+        $response->assertViewIs('book.create');
+    }
 
 
 }

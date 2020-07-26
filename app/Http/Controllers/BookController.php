@@ -37,7 +37,7 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
+       return response()->view('book.create');
     }
 
     /**
@@ -48,7 +48,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
