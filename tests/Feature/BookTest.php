@@ -143,5 +143,22 @@ class BookTest extends TestCase
 
     }
 
+    /**
+     * A basic feature test example.
+     * @test
+     * @return void
+     */
+
+    public function admin_can_see_show_book_view()
+    {
+        $user = factory(User::class)->create(['is_admin' => true]);
+        $book = factory(Book::class)->create(['isbn' => '1111111111111']);
+
+        $response = $this->actingAs($user)->get("/books/$book->id");
+
+        $response->assertSuccessful();
+        $response->assertViewIs('book.show');
+    }
+
 
 }

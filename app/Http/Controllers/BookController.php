@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class BookController extends Controller
@@ -81,7 +82,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-       return response()->view('book.show', compact('book'));
+        return response()->view('book.show', compact('book'));
     }
 
     /**
