@@ -160,5 +160,21 @@ class BookTest extends TestCase
         $response->assertViewIs('book.show');
     }
 
+    /**
+     * A basic feature test example.
+     * @test
+     * @return void
+     */
+
+
+    public function non_admins_cannot_see_show_book_view()
+    {
+        $user = factory(User::class)->create();
+        $book = factory(Book::class)->create();
+
+        $response = $this->actingAs($user)->get("/books/$book->id");
+
+        $response->assertForbidden();
+    }
 
 }
