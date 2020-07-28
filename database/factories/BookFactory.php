@@ -10,8 +10,8 @@ $factory->define(Book::class, function (Faker $faker) {
         'isbn' => $faker->isbn13,
         'title' => $faker->sentence(4),
         'author' => $faker->name,
-        'price' => $faker->numberBetween(1,100000),
-        'stock' => $faker->numberBetween(1,200),
+        'price' => $faker->numberBetween(1,500000),
+        'stock' => $faker->numberBetween(1,1000),
         'image_path' => $faker->imageUrl(400,350),
         'is_active' => true
     ];

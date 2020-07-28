@@ -114,5 +114,34 @@ class BookTest extends TestCase
         $response->assertViewIs('book.create');
     }
 
+    /**
+     * A basic feature test example.
+     * @test
+     * @return void
+     */
+
+    public function admin_can_create_new_book()
+    {
+
+        $user = factory(User::class)->create(['is_admin' => true]);
+        $book = factory(Book::class)->make();
+
+        $response = $this->actingAs($user)->post('/books',[
+            'isbn' => $book->isbn,
+            'title' => $book->title,
+            'author' => $book->author,
+            'price' => $book->price,
+            'stock' => $book->stock,
+            'image_path' => $book->image_path,
+            'is_active' => true,
+        ]);
+
+        $response->assertRedirect('books');
+        $this->assertDatabaseHas('books', [
+            'isbn' => $book->isbn,
+        ]);
+
+    }
+
 
 }

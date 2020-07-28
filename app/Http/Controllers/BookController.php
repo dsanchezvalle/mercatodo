@@ -37,7 +37,7 @@ class BookController extends Controller
      */
     public function create()
     {
-       return response()->view('book.create');
+       return view('book.create');
     }
 
     /**
@@ -48,7 +48,29 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+       $book = new Book();
+
+        $validatedData = $request->validate([
+            'isbn' => ['required', 'string', 'min:10', 'max:13', Rule::unique('books')->ignore($book)],
+            'title' => ['required', 'string', 'max:255'],
+            'author' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric', 'max:500000'],
+            'stock' => ['required', 'numeric', 'max:1000', ],
+            'image_path' => ['required', 'url'],
+        ]);
+
+        $book->create([
+            'isbn' => $validatedData['isbn'],
+            'title' => $validatedData['title'],
+            'author' => $validatedData['author'],
+            'price' => $validatedData['price'],
+            'stock' => $validatedData['stock'],
+            'image_path' => $validatedData['image_path'],
+            'is_active' => true,
+        ]);
+
+
+        return response()->redirectToRoute('books.index');
     }
 
     /**
@@ -83,7 +105,7 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
        $validatedData = $request->validate([
-            'isbn' => ['required', 'string', 'max:13', Rule::unique('books')->ignore($book)],
+            'isbn' => ['required', 'string', 'min:10', 'max:13', Rule::unique('books')->ignore($book)],
             'title' => ['required', 'string', 'max:255'],
             'author' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'max:500000'],

@@ -9,9 +9,7 @@
 
                 <div class="card-body">
                     <form action="/books" method="POST">
-
                         @csrf
-
                         <div class="form-group row">
                             <label for="isbn" class="col-md-4 col-form-label text-md-right">{{ __('ISBN') }}</label>
 
