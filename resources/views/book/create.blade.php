@@ -8,7 +8,7 @@
                 <div class="card-header">Create a new book</div>
 
                 <div class="card-body">
-                    <form action="/books" method="POST">
+                    <form action="/books" enctype="multipart/form-data" method="POST">
                         @csrf
                         <div class="form-group row">
                             <label for="isbn" class="col-md-4 col-form-label text-md-right">{{ __('ISBN') }}</label>
@@ -80,13 +80,13 @@
                             </div>
                         </div>
 
-                       <div class="form-group row">
-                            <label for="image_path" class="col-md-4 col-form-label text-md-right">{{ __('Image path') }}</label>
+                        <div class="form-group row">
+                            <label for="file" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                             <div class="col-md-6">
-                                <input id="image" type="url" class="form-control @error('image_path') is-invalid @enderror" name="image_path" value="{{old('image_path','https://lorempixel.com/400/350/?61443') }}" required autocomplete="image_path">
+                                <input id="file" type="file" class="form-control @error('image') is-invalid @enderror" name="file" accept="image/*">
 
-                                @error('image_path')
+                                @error('image')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

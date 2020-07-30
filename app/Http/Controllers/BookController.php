@@ -57,8 +57,18 @@ class BookController extends Controller
             'author' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'max:500000'],
             'stock' => ['required', 'numeric', 'max:1000', ],
-            'image_path' => ['required', 'url'],
+            'image_path' => ['string'],
         ]);
+
+        if(request()->file) {
+            $validatedData ['image_path'] = $this->get_image_path();
+            $this->store_image();
+        }
+        else {
+            return redirect('/books/create')
+                ->withInput($request->all())
+                ->withErrors(['image' => 'You need to add a book cover image.']);
+        }
 
         $book->create([
             'isbn' => $validatedData['isbn'],
@@ -111,10 +121,19 @@ class BookController extends Controller
             'author' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'max:500000'],
             'stock' => ['required', 'numeric', 'max:1000', ],
-            'image_path' => ['required', 'url'],
+            'image_path' => ['string'],
         ]);
 
-        $book->update([
+       if(request()->file) {
+            $validatedData ['image_path'] = $this->get_image_path();
+            $this->store_image();
+            unlink(storage_path().'/app'.$book->image_path);
+        }
+       else {
+           $validatedData ['image_path'] = $book->image_path;
+       }
+
+       $book->update([
             'isbn' => $validatedData['isbn'],
             'title' => $validatedData['title'],
             'author' => $validatedData['author'],
@@ -123,6 +142,7 @@ class BookController extends Controller
             'image_path' => $validatedData['image_path'],
             'is_active' => $request->is_active ? true : false,
         ]);
+
 
         return response()->redirectToRoute('books.index');
     }
@@ -136,5 +156,25 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         //
+    }
+
+    /**
+     * Store book cover image.
+     * @return mixed
+     */
+    public function store_image () {
+        request()->validate(['file' => 'image']);
+        return request()->file->storeAs('uploads', request()->file->getClientOriginalName());
+    }
+
+
+    public function get_image_path() {
+
+        return '/uploads/'.request()->file->getClientOriginalName();
+    }
+
+    public function get_image_name(String $image_path){
+        $trimmed = trim($image_path, " /uploads/.");
+        return $trimmed;
     }
 }

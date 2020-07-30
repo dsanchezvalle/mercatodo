@@ -32,7 +32,7 @@
 
                         <tr>
                             <td class="font-weight-bold">Book cover: </td>
-                            <td><img src="{{$book->image_path}}" class="img-thumbnail" alt="Book cover"></td>
+                            <td><img src="{{$book->image_path}}" class="img-thumbnail" alt="Book cover" width="250" height="400"></td>
                         </tr>
 
                         <tr>

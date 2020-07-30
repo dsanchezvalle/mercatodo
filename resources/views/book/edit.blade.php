@@ -8,7 +8,7 @@
                 <div class="card-header">Editing book</div>
 
                 <div class="card-body">
-                    <form action="/books/{{$book->id}}" method="POST">
+                    <form action="/books/{{$book->id}}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
 
@@ -83,12 +83,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="image_path" class="col-md-4 col-form-label text-md-right">{{ __('Image path') }}</label>
+                            <label for="file" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                             <div class="col-md-6">
-                                <input id="image" type="url" class="form-control @error('image_path') is-invalid @enderror" name="image_path" value="{{old('image_path',$book->image_path) }}" required autocomplete="image_path">
+                                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" accept="image/*">
 
-                                @error('image_path')
+                                @error('file')
                                 <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -101,7 +101,7 @@
                             <label for="book_cover" class="col-md-4 col-form-label text-md-right">{{ __('Book cover') }}</label>
 
                             <div class="col-md-6">
-                                <img src="{{$book->image_path}}" class="img-thumbnail" alt="Book cover">
+                                <img src="{{$book->image_path}}" class="img-thumbnail" alt="Book cover"  width="250" height="400">
                             </div>
 
                         </div>

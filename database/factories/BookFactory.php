@@ -12,7 +12,7 @@ $factory->define(Book::class, function (Faker $faker) {
         'author' => $faker->name,
         'price' => $faker->numberBetween(1,500000),
         'stock' => $faker->numberBetween(1,1000),
-        'image_path' => $faker->imageUrl(400,350),
+        'image_path' => $faker->imageUrl(250,400),
         'is_active' => true
     ];
 });
