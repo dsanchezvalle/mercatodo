@@ -22,11 +22,13 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = Book::paginate(config('view.paginate'));
+       //dd($request->all());
+        $books = Book::author($request->input('filter.author'))->paginate(config('view.paginate'));
 
         return response()->view('book.index', compact('books'));
     }

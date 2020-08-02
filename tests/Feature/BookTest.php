@@ -177,4 +177,34 @@ class BookTest extends TestCase
         $response->assertForbidden();
     }
 
+    /**
+     * A basic feature test example.
+     * @test
+     * @return void
+     */
+
+    public function admin_can_search_books_by_author ()
+    {
+        $user = factory(User::class)->create(['is_admin' => true]);
+        factory(Book::class, 20)->create();
+        $book = factory(Book::class)->create([
+            'author' => 'Carlos Perez'
+        ]);
+
+        $filters = [
+            'filter' => [
+                'author' => 'carlos'
+            ]
+        ];
+
+        $response = $this->actingAs($user)
+            ->get(route('books.index', $filters));
+
+        $responseBooks = $response->getOriginalContent()['books'];
+        //dd($responseBooks->count());
+        $this->assertTrue($responseBooks->contains($book));
+
+    }
+
+
 }
