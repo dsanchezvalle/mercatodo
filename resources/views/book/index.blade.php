@@ -10,7 +10,6 @@
                     <form action="{{ route('books.index') }}" method="get">
                         <div class="form-group row">
                             <label for="author" class="col-md-4 col-form-label text-md-right">{{ __('Author') }}</label>
-
                             <div class="col-md-6">
                                 <input
                                     id="author"
@@ -40,6 +39,25 @@
                                 >
 
                                 @error('filter.title')
+                                <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                @enderror
+                            </div>
+
+                            <label for="isbn" class="col-md-4 col-form-label text-md-right">{{ __('ISBN') }}</label>
+
+                            <div class="col-md-6">
+                                <input
+                                    id="isbn"
+                                    type="text"
+                                    class="form-control @error('filter.isbn') is-invalid @enderror"
+                                    name="filter[isbn]"
+                                    value="{{ old('filter.isbn',request('filter.isbn')) }}"
+                                    placeholder="Type the ISBN"
+                                >
+
+                                @error('filter.isbn')
                                 <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

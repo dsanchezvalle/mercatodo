@@ -45,6 +45,20 @@ class Book extends Model
         return $query;
     }
 
+    /**
+     * @param Builder $query
+     * @param string|null $isbn
+     * @return Builder
+     */
+    public function scopeIsbn(Builder $query, ? string $isbn): Builder
+    {
+        if(null !== $isbn){
+            return $this->searchByField($query, 'isbn', "$isbn");
+        }
+
+        return $query;
+    }
+
 
     /**
      * @param Builder $query

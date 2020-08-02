@@ -28,7 +28,10 @@ class BookController extends Controller
     public function index(Request $request)
     {
        //dd($request->all());
-        $books = Book::author($request->input('filter.author'))->title($request->input('filter.title'))->paginate(config('view.paginate'));
+        $books = Book::author($request->input('filter.author'))
+            ->title($request->input('filter.title'))
+            ->isbn($request->input('filter.isbn'))
+            ->paginate(config('view.paginate'));
 
         return response()->view('book.index', compact('books'));
     }
