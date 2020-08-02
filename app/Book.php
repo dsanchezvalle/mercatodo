@@ -22,12 +22,39 @@ class Book extends Model
      * @param string|null $author
      * @return Builder
      */
-    public static function scopeAuthor(Builder $query, ? string $author): Builder
+    public function scopeAuthor(Builder $query, ? string $author): Builder
     {
         if(null !== $author){
-            return $query->where('author', 'like', "%$author%");
+            return $this->searchByField($query, 'author', "%$author%");
         }
 
         return $query;
+    }
+
+    /**
+     * @param Builder $query
+     * @param string|null $title
+     * @return Builder
+     */
+    public function scopeTitle(Builder $query, ? string $title): Builder
+    {
+        if(null !== $title){
+            return $this->searchByField($query, 'title', "%$title%");
+        }
+
+        return $query;
+    }
+
+
+    /**
+     * @param Builder $query
+     * @param string $field
+     * @param string $value
+     * @return Builder
+     */
+    private function searchByField (Builder $query, string $field, string $value): Builder
+    {
+        //dd($field);
+        return $query->where($field, 'like', $value);
     }
 }
