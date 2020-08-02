@@ -189,12 +189,11 @@ class BookTest extends TestCase
     public function admin_can_search_books_with_filters (string $field, string $value)
     {
         $user = factory(User::class)->create(['is_admin' => true]);
-        factory(Book::class, 20)->create();
+        factory(Book::class, 5)->create();
         $book = factory(Book::class)->create([
             'author' => 'Carlos Perez',
             'title' => 'Tom Sawyer',
             'isbn' => '2222222222222',
-            'is_active' => 'true'
         ]);
 
         $filters = [
@@ -217,7 +216,7 @@ class BookTest extends TestCase
             'admin can search books by author' => ['author', 'Carlos'],
             'admin can search books by title' => ['title', 'Tom Sawyer'],
             'admin can search books by isbn' => ['isbn', '2222222222222'],
-            'admin can search books by status' => ['is_active', 'true'],
+            'admin can search books by status' => ['status', 'true'],
         ];
     }
 

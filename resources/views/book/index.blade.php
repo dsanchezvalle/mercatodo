@@ -63,6 +63,24 @@
                                         </span>
                                 @enderror
                             </div>
+
+                            <label for="status" class="col-md-4 col-form-label text-md-right">{{ __('Book status') }}</label>
+                            <div class="col-md-6">
+                                <table>
+                                    <tr class="mt-2">
+                                        <td>
+                                            <label for="active">Active</label>
+                                            <input type="radio" id="active" name="filter[status]" value= "true">
+                                        </td>
+                                        <td>
+                                            <label for="inactive">Inactive</label>
+                                            <input type="radio" id="inactive" name="filter[status]" value="false">
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
                         </div>
 
                         <div class="form-group row">

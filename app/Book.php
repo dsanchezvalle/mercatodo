@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Book extends Model
 {
@@ -25,7 +26,7 @@ class Book extends Model
     public function scopeAuthor(Builder $query, ? string $author): Builder
     {
         if(null !== $author){
-            return $this->searchByField($query, 'author', "%$author%");
+            return $this->searchByField($query, 'author', "%$author%", 'like');
         }
 
         return $query;
@@ -39,7 +40,7 @@ class Book extends Model
     public function scopeTitle(Builder $query, ? string $title): Builder
     {
         if(null !== $title){
-            return $this->searchByField($query, 'title', "%$title%");
+            return $this->searchByField($query, 'title', "%$title%", 'like');
         }
 
         return $query;
@@ -59,16 +60,37 @@ class Book extends Model
         return $query;
     }
 
+    /**
+     * @param Builder $query
+     * @param string|null $status
+     * @return Builder
+     */
+    public function scopeStatus(Builder $query, ? string $status): Builder
+    {
+        if("true" == $status)
+           {
+               return $this->searchByField($query, 'is_active', true);
+           }
+        elseif ("false" == $status)
+        {
+            return $this->searchByField($query, 'is_active', false);
+        }
+        else
+        {
+            return $query;
+        }
+    }
+
 
     /**
      * @param Builder $query
      * @param string $field
      * @param string $value
+     * @param string|null $operator
      * @return Builder
      */
-    private function searchByField (Builder $query, string $field, string $value): Builder
+    private function searchByField (Builder $query, string $field, string $value, string $operator = '='): Builder
     {
-        //dd($field);
-        return $query->where($field, 'like', $value);
+        return $query->where($field, $operator, $value);
     }
 }
