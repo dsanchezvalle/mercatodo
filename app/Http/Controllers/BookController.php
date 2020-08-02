@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use App\Http\Requests\BookFilterRequest;
+use App\Http\Requests\BookRequest;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Validation\Rule;
 
 class BookController extends Controller
@@ -49,42 +53,27 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @param BookRequest $request
+     * @return Application|RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
-       $book = new Book();
-
-        $validatedData = $request->validate([
-            'isbn' => ['required', 'string', 'min:10', 'max:13', Rule::unique('books')->ignore($book)],
-            'title' => ['required', 'string', 'max:255'],
-            'author' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'max:500000'],
-            'stock' => ['required', 'numeric', 'max:1000', ],
-            'image_path' => ['string'],
-        ]);
-
-        if(request()->file) {
-            $validatedData ['image_path'] = $this->get_image_path();
-            $this->store_image();
-        }
-        else {
+        if(!request()->file) {
             return redirect('/books/create')
                 ->withInput($request->all())
                 ->withErrors(['image' => 'You need to add a book cover image.']);
         }
+        $this->store_image();
 
-        $book->create([
-            'isbn' => $validatedData['isbn'],
-            'title' => $validatedData['title'],
-            'author' => $validatedData['author'],
-            'price' => $validatedData['price'],
-            'stock' => $validatedData['stock'],
-            'image_path' => $validatedData['image_path'],
+        Book::create([
+            'isbn' => $request->input('isbn'),
+            'title' => $request->input('title'),
+            'author' => $request->input('author'),
+            'price' => $request->input('price'),
+            'stock' => $request->input('stock'),
+            'image_path' => $this->get_image_path(),
             'is_active' => true,
         ]);
-
 
         return response()->redirectToRoute('books.index');
     }
@@ -92,7 +81,7 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param Book $book
      * @return Response
      */
     public function show(Book $book)
@@ -103,7 +92,7 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Book  $book
+     * @param Book $book
      * @return Response
      */
     public function edit(Book $book)
@@ -114,37 +103,28 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Book  $book
+     * @param BookRequest $request
+     * @param Book $book
      * @return Response
      */
-    public function update(Request $request, Book $book)
+    public function update(BookRequest $request, Book $book)
     {
-       $validatedData = $request->validate([
-            'isbn' => ['required', 'string', 'min:10', 'max:13', Rule::unique('books')->ignore($book)],
-            'title' => ['required', 'string', 'max:255'],
-            'author' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'max:500000'],
-            'stock' => ['required', 'numeric', 'max:1000', ],
-            'image_path' => ['string'],
-        ]);
-
        if(request()->file) {
-            $validatedData ['image_path'] = $this->get_image_path();
+           $imagePath = $this->get_image_path();
             $this->store_image();
             unlink(storage_path().'/app'.$book->image_path);
         }
        else {
-           $validatedData ['image_path'] = $book->image_path;
+           $imagePath = $book->image_path;
        }
 
        $book->update([
-            'isbn' => $validatedData['isbn'],
-            'title' => $validatedData['title'],
-            'author' => $validatedData['author'],
-            'price' => $validatedData['price'],
-            'stock' => $validatedData['stock'],
-            'image_path' => $validatedData['image_path'],
+            'isbn' => $request->input('isbn'),
+            'title' => $request->input('title'),
+            'author' => $request->input('author'),
+            'price' => $request->input('price'),
+            'stock' => $request->input('stock'),
+            'image_path' => $imagePath,
             'is_active' => $request->is_active ? true : false,
         ]);
 
@@ -155,7 +135,7 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Book  $book
+     * @param Book $book
      * @return Response
      */
     public function destroy(Book $book)
