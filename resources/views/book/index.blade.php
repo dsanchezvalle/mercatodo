@@ -82,7 +82,7 @@
                         @endif
 
                     </table>
-                    {{ $books->links() }}
+                    {{ $books->withQueryString()->links() }}
                 </div>
             </div>
         </div>
