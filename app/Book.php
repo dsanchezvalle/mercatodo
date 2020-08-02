@@ -75,10 +75,9 @@ class Book extends Model
         {
             return $this->searchByField($query, 'is_active', false);
         }
-        else
-        {
-            return $query;
-        }
+
+        return $query;
+
     }
 
 
