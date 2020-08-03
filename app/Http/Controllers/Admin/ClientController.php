@@ -85,5 +85,4 @@ class ClientController extends Controller
 
         return response()->redirectToRoute('clients.index');
     }
-
 }

@@ -53,7 +53,7 @@ class BookTest extends TestCase
         $user = factory(User::class)->create(['is_admin' => true]);
         $book = factory(Book::class)->create();
 
-       $response = $this->actingAs($user)->put("/books/$book->id", [
+        $response = $this->actingAs($user)->put("/books/$book->id", [
             'isbn' => '1111111111111',
             'title' => 'Hamlet',
             'author' => 'William Shakespeare',
@@ -65,12 +65,11 @@ class BookTest extends TestCase
         //$response->assertRedirect(route('books.index'));
         $expectedData = Book::find(1);
 
-        $this->assertEquals('1111111111111',$expectedData->isbn);
-        $this->assertEquals('Hamlet',$expectedData->title);
-        $this->assertEquals('William Shakespeare',$expectedData->author);
-        $this->assertEquals('54543',$expectedData->price);
-        $this->assertEquals('999',$expectedData->stock);
-
+        $this->assertEquals('1111111111111', $expectedData->isbn);
+        $this->assertEquals('Hamlet', $expectedData->title);
+        $this->assertEquals('William Shakespeare', $expectedData->author);
+        $this->assertEquals('54543', $expectedData->price);
+        $this->assertEquals('999', $expectedData->stock);
     }
 
     /**
@@ -78,8 +77,8 @@ class BookTest extends TestCase
      * @test
      * @return void
      */
-    public function non_admin_cannot_update_book_info (){
-
+    public function non_admin_cannot_update_book_info()
+    {
         $user = factory(User::class)->create();
         $book = factory(Book::class)->create();
 
@@ -120,11 +119,10 @@ class BookTest extends TestCase
 
     public function admin_can_create_new_book()
     {
-
         $user = factory(User::class)->create(['is_admin' => true]);
         $book = factory(Book::class)->make();
 
-        $response = $this->actingAs($user)->post('/books',[
+        $response = $this->actingAs($user)->post('/books', [
             'isbn' => $book->isbn,
             'title' => $book->title,
             'author' => $book->author,
@@ -138,7 +136,6 @@ class BookTest extends TestCase
         $this->assertDatabaseHas('books', [
             'isbn' => $book->isbn,
         ]);
-
     }
 
     /**
@@ -184,7 +181,7 @@ class BookTest extends TestCase
      * @return void
      */
 
-    public function admin_can_search_books_with_filters (string $field, string $value)
+    public function admin_can_search_books_with_filters(string $field, string $value)
     {
         $user = factory(User::class)->create(['is_admin' => true]);
         factory(Book::class, 5)->create();
@@ -205,7 +202,6 @@ class BookTest extends TestCase
 
         $responseBooks = $response->getOriginalContent()['books'];
         $this->assertTrue($responseBooks->contains($book));
-
     }
 
     public function searchItemsProvider(): array
@@ -217,6 +213,4 @@ class BookTest extends TestCase
             'admin can search books by status' => ['status', 'true'],
         ];
     }
-
-
 }

@@ -12,13 +12,13 @@
             </div>
             <hr>
             <div class="card">
-                <div class="card-header h4">Find the perfect Book for you! </div>
-                @can('viewAny', \App\Book::class)
-                    <div class="m-2">
-                        <a href="{{ route('books.create') }}" class="btn btn-primary">Create New Book</a>
-                    </div>
-                @endcan
+                <div class="card-header h4">Books' dashboard </div>
                 <div class="card-body">
+                    @can('viewAny', \App\Book::class)
+                        <div class="pb-4">
+                            <a href="{{ route('books.create') }}" class="btn btn-primary">Create New Book</a>
+                        </div>
+                    @endcan
                     <table class="table table-striped table-hover">
                         <tr>
                             <th class="text-center">ISBN</th>

@@ -76,12 +76,14 @@
             @endif
         </div>
 
-        <div class="form-group row">
-            <div class="col-md-6">
+        <div class="form-group row justify-content-center">
+            <div class="justify-content-center">
                 <div class="btn-group btn-group-sm">
                     <button type="submit" class="btn btn-success">
                         {{__('Search')}}
                     </button>
+                </div>
+                <div class="btn-group btn-group-sm">
                     <a href="{{ $route }}" class="btn btn-link">
                         {{ __('Clear') }}
                     </a>

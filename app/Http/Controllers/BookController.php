@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Http\Requests\BookFilterRequest;
 
-
 class BookController extends Controller
 {
     public function bookshelf(BookFilterRequest $request)

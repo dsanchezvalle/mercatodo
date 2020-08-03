@@ -13,7 +13,7 @@ class Book extends Model
 
     public function isActive(): string
     {
-        if($this->is_active){
+        if ($this->is_active) {
             return 'Yes';
         }
         return 'No';
@@ -26,7 +26,7 @@ class Book extends Model
      */
     public function scopeAuthor(Builder $query, ? string $author): Builder
     {
-        if(null !== $author){
+        if (null !== $author) {
             return $this->searchByField($query, 'author', "%$author%", 'like');
         }
 
@@ -40,7 +40,7 @@ class Book extends Model
      */
     public function scopeTitle(Builder $query, ? string $title): Builder
     {
-        if(null !== $title){
+        if (null !== $title) {
             return $this->searchByField($query, 'title', "%$title%", 'like');
         }
 
@@ -54,7 +54,7 @@ class Book extends Model
      */
     public function scopeIsbn(Builder $query, ? string $isbn): Builder
     {
-        if(null !== $isbn){
+        if (null !== $isbn) {
             return $this->searchByField($query, 'isbn', "$isbn");
         }
 
@@ -68,17 +68,13 @@ class Book extends Model
      */
     public function scopeStatus(Builder $query, ? string $status): Builder
     {
-        if("true" == $status)
-           {
-               return $this->searchByField($query, 'is_active', true);
-           }
-        elseif ("false" == $status)
-        {
+        if ("true" == $status) {
+            return $this->searchByField($query, 'is_active', true);
+        } elseif ("false" == $status) {
             return $this->searchByField($query, 'is_active', false);
         }
 
         return $query;
-
     }
 
 
@@ -89,7 +85,7 @@ class Book extends Model
      * @param string|null $operator
      * @return Builder
      */
-    private function searchByField (Builder $query, string $field, string $value, string $operator = '='): Builder
+    private function searchByField(Builder $query, string $field, string $value, string $operator = '='): Builder
     {
         return $query->where($field, $operator, $value);
     }
@@ -100,7 +96,7 @@ class Book extends Model
      */
     public function formattedPrice(int $price)
     {
-        $amount = new NumberFormatter( 'es_CO', NumberFormatter::CURRENCY );
+        $amount = new NumberFormatter('es_CO', NumberFormatter::CURRENCY);
 
         return $amount->format($price);
     }

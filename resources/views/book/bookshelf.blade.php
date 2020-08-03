@@ -13,7 +13,9 @@
             </div>
             <hr>
         </div>
-
+            <div class="m-2">
+                <h2>Find the perfect Book for you!</h2>
+            </div>
             <div class="card-group row row-cols-lg-5 row-cols-2">
             @foreach($books as $book)
                 <div class="col mb-4">

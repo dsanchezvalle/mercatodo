@@ -34,7 +34,7 @@ class ClientTest extends TestCase
     public function admin_can_see_client_list()
     {
         $user = factory(User::class)->create(['is_admin' => true]);
-        $clients = factory(User::class,10)->create();
+        $clients = factory(User::class, 10)->create();
 
         $response = $this->actingAs($user)->get('/clients');
 
@@ -109,16 +109,11 @@ class ClientTest extends TestCase
         $response->assertRedirect(route('clients.index'));
         $expectedData = User::find(2);
 
-        $this->assertEquals('Many',$expectedData->name);
-        $this->assertEquals('Delgado',$expectedData->surname);
-        $this->assertEquals('CC',$expectedData->document_type);
-        $this->assertEquals('12345',$expectedData->document_number);
-        $this->assertEquals('many@hotm.com',$expectedData->email);
-        $this->assertEquals('1234546',$expectedData->phone_number);
-
+        $this->assertEquals('Many', $expectedData->name);
+        $this->assertEquals('Delgado', $expectedData->surname);
+        $this->assertEquals('CC', $expectedData->document_type);
+        $this->assertEquals('12345', $expectedData->document_number);
+        $this->assertEquals('many@hotm.com', $expectedData->email);
+        $this->assertEquals('1234546', $expectedData->phone_number);
     }
-
-
-
-
 }

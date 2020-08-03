@@ -46,7 +46,7 @@ class BookController extends Controller
      */
     public function create()
     {
-       return view('admin.book.create');
+        return view('admin.book.create');
     }
 
     /**
@@ -57,7 +57,7 @@ class BookController extends Controller
      */
     public function store(BookRequest $request)
     {
-        if(!request()->file) {
+        if (!request()->file) {
             return redirect('/books/create')
                 ->withInput($request->all())
                 ->withErrors(['image' => 'You need to add a book cover image.']);
@@ -108,16 +108,15 @@ class BookController extends Controller
      */
     public function update(BookRequest $request, Book $book)
     {
-       if(request()->file) {
-           $imagePath = $this->get_image_path();
+        if (request()->file) {
+            $imagePath = $this->get_image_path();
             $this->store_image();
             unlink(storage_path().'/app'.$book->image_path);
+        } else {
+            $imagePath = $book->image_path;
         }
-       else {
-           $imagePath = $book->image_path;
-       }
 
-       $book->update([
+        $book->update([
             'isbn' => $request->input('isbn'),
             'title' => $request->input('title'),
             'author' => $request->input('author'),
@@ -135,7 +134,7 @@ class BookController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Book $book
-     * @return Response
+     * @return void
      */
     public function destroy(Book $book)
     {
@@ -146,18 +145,20 @@ class BookController extends Controller
      * Store book cover image.
      * @return mixed
      */
-    public function store_image () {
+    public function store_image()
+    {
         request()->validate(['file' => 'image']);
         return request()->file->storeAs('uploads', request()->file->getClientOriginalName());
     }
 
 
-    public function get_image_path() {
-
+    public function get_image_path()
+    {
         return '/uploads/'.request()->file->getClientOriginalName();
     }
 
-    public function get_image_name(String $image_path){
+    public function get_image_name(String $image_path)
+    {
         $trimmed = trim($image_path, " /uploads/.");
         return $trimmed;
     }

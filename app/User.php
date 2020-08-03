@@ -40,7 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isActive(): string
     {
-        if($this->is_active){
+        if ($this->is_active) {
             return 'Yes';
         }
         return 'No';
