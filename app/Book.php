@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use NumberFormatter;
+use phpDocumentor\Reflection\Types\Integer;
 
 class Book extends Model
 {
@@ -93,10 +94,14 @@ class Book extends Model
         return $query->where($field, $operator, $value);
     }
 
-    public function formattedPrice()
+    /**
+     * @param int $price
+     * @return false|string
+     */
+    public function formattedPrice(int $price)
     {
-        $amount = new NumberFormatter( 'de_DE', NumberFormatter::CURRENCY );
+        $amount = new NumberFormatter( 'es_CO', NumberFormatter::CURRENCY );
 
-        return $amount->format( 2499 );
+        return $amount->format($price);
     }
 }
