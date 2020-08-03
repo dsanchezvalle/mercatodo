@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+
+    <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
@@ -11,46 +12,22 @@
                 </div>
             </div>
             <hr>
-            <div class="card">
-                <div class="card-header h4">Find the perfect Book for you! </div>
-                @can('viewAny', \App\Book::class)
-                    <div class="m-2">
-                        <a href="{{ route('books.create') }}" class="btn btn-primary">Create New Book</a>
-                    </div>
-                @endcan
-                <div class="card-body">
-                    <table class="table table-striped table-hover">
-                        <tr>
-                            <th class="text-center">ISBN</th>
-                            <th>Title</th>
-                            <th>Author</th>
-                            <th class="text-center">Stock</th>
-                            <th class="text-center">Price</th>
-                            <th class="text-center">Active</th>
-                            <th></th>
-                        </tr>
-
-                        @if(count($books)>0)
-                            @foreach($books as $book)
-                                <tr>
-                                    <td class="text-center"><a href="{{ route('books.show', $book) }}">{{ $book->isbn  }} </a></td>
-                                    <td>{{ $book->title }}</td>
-                                    <td>{{ $book->author }}</td>
-                                    <td class="text-center">{{ $book->stock }}</td>
-                                    <td class="text-center">$ {{ $book->price }}</td>
-                                    <td class="text-center @if($book->is_active) text-success @else text-danger @endif">{{ $book->isActive() }}</td>
-                                    <td><a href="{{ route('books.edit', $book) }}">Edit</a></td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <td class="alert-info" colspan="7" style="text-align: center">There are no books to show.</td>
-                        @endif
-
-                    </table>
-                    {{ $books->withQueryString()->links() }}
-                </div>
-            </div>
         </div>
+        <div class="row row-cols-lg-5 row-cols-2">
+            @foreach($books as $book)
+                <div class="col mb-4">
+                    <div class="card">
+                        <img src="{{$book->image_path}}" class="card-img-top" alt="book-cover">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $book->title }}</h5>
+                            <p class="card-text">Author: {{ $book->author }}</p>
+                            <p class="card-text">Price: {{ $book->formattedPrice() }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        {{ $books->withQueryString()->links() }}
     </div>
 </div>
 @endsection

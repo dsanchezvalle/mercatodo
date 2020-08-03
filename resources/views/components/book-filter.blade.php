@@ -56,7 +56,7 @@
                 @enderror
             </div>
 
-            @can('viewAny', \App\Book::class)
+            @if($route === route('books.index'))
                 <label for="status" class="col-md-4 col-form-label text-md-right">{{ __('Book status') }}</label>
                 <div class="col-md-6">
                     <table>
@@ -73,7 +73,7 @@
                     </table>
 
                 </div>
-            @endcan
+            @endif
         </div>
 
         <div class="form-group row">
@@ -82,7 +82,7 @@
                     <button type="submit" class="btn btn-success">
                         {{__('Search')}}
                     </button>
-                    <a href="{{route('books.index')}}" class="btn btn-link">
+                    <a href="{{ $route }}" class="btn btn-link">
                         {{ __('Clear') }}
                     </a>
                 </div>

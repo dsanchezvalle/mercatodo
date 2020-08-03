@@ -13,6 +13,7 @@ class BookController extends Controller
         $books = Book::author($request->input('filter.author'))
             ->title($request->input('filter.title'))
             ->isbn($request->input('filter.isbn'))
+            ->status('true')
             ->paginate(config('view.paginate'));
 
         return response()->view('book.bookshelf', compact('books'));

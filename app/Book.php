@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use phpDocumentor\Reflection\Types\Boolean;
+use NumberFormatter;
 
 class Book extends Model
 {
@@ -91,5 +91,12 @@ class Book extends Model
     private function searchByField (Builder $query, string $field, string $value, string $operator = '='): Builder
     {
         return $query->where($field, $operator, $value);
+    }
+
+    public function formattedPrice()
+    {
+        $amount = new NumberFormatter( 'de_DE', NumberFormatter::CURRENCY );
+
+        return $amount->format( 2499 );
     }
 }
