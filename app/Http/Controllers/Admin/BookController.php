@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Book;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BookFilterRequest;
 use App\Http\Requests\BookRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
-use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
@@ -37,7 +36,7 @@ class BookController extends Controller
             ->status($request->input('filter.status'))
             ->paginate(config('view.paginate'));
 
-        return response()->view('book.index', compact('books'));
+        return response()->view('admin.book.index', compact('books'));
     }
 
     /**
@@ -47,7 +46,7 @@ class BookController extends Controller
      */
     public function create()
     {
-       return view('book.create');
+       return view('admin.book.create');
     }
 
     /**
@@ -75,7 +74,7 @@ class BookController extends Controller
             'is_active' => true,
         ]);
 
-        return response()->redirectToRoute('books.index');
+        return response()->redirectToRoute('admin.books.index');
     }
 
     /**
@@ -86,7 +85,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        return response()->view('book.show', compact('book'));
+        return response()->view('admin.book.show', compact('book'));
     }
 
     /**
@@ -97,7 +96,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return response()->view('book.edit', compact('book'));
+        return response()->view('admin.book.edit', compact('book'));
     }
 
     /**
@@ -129,7 +128,7 @@ class BookController extends Controller
         ]);
 
 
-        return response()->redirectToRoute('books.index');
+        return response()->redirectToRoute('admin.books.index');
     }
 
     /**

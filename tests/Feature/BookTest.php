@@ -25,7 +25,7 @@ class BookTest extends TestCase
         $response = $this->actingAs($user)->get('/books');
 
         $response->assertSuccessful();
-        $response->assertViewIs('book.index');
+        $response->assertViewIs('admin.book.index');
     }
 
     /**
@@ -111,7 +111,7 @@ class BookTest extends TestCase
         $response = $this->actingAs($user)->get('/books/create');
 
         $response->assertSuccessful();
-        $response->assertViewIs('book.create');
+        $response->assertViewIs('admin.book.create');
     }
 
     /**
@@ -157,7 +157,7 @@ class BookTest extends TestCase
         $response = $this->actingAs($user)->get("/books/$book->id");
 
         $response->assertSuccessful();
-        $response->assertViewIs('book.show');
+        $response->assertViewIs('admin.book.show');
     }
 
     /**
