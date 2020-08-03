@@ -2,9 +2,8 @@
 
 @section('content')
 
-    <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
+<div class="container">
+    <div class="col-md-12">
             <div class="card">
                 <div class="card-header h4">{{__('Filters')}}</div>
                 <div class="card-body">
@@ -13,9 +12,10 @@
             </div>
             <hr>
         </div>
-            <div class="m-2">
+            <div class="m-2 row justify-content-center align-content-center">
                 <h2>Find the perfect Book for you!</h2>
             </div>
+
             <div class="card-group row row-cols-lg-5 row-cols-2">
             @foreach($books as $book)
                 <div class="col mb-4">
@@ -32,6 +32,5 @@
             </div>
 
         {{ $books->withQueryString()->links() }}
-    </div>
 </div>
 @endsection
