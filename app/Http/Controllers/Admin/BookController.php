@@ -74,7 +74,7 @@ class BookController extends Controller
             'is_active' => true,
         ]);
 
-        return response()->redirectToRoute('admin.books.index');
+        return response()->redirectToRoute('books.index');
     }
 
     /**
@@ -128,7 +128,7 @@ class BookController extends Controller
         ]);
 
 
-        return response()->redirectToRoute('admin.books.index');
+        return response()->redirectToRoute('books.index');
     }
 
     /**
