@@ -13,7 +13,8 @@
             </div>
             <hr>
         </div>
-        <div class="row row-cols-lg-5 row-cols-2">
+
+            <div class="card-group row row-cols-lg-5 row-cols-2">
             @foreach($books as $book)
                 <div class="col mb-4">
                     <div class="card">
@@ -26,7 +27,8 @@
                     </div>
                 </div>
             @endforeach
-        </div>
+            </div>
+
         {{ $books->withQueryString()->links() }}
     </div>
 </div>
