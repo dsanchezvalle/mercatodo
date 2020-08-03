@@ -33,4 +33,17 @@ return [
         realpath(storage_path('framework/views'))
     ),
 
+    /*
+  |--------------------------------------------------------------------------
+  | Paginate
+  |--------------------------------------------------------------------------
+  |
+  | This option determines how many items an user can see in each page
+  | of a view.
+  |
+  */
+
+    'paginate' => env(
+        'PAGINATE', 10
+    ),
 ];

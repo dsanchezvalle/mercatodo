@@ -21,4 +21,11 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-Route::resource('clients','ClientController')->middleware('verified');
+Route::resource('clients','Admin\ClientController')->middleware('verified');
+
+Route::resource('books','Admin\BookController')->middleware('verified');
+Route::get('/bookshelf', 'BookController@bookshelf')->middleware('verified')->name('bookshelf');
+
+Route::get('/uploads/{file}', function ($file) {
+    return Storage::response("uploads/$file");
+})->middleware('verified');

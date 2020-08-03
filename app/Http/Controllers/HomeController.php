@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -20,10 +21,12 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return Renderable
      */
-    public function index(): Renderable
+    public function index()
     {
-        return view('home');
+        if(Auth::user()->is_admin){
+            return view('home');
+        }
+        return response()->redirectToRoute('bookshelf');
     }
 }
