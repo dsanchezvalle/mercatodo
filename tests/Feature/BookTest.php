@@ -59,7 +59,6 @@ class BookTest extends TestCase
             'author' => 'William Shakespeare',
             'price' => '54543',
             'stock' => '999',
-            'image_path' => 'https://lorempixel.com/400/350/?61443',
             'is_active' => 'on'
         ]);
 
@@ -71,7 +70,6 @@ class BookTest extends TestCase
         $this->assertEquals('William Shakespeare',$expectedData->author);
         $this->assertEquals('54543',$expectedData->price);
         $this->assertEquals('999',$expectedData->stock);
-        $this->assertEquals('https://lorempixel.com/400/350/?61443',$expectedData->image_path);
 
     }
 

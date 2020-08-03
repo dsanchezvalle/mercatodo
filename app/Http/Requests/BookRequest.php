@@ -31,7 +31,7 @@ class BookRequest extends FormRequest
             'author' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'max:500000'],
             'stock' => ['required', 'numeric', 'max:1000', ],
-            'image_path' => ['string'],
+            'image_path' => ['string|image'],
         ];
     }
 }

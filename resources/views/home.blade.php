@@ -28,6 +28,12 @@
                         </div>
                     @endcan
 
+                        @can('viewAny', \App\Book::class)
+                            <div class="m-2">
+                                <a href="{{ route('bookshelf') }}" class="btn btn-primary">Bookshelf</a>
+                            </div>
+                        @endcan
+
                 </div>
             </div>
         </div>

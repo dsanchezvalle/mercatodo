@@ -14,8 +14,8 @@
 
                 @error('filter.author')
                 <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                    <strong>{{ $message }}</strong>
+                </span>
                 @enderror
             </div>
 
@@ -32,8 +32,8 @@
 
                 @error('filter.title')
                 <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                    <strong>{{ $message }}</strong>
+                </span>
                 @enderror
             </div>
 
@@ -51,8 +51,8 @@
 
                 @error('filter.isbn')
                 <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                    <strong>{{ $message }}</strong>
+                </span>
                 @enderror
             </div>
 
@@ -63,11 +63,11 @@
                         <tr class="mt-2">
                             <td>
                                 <label for="active">Active</label>
-                                <input type="radio" id="active" name="filter[status]" value= "true">
+                                <input type="radio" id="active" name="filter[status]" value= "true" @if(old('filter.status',request('filter.status')) == 'true') checked @endif>
                             </td>
                             <td>
                                 <label for="inactive">Inactive</label>
-                                <input type="radio" id="inactive" name="filter[status]" value="false">
+                                <input type="radio" id="inactive" name="filter[status]" value="false"  @if(old('filter.status',request('filter.status')) == 'false') checked @endif>
                             </td>
                         </tr>
                     </table>

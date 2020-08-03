@@ -24,8 +24,8 @@ class BookFilterRequest extends FormRequest
     public function rules()
     {
         return [
-            'filter.author' => 'nullable|max:255|string',
-            'filter.title' => 'nullable|max:255|string',
+            'filter.author' => 'nullable|string|between:2,255',
+            'filter.title' => 'nullable|string|between:2,255',
             'filter.isbn' => 'nullable|numeric|digits:13',
             'filter.status' => 'nullable',
         ];
