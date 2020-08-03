@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header h4">{{__('Filters')}}</div>
                 <div class="card-body">
-                    <x-book-filter route="{{ route('books.index') }}"></x-book-filter>
+                    <x-book-filter route="{{ route('bookshelf') }}"></x-book-filter>
                 </div>
             </div>
             <hr>
