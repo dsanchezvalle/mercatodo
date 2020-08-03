@@ -30,7 +30,8 @@
                 </div>
             @endforeach
             </div>
-
+        <div class="m-2 row justify-content-center align-content-center">
         {{ $books->withQueryString()->links() }}
+        </div>
 </div>
 @endsection
