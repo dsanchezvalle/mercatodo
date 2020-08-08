@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -62,6 +63,13 @@ class BookController extends Controller
                 ->withInput($request->all())
                 ->withErrors(['image' => 'You need to add a book cover image.']);
         }
+        elseif ($this->file_is_not_image($request))
+        {
+            return redirect('/books/create')
+                ->withInput($request->all())
+                ->withErrors(['image' => 'The file must be an image.']);
+        }
+
         $this->store_image();
 
         Book::create([
@@ -104,15 +112,25 @@ class BookController extends Controller
      *
      * @param BookRequest $request
      * @param Book $book
-     * @return Response
+     * @return Application|RedirectResponse|Response|Redirector
      */
     public function update(BookRequest $request, Book $book)
     {
         if (request()->file) {
+            if ($this->file_is_not_image($request))
+            {
+                return redirect("/books/$book->id/edit")
+                    ->withInput($request->all())
+                    ->withErrors(['image' => 'The file must be an image.']);
+            }
             $imagePath = $this->get_image_path();
             $this->store_image();
-            unlink(storage_path().'/app'.$book->image_path);
-        } else {
+
+            if ($this->has_old_path($book) === false){
+                unlink(storage_path().'/app'.$book->image_path);
+            }
+        } else
+            {
             $imagePath = $book->image_path;
         }
 
@@ -147,19 +165,42 @@ class BookController extends Controller
      */
     public function store_image()
     {
-        request()->validate(['file' => 'image']);
         return request()->file->storeAs('uploads', request()->file->getClientOriginalName());
     }
 
 
+    /**
+     * @return string
+     */
     public function get_image_path()
     {
         return '/uploads/'.request()->file->getClientOriginalName();
     }
 
+    /**
+     * @param String $image_path
+     * @return string
+     */
     public function get_image_name(String $image_path)
     {
         $trimmed = trim($image_path, " /uploads/.");
         return $trimmed;
+    }
+
+    public function file_is_not_image(BookRequest $request)
+    {
+        $validator = Validator::make(request()->all(), [
+            'file' => 'image',
+        ]);
+
+        return $validator->fails();
+    }
+
+    public function has_old_path ($book){
+        $oldImagePath = strpos($book->image_path, 'https:');
+        if(false === $oldImagePath){
+            return false;
+        }
+        return true;
     }
 }
