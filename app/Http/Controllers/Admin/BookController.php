@@ -10,7 +10,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
 {
@@ -61,13 +60,7 @@ class BookController extends Controller
         if (!request()->file) {
             return redirect('/books/create')
                 ->withInput($request->all())
-                ->withErrors(['image' => 'You need to add a book cover image.']);
-        }
-        elseif ($this->file_is_not_image($request))
-        {
-            return redirect('/books/create')
-                ->withInput($request->all())
-                ->withErrors(['image' => 'The file must be an image.']);
+                ->withErrors(['file' => 'You need to add a book cover image.']);
         }
 
         $this->store_image();
@@ -117,12 +110,7 @@ class BookController extends Controller
     public function update(BookRequest $request, Book $book)
     {
         if (request()->file) {
-            if ($this->file_is_not_image($request))
-            {
-                return redirect("/books/$book->id/edit")
-                    ->withInput($request->all())
-                    ->withErrors(['image' => 'The file must be an image.']);
-            }
+
             $imagePath = $this->get_image_path();
             $this->store_image();
 
@@ -185,15 +173,6 @@ class BookController extends Controller
     {
         $trimmed = trim($image_path, " /uploads/.");
         return $trimmed;
-    }
-
-    public function file_is_not_image(BookRequest $request)
-    {
-        $validator = Validator::make(request()->all(), [
-            'file' => 'image',
-        ]);
-
-        return $validator->fails();
     }
 
     public function has_old_path ($book){

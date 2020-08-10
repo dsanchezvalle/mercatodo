@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class BookRequest extends FormRequest
 {
@@ -31,7 +30,8 @@ class BookRequest extends FormRequest
             'author' => ['required', 'string', 'min: 2', 'max:255'],
             'price' => ['required', 'numeric', 'min:1', 'max:500000'],
             'stock' => ['required', 'numeric', 'min:1', 'max:1000' ],
-            'image_path' => ['string|image'],
+            'image_path' => ['string'],
+            'file' => ['image', 'mimes:jpeg,bmp,png', 'max:200'],
         ];
     }
 }
