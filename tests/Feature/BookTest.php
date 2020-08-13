@@ -65,7 +65,6 @@ class BookTest extends TestCase
             'is_active' => 'on'
         ]);
 
-        //$response->assertRedirect(route('books.index'));
         $expectedData = Book::find(1);
 
         $this->assertEquals('1111111111111', $expectedData->isbn);
@@ -165,7 +164,6 @@ class BookTest extends TestCase
      * @test
      * @return void
      */
-
 
     public function non_admins_cannot_see_show_book_view()
     {

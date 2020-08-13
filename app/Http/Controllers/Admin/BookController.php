@@ -10,6 +10,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -74,7 +76,11 @@ class BookController extends Controller
             'image_path' => $this->get_image_path(),
             'is_active' => true,
         ]);
-
+        $idLastBookCreated = DB::table('books')->latest('id')->first()->id;
+        Log::channel('single')
+            ->notice("A new book with ID " . $idLastBookCreated . " has been created successfully by admin: " . $request->user()->name . " " . $request->user()->surname);
+        Log::channel('slack')
+            ->notice("A new book has been created successfully. Find it at:  http://mercatodo.test/books/" . $idLastBookCreated);
         return response()->redirectToRoute('books.index');
     }
 
@@ -86,6 +92,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
+        Log::channel('single')->notice("User with ID " . auth()->user()->id . " has accessed to details for book with ID " . $book->id);
         return response()->view('admin.book.show', compact('book'));
     }
 
@@ -175,6 +182,10 @@ class BookController extends Controller
         return $trimmed;
     }
 
+    /**
+     * @param $book
+     * @return bool
+     */
     public function has_old_path ($book){
         $oldImagePath = strpos($book->image_path, 'https:');
         if(false === $oldImagePath){

@@ -5,12 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use NumberFormatter;
-use phpDocumentor\Reflection\Types\Integer;
 
 class Book extends Model
 {
     protected $guarded = [];
 
+    /**
+     * @return string
+     */
     public function isActive(): string
     {
         if ($this->is_active) {
