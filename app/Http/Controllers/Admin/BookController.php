@@ -117,15 +117,13 @@ class BookController extends Controller
     public function update(BookRequest $request, Book $book)
     {
         if (request()->file) {
-
             $imagePath = $this->get_image_path();
             $this->store_image();
 
-            if ($this->has_old_path($book) === false){
+            if ($this->has_old_path($book) === false) {
                 unlink(storage_path().'/app'.$book->image_path);
             }
-        } else
-            {
+        } else {
             $imagePath = $book->image_path;
         }
 
@@ -186,9 +184,10 @@ class BookController extends Controller
      * @param $book
      * @return bool
      */
-    public function has_old_path ($book){
+    public function has_old_path($book)
+    {
         $oldImagePath = strpos($book->image_path, 'https:');
-        if(false === $oldImagePath){
+        if (false === $oldImagePath) {
             return false;
         }
         return true;
