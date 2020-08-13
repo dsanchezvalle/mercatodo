@@ -23,11 +23,11 @@
                         </tr>
                         <tr>
                             <td class="font-weight-bold">Price: </td>
-                            <td>$ {{ $book->price }}</td>
+                            <td>{{ $book->formattedPrice($book->price) }}</td>
                         </tr>
                         <tr>
                             <td class="font-weight-bold">Stock: </td>
-                            <td>$ {{ $book->stock }}</td>
+                            <td>{{ $book->stock }}</td>
                         </tr>
 
                         <tr>

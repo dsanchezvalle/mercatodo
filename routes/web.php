@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    Log::channel('single')->info('A user has arrived at the welcome page.');
     return view('welcome');
 });
 

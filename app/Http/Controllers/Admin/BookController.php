@@ -10,6 +10,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -60,8 +62,9 @@ class BookController extends Controller
         if (!request()->file) {
             return redirect('/books/create')
                 ->withInput($request->all())
-                ->withErrors(['image' => 'You need to add a book cover image.']);
+                ->withErrors(['file' => 'You need to add a book cover image.']);
         }
+
         $this->store_image();
 
         Book::create([
@@ -73,7 +76,11 @@ class BookController extends Controller
             'image_path' => $this->get_image_path(),
             'is_active' => true,
         ]);
-
+        $idLastBookCreated = DB::table('books')->latest('id')->first()->id;
+        Log::channel('single')
+            ->notice("A new book with ID " . $idLastBookCreated . " has been created successfully by admin: " . $request->user()->name . " " . $request->user()->surname);
+        Log::channel('slack')
+            ->notice("A new book has been created successfully. Find it at:  http://mercatodo.test/books/" . $idLastBookCreated);
         return response()->redirectToRoute('books.index');
     }
 
@@ -85,6 +92,7 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
+        Log::channel('single')->notice("User with ID " . auth()->user()->id . " has accessed to details for book with ID " . $book->id);
         return response()->view('admin.book.show', compact('book'));
     }
 
@@ -104,14 +112,17 @@ class BookController extends Controller
      *
      * @param BookRequest $request
      * @param Book $book
-     * @return Response
+     * @return Application|RedirectResponse|Response|Redirector
      */
     public function update(BookRequest $request, Book $book)
     {
         if (request()->file) {
             $imagePath = $this->get_image_path();
             $this->store_image();
-            unlink(storage_path().'/app'.$book->image_path);
+
+            if ($this->has_old_path($book) === false) {
+                unlink(storage_path().'/app'.$book->image_path);
+            }
         } else {
             $imagePath = $book->image_path;
         }
@@ -147,19 +158,38 @@ class BookController extends Controller
      */
     public function store_image()
     {
-        request()->validate(['file' => 'image']);
         return request()->file->storeAs('uploads', request()->file->getClientOriginalName());
     }
 
 
+    /**
+     * @return string
+     */
     public function get_image_path()
     {
         return '/uploads/'.request()->file->getClientOriginalName();
     }
 
+    /**
+     * @param String $image_path
+     * @return string
+     */
     public function get_image_name(String $image_path)
     {
         $trimmed = trim($image_path, " /uploads/.");
         return $trimmed;
+    }
+
+    /**
+     * @param $book
+     * @return bool
+     */
+    public function has_old_path($book)
+    {
+        $oldImagePath = strpos($book->image_path, 'https:');
+        if (false === $oldImagePath) {
+            return false;
+        }
+        return true;
     }
 }

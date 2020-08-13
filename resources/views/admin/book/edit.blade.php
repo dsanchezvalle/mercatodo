@@ -128,7 +128,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Update') }}
                                 </button>
+                                <a href="{{ route('books.index') }}" class="btn btn-primary">{{ __('Back') }}</a>
                             </div>
+
                         </div>
 
                     </form>

@@ -10,7 +10,7 @@
                     <x-book-filter route="{{ route('books.index') }}"></x-book-filter>
                 </div>
             </div>
-            <hr>
+
             <div class="card">
                 <div class="card-header h4">Books' dashboard </div>
                 <div class="card-body">
@@ -37,7 +37,7 @@
                                     <td>{{ $book->title }}</td>
                                     <td>{{ $book->author }}</td>
                                     <td class="text-center">{{ $book->stock }}</td>
-                                    <td class="text-center">$ {{ $book->price }}</td>
+                                    <td class="text-center">{{ $book->formattedPrice($book->price) }}</td>
                                     <td class="text-center @if($book->is_active) text-success @else text-danger @endif">{{ $book->isActive() }}</td>
                                     <td><a href="{{ route('books.edit', $book) }}">Edit</a></td>
                                 </tr>

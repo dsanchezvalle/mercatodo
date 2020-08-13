@@ -8,7 +8,10 @@ use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
+use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Storage;
 
 class BookTest extends TestCase
 {
@@ -62,7 +65,6 @@ class BookTest extends TestCase
             'is_active' => 'on'
         ]);
 
-        //$response->assertRedirect(route('books.index'));
         $expectedData = Book::find(1);
 
         $this->assertEquals('1111111111111', $expectedData->isbn);
@@ -121,6 +123,8 @@ class BookTest extends TestCase
     {
         $user = factory(User::class)->create(['is_admin' => true]);
         $book = factory(Book::class)->make();
+        Storage::fake('local');
+        $file = UploadedFile::fake()->create('file.jpg', 50);
 
         $response = $this->actingAs($user)->post('/books', [
             'isbn' => $book->isbn,
@@ -128,11 +132,11 @@ class BookTest extends TestCase
             'author' => $book->author,
             'price' => $book->price,
             'stock' => $book->stock,
-            'image_path' => $book->image_path,
-            'is_active' => true,
+            'file' => $file,
         ]);
 
         $response->assertRedirect('books');
+
         $this->assertDatabaseHas('books', [
             'isbn' => $book->isbn,
         ]);
@@ -160,7 +164,6 @@ class BookTest extends TestCase
      * @test
      * @return void
      */
-
 
     public function non_admins_cannot_see_show_book_view()
     {
