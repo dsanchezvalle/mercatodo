@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Validation\Rule;
+use App\Http\Requests\ClientRequest;
 
 class ClientController extends Controller
 {
@@ -58,29 +57,20 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param ClientRequest $request
      * @param User $client
      * @return RedirectResponse
      */
-    public function update(Request $request, User $client): RedirectResponse
+    public function update(ClientRequest $request, User $client): RedirectResponse
     {
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'surname' => ['required', 'string', 'max:255'],
-            'document_type' => ['required', 'string', 'max:255'],
-            'document_number' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($client)],
-            'phone_number' => ['required', 'string', 'max:255'],
-        ]);
-
         $client->update([
-            'name' => $validatedData['name'],
-            'surname' => $validatedData['surname'],
-            'document_type' => $validatedData['document_type'],
-            'document_number' => $validatedData['document_number'],
-            'email' => $validatedData['email'],
-            'phone_number' => $validatedData['phone_number'],
-            'is_active' => $request->is_active ? true : false,
+            'name' => $request->input('name'),
+            'surname' => $request->input('surname'),
+            'document_type' => $request->input('document_type'),
+            'document_number' => $request->input('document_number'),
+            'email' => $request->input('email'),
+            'phone_number' => $request->input('phone_number'),
+            'is_active' => $request->input('is_active') ? true : false,
         ]);
 
         return response()->redirectToRoute('clients.index');
