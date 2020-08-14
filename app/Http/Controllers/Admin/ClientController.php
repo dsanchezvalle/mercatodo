@@ -34,7 +34,7 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param User $client
+     * @param  User $client
      * @return Response
      */
     public function show(User $client): Response
@@ -46,7 +46,7 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param User $client
+     * @param  User $client
      * @return Response
      */
     public function edit(User $client): Response
@@ -57,13 +57,14 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param ClientRequest $request
-     * @param User $client
+     * @param  ClientRequest $request
+     * @param  User          $client
      * @return RedirectResponse
      */
     public function update(ClientRequest $request, User $client): RedirectResponse
     {
-        $client->update([
+        $client->update(
+            [
             'name' => $request->input('name'),
             'surname' => $request->input('surname'),
             'document_type' => $request->input('document_type'),
@@ -71,7 +72,8 @@ class ClientController extends Controller
             'email' => $request->input('email'),
             'phone_number' => $request->input('phone_number'),
             'is_active' => $request->input('is_active') ? true : false,
-        ]);
+            ]
+        );
 
         return response()->redirectToRoute('clients.index');
     }

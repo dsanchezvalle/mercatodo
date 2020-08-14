@@ -1,12 +1,15 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/**
+ * @var \Illuminate\Database\Eloquent\Factory $factory 
+ */
 
 use App\Book;
 use Faker\Generator as Faker;
 
-$factory->define(Book::class, function (Faker $faker) {
-    return [
+$factory->define(
+    Book::class, function (Faker $faker) {
+        return [
         'isbn' => $faker->isbn13,
         'title' => $faker->sentence(4),
         'author' => $faker->name,
@@ -14,5 +17,6 @@ $factory->define(Book::class, function (Faker $faker) {
         'stock' => $faker->numberBetween(1, 1000),
         'image_path' => $faker->imageUrl(250, 400),
         'is_active' => true
-    ];
-});
+        ];
+    }
+);

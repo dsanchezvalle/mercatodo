@@ -34,14 +34,14 @@ return [
     ),
 
     /*
-  |--------------------------------------------------------------------------
-  | Paginate
-  |--------------------------------------------------------------------------
-  |
-  | This option determines how many items an user can see in each page
-  | of a view.
-  |
-  */
+    |--------------------------------------------------------------------------
+    | Paginate
+    |--------------------------------------------------------------------------
+    |
+    | This option determines how many items an user can see in each page
+    | of a view.
+    |
+    */
 
     'paginate' => env(
         'PAGINATE',

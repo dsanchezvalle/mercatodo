@@ -18,6 +18,7 @@ class BookTest extends TestCase
     use DatabaseMigrations;
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -33,6 +34,7 @@ class BookTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -47,6 +49,7 @@ class BookTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -56,14 +59,16 @@ class BookTest extends TestCase
         $user = factory(User::class)->create(['is_admin' => true]);
         $book = factory(Book::class)->create();
 
-        $response = $this->actingAs($user)->put("/books/$book->id", [
+        $response = $this->actingAs($user)->put(
+            "/books/$book->id", [
             'isbn' => '1111111111111',
             'title' => 'Hamlet',
             'author' => 'William Shakespeare',
             'price' => '54543',
             'stock' => '999',
             'is_active' => 'on'
-        ]);
+            ]
+        );
 
         $expectedData = Book::find(1);
 
@@ -76,6 +81,7 @@ class BookTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -84,7 +90,8 @@ class BookTest extends TestCase
         $user = factory(User::class)->create();
         $book = factory(Book::class)->create();
 
-        $response = $this->actingAs($user)->put("/books/$book->id", [
+        $response = $this->actingAs($user)->put(
+            "/books/$book->id", [
             'isbn' => '1111111111111',
             'title' => 'Hamlet',
             'author' => 'William Shakespeare',
@@ -92,13 +99,15 @@ class BookTest extends TestCase
             'stock' => '999',
             'image_path' => 'https://lorempixel.com/400/350/?61443',
             'is_active' => 'on'
-        ]);
+            ]
+        );
 
         $response->assertForbidden();
     }
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -115,6 +124,7 @@ class BookTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -126,24 +136,29 @@ class BookTest extends TestCase
         Storage::fake('local');
         $file = UploadedFile::fake()->create('file.jpg', 50);
 
-        $response = $this->actingAs($user)->post('/books', [
+        $response = $this->actingAs($user)->post(
+            '/books', [
             'isbn' => $book->isbn,
             'title' => $book->title,
             'author' => $book->author,
             'price' => $book->price,
             'stock' => $book->stock,
             'file' => $file,
-        ]);
+            ]
+        );
 
         $response->assertRedirect('books');
 
-        $this->assertDatabaseHas('books', [
+        $this->assertDatabaseHas(
+            'books', [
             'isbn' => $book->isbn,
-        ]);
+            ]
+        );
     }
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -161,6 +176,7 @@ class BookTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -177,22 +193,25 @@ class BookTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @dataProvider searchItemsProvider
-     * @param string $field
-     * @param string $value
-     * @return void
+     * @param        string $field
+     * @param        string $value
+     * @return       void
      */
 
     public function admin_can_search_books_with_filters(string $field, string $value)
     {
         $user = factory(User::class)->create(['is_admin' => true]);
         factory(Book::class, 5)->create();
-        $book = factory(Book::class)->create([
+        $book = factory(Book::class)->create(
+            [
             'author' => 'Carlos Perez',
             'title' => 'Tom Sawyer',
             'isbn' => '2222222222222',
-        ]);
+            ]
+        );
 
         $filters = [
             'filter' => [

@@ -22,8 +22,8 @@ class Book extends Model
     }
 
     /**
-     * @param Builder $query
-     * @param string|null $author
+     * @param  Builder     $query
+     * @param  string|null $author
      * @return Builder
      */
     public function scopeAuthor(Builder $query, ? string $author): Builder
@@ -36,8 +36,8 @@ class Book extends Model
     }
 
     /**
-     * @param Builder $query
-     * @param string|null $title
+     * @param  Builder     $query
+     * @param  string|null $title
      * @return Builder
      */
     public function scopeTitle(Builder $query, ? string $title): Builder
@@ -50,8 +50,8 @@ class Book extends Model
     }
 
     /**
-     * @param Builder $query
-     * @param string|null $isbn
+     * @param  Builder     $query
+     * @param  string|null $isbn
      * @return Builder
      */
     public function scopeIsbn(Builder $query, ? string $isbn): Builder
@@ -64,8 +64,8 @@ class Book extends Model
     }
 
     /**
-     * @param Builder $query
-     * @param string|null $status
+     * @param  Builder     $query
+     * @param  string|null $status
      * @return Builder
      */
     public function scopeStatus(Builder $query, ? string $status): Builder
@@ -81,10 +81,10 @@ class Book extends Model
 
 
     /**
-     * @param Builder $query
-     * @param string $field
-     * @param string $value
-     * @param string|null $operator
+     * @param  Builder     $query
+     * @param  string      $field
+     * @param  string      $value
+     * @param  string|null $operator
      * @return Builder
      */
     private function searchByField(Builder $query, string $field, string $value, string $operator = '='): Builder
@@ -93,7 +93,7 @@ class Book extends Model
     }
 
     /**
-     * @param int $price
+     * @param  int $price
      * @return false|string
      */
     public function formattedPrice(int $price)

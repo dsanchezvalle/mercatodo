@@ -13,6 +13,7 @@ class ClientTest extends TestCase
     use DatabaseMigrations;
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -28,6 +29,7 @@ class ClientTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -43,6 +45,7 @@ class ClientTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -57,6 +60,7 @@ class ClientTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -71,6 +75,7 @@ class ClientTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -87,6 +92,7 @@ class ClientTest extends TestCase
 
     /**
      * A basic feature test example.
+     *
      * @test
      * @return void
      */
@@ -96,7 +102,8 @@ class ClientTest extends TestCase
         $user = factory(User::class)->create(['is_admin' => true]);
         $client = factory(User::class)->create();
 
-        $response = $this->actingAs($user)->put("/clients/$client->id", [
+        $response = $this->actingAs($user)->put(
+            "/clients/$client->id", [
             'name' => 'Many',
             'surname' => 'Delgado',
             'document_type' => 'CC',
@@ -104,7 +111,8 @@ class ClientTest extends TestCase
             'is_active' => 'on',
             'email' => 'many@hotm.com',
             'phone_number' => '1234546'
-        ]);
+            ]
+        );
 
         $response->assertRedirect(route('clients.index'));
         $expectedData = User::find(2);

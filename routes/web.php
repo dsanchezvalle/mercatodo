@@ -13,10 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    Log::channel('single')->info('A user has arrived at the welcome page.');
-    return view('welcome');
-});
+Route::get(
+    '/', function () {
+        Log::channel('single')->info('A user has arrived at the welcome page.');
+        return view('welcome');
+    }
+);
 
 Auth::routes(['verify' => true]);
 
@@ -27,6 +29,8 @@ Route::resource('clients', 'Admin\ClientController')->middleware('verified');
 Route::resource('books', 'Admin\BookController')->middleware('verified');
 Route::get('/bookshelf', 'BookController@bookshelf')->middleware('verified')->name('bookshelf');
 
-Route::get('/uploads/{file}', function ($file) {
-    return Storage::response("uploads/$file");
-})->middleware('verified');
+Route::get(
+    '/uploads/{file}', function ($file) {
+        return Storage::response("uploads/$file");
+    }
+)->middleware('verified');

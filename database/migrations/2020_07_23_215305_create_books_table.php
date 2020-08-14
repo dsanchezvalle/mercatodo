@@ -13,17 +13,19 @@ class CreateBooksTable extends Migration
      */
     public function up()
     {
-        Schema::create('books', function (Blueprint $table) {
-            $table->id();
-            $table->string('isbn')->unique();
-            $table->string('title');
-            $table->string('author');
-            $table->integer('price');
-            $table->smallInteger('stock');
-            $table->string('image_path');
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
+        Schema::create(
+            'books', function (Blueprint $table) {
+                $table->id();
+                $table->string('isbn')->unique();
+                $table->string('title');
+                $table->string('author');
+                $table->integer('price');
+                $table->smallInteger('stock');
+                $table->string('image_path');
+                $table->boolean('is_active')->default(true);
+                $table->timestamps();
+            }
+        );
     }
 
     /**

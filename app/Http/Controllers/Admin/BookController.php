@@ -27,7 +27,7 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param BookFilterRequest $request
+     * @param  BookFilterRequest $request
      * @return Response
      */
     public function index(BookFilterRequest $request)
@@ -54,7 +54,7 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param BookRequest $request
+     * @param  BookRequest $request
      * @return Application|RedirectResponse|Redirector
      */
     public function store(BookRequest $request)
@@ -67,7 +67,8 @@ class BookController extends Controller
 
         $this->store_image();
 
-        Book::create([
+        Book::create(
+            [
             'isbn' => $request->input('isbn'),
             'title' => $request->input('title'),
             'author' => $request->input('author'),
@@ -75,7 +76,8 @@ class BookController extends Controller
             'stock' => $request->input('stock'),
             'image_path' => $this->get_image_path(),
             'is_active' => true,
-        ]);
+            ]
+        );
         $idLastBookCreated = DB::table('books')->latest('id')->first()->id;
         Log::channel('single')
             ->notice("A new book with ID " . $idLastBookCreated . " has been created successfully by admin: " . $request->user()->name . " " . $request->user()->surname);
@@ -87,7 +89,7 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Book $book
+     * @param  Book $book
      * @return Response
      */
     public function show(Book $book)
@@ -99,7 +101,7 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Book $book
+     * @param  Book $book
      * @return Response
      */
     public function edit(Book $book)
@@ -110,8 +112,8 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param BookRequest $request
-     * @param Book $book
+     * @param  BookRequest $request
+     * @param  Book        $book
      * @return Application|RedirectResponse|Response|Redirector
      */
     public function update(BookRequest $request, Book $book)
@@ -127,7 +129,8 @@ class BookController extends Controller
             $imagePath = $book->image_path;
         }
 
-        $book->update([
+        $book->update(
+            [
             'isbn' => $request->input('isbn'),
             'title' => $request->input('title'),
             'author' => $request->input('author'),
@@ -135,7 +138,8 @@ class BookController extends Controller
             'stock' => $request->input('stock'),
             'image_path' => $imagePath,
             'is_active' => $request->is_active ? true : false,
-        ]);
+            ]
+        );
 
 
         return response()->redirectToRoute('books.index');
@@ -144,7 +148,7 @@ class BookController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Book $book
+     * @param  Book $book
      * @return void
      */
     public function destroy(Book $book)
@@ -154,6 +158,7 @@ class BookController extends Controller
 
     /**
      * Store book cover image.
+     *
      * @return mixed
      */
     public function store_image()
@@ -171,7 +176,7 @@ class BookController extends Controller
     }
 
     /**
-     * @param String $image_path
+     * @param  String $image_path
      * @return string
      */
     public function get_image_name(String $image_path)
@@ -181,7 +186,7 @@ class BookController extends Controller
     }
 
     /**
-     * @param $book
+     * @param  $book
      * @return bool
      */
     public function has_old_path($book)

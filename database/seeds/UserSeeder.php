@@ -13,11 +13,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        factory(User::class)->create([
+        factory(User::class)->create(
+            [
             'email' => 'admin@mercatodo.com',
             'password' => Hash::make('admin123'),
             'is_admin' => true,
-        ]);
+            ]
+        );
 
         factory(User::class, 15)->create();
     }
