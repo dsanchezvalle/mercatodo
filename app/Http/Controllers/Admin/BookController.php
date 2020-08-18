@@ -12,6 +12,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
@@ -44,9 +45,9 @@ class BookController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('admin.book.create');
     }
@@ -92,7 +93,7 @@ class BookController extends Controller
      * @param  Book $book
      * @return Response
      */
-    public function show(Book $book)
+    public function show(Book $book): Response
     {
         Log::channel('single')->notice("User with ID " . auth()->user()->id . " has accessed to details for book with ID " . $book->id);
         return response()->view('admin.book.show', compact('book'));
@@ -114,9 +115,9 @@ class BookController extends Controller
      *
      * @param  BookRequest $request
      * @param  Book        $book
-     * @return Application|RedirectResponse|Response|Redirector
+     * @return RedirectResponse
      */
-    public function update(BookRequest $request, Book $book)
+    public function update(BookRequest $request, Book $book): RedirectResponse
     {
         if (request()->file) {
             $imagePath = $this->get_image_path();

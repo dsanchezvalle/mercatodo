@@ -60,7 +60,8 @@ class BookTest extends TestCase
         $book = factory(Book::class)->create();
 
         $response = $this->actingAs($user)->put(
-            "/books/$book->id", [
+            "/books/$book->id",
+            [
             'isbn' => '1111111111111',
             'title' => 'Hamlet',
             'author' => 'William Shakespeare',
@@ -91,7 +92,8 @@ class BookTest extends TestCase
         $book = factory(Book::class)->create();
 
         $response = $this->actingAs($user)->put(
-            "/books/$book->id", [
+            "/books/$book->id",
+            [
             'isbn' => '1111111111111',
             'title' => 'Hamlet',
             'author' => 'William Shakespeare',
@@ -137,7 +139,8 @@ class BookTest extends TestCase
         $file = UploadedFile::fake()->create('file.jpg', 50);
 
         $response = $this->actingAs($user)->post(
-            '/books', [
+            '/books',
+            [
             'isbn' => $book->isbn,
             'title' => $book->title,
             'author' => $book->author,
@@ -150,7 +153,8 @@ class BookTest extends TestCase
         $response->assertRedirect('books');
 
         $this->assertDatabaseHas(
-            'books', [
+            'books',
+            [
             'isbn' => $book->isbn,
             ]
         );

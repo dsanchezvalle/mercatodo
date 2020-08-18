@@ -1,14 +1,15 @@
 <?php
 
 /**
- * @var \Illuminate\Database\Eloquent\Factory $factory 
+ * @var \Illuminate\Database\Eloquent\Factory $factory
  */
 
 use App\Book;
 use Faker\Generator as Faker;
 
 $factory->define(
-    Book::class, function (Faker $faker) {
+    Book::class,
+    function (Faker $faker) {
         return [
         'isbn' => $faker->isbn13,
         'title' => $faker->sentence(4),

@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get(
-    '/', function () {
+    '/',
+    function () {
         Log::channel('single')->info('A user has arrived at the welcome page.');
         return view('welcome');
     }
@@ -30,7 +31,8 @@ Route::resource('books', 'Admin\BookController')->middleware('verified');
 Route::get('/bookshelf', 'BookController@bookshelf')->middleware('verified')->name('bookshelf');
 
 Route::get(
-    '/uploads/{file}', function ($file) {
+    '/uploads/{file}',
+    function ($file) {
         return Storage::response("uploads/$file");
     }
 )->middleware('verified');

@@ -103,7 +103,8 @@ class ClientTest extends TestCase
         $client = factory(User::class)->create();
 
         $response = $this->actingAs($user)->put(
-            "/clients/$client->id", [
+            "/clients/$client->id",
+            [
             'name' => 'Many',
             'surname' => 'Delgado',
             'document_type' => 'CC',

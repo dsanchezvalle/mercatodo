@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var \Illuminate\Database\Eloquent\Factory $factory 
+ * @var \Illuminate\Database\Eloquent\Factory $factory
  */
 
 use App\User;
@@ -20,7 +20,8 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(
-    User::class, function (Faker $faker) {
+    User::class,
+    function (Faker $faker) {
         return [
         'name' => $faker->firstName,
         'surname' => $faker->lastName,
