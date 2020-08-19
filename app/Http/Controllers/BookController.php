@@ -11,7 +11,7 @@ class BookController extends Controller
     public function bookshelf(BookFilterRequest $request)
     {
         Log::channel('single')
-            ->notice("User with id " . $request->user()->id . " has arrived at the Bookshelf.");
+            ->notice("User with ID " . $request->user()->id . " has arrived at the Bookshelf.");
 
         $books = Book::author($request->input('filter.author'))
             ->title($request->input('filter.title'))

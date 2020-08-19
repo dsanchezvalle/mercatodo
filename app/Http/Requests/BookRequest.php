@@ -26,12 +26,12 @@ class BookRequest extends FormRequest
         $id = $this->book->id ?? null;
         return [
             'isbn' => ['required', 'string', 'digits:13', "unique:books,isbn,$id"],
-            'title' => ['required', 'string', 'min: 2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
-            'author' => ['required', 'string', 'min: 2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
+            'title' => ['required', 'string', 'min: 2', 'max:100', 'regex:/^[a-zA-Z0-9áéíóúüñÑ\s\.]+$/'],
+            'author' => ['required', 'string', 'min: 2', 'max:80', 'regex:/^[a-zA-Z0-9áéíóúüñÑ\s\.]+$/'],
             'price' => ['required', 'numeric', 'min:1', 'max:500000'],
             'stock' => ['required', 'numeric', 'min:1', 'max:1000' ],
-            'image_path' => ['string'],
             'file' => ['image', 'mimes:jpeg,bmp,png', 'max:200'],
+            'is_active' => ['nullable', 'in:on,null'],
         ];
     }
 }
