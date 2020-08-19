@@ -52,12 +52,12 @@ class RegisterController extends Controller
         return Validator::make(
             $data,
             [
-            'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
-            'surname' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
-            'document_type' => ['required', 'string', 'max:255'],
-            'document_number' => ['required', 'string', 'max:255', 'alpha_num'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'phone_number' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'min:2', 'max:50', 'regex:/^[a-zA-Z0-9áéíóúüñÑ\s\.]+$/'],
+            'surname' => ['required', 'string', 'min:2', 'max:50', 'regex:/^[a-zA-Z0-9áéíóúüñÑ\s\.]+$/'],
+            'document_type' => ['required', 'string', 'max:2'],
+            'document_number' => ['required', 'string', 'max:50', 'alpha_num'],
+            'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
+            'phone_number' => ['required', 'string', 'max:50'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             ]
         );
