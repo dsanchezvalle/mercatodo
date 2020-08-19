@@ -81,7 +81,7 @@ class BookController extends Controller
         );
         $idLastBookCreated = DB::table('books')->latest('id')->first()->id;
         Log::channel('single')
-            ->notice("A new book with ID " . $idLastBookCreated . " has been created successfully by admin: " . $request->user()->name . " " . $request->user()->surname);
+            ->notice("A new book with ID " . $idLastBookCreated . " has been created successfully by admin with ID: " . $request->user()->id);
         Log::channel('slack')
             ->notice("A new book has been created successfully. Find it at:  http://mercatodo.test/books/" . $idLastBookCreated);
         return response()->redirectToRoute('books.index');
@@ -129,7 +129,7 @@ class BookController extends Controller
         } else {
             $imagePath = $book->image_path;
         }
-
+        //dd($imagePath);
         $book->update(
             [
             'isbn' => $request->input('isbn'),

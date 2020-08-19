@@ -24,10 +24,10 @@ class BookFilterRequest extends FormRequest
     public function rules()
     {
         return [
-            'filter.author' => 'nullable|string|between:2,255',
-            'filter.title' => 'nullable|string|between:2,255',
+            'filter.author' => 'nullable|string|between:2,255|regex:/^[a-zA-Z0-9\s\.]+$/',
+            'filter.title' => 'nullable|string|between:2,255|regex:/^[a-zA-Z0-9\s\.]+$/',
             'filter.isbn' => 'nullable|numeric|digits:13',
-            'filter.status' => 'nullable',
+            'filter.status' => 'nullable|in:true,false',
         ];
     }
 }

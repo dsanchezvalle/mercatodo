@@ -27,11 +27,11 @@ class ClientRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
             'surname' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
-            'document_type' => ['required', 'string', 'max:255'],
+            'document_type' => ['required', 'string', 'max:2'],
             'document_number' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($this->client->id)],
             'phone_number' => ['required', 'string', 'max:255'],
-            'is_active' => ['nullable'],
+            'is_active' => ['nullable', 'in:on,null'],
         ];
     }
 }

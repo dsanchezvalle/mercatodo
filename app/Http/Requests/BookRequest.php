@@ -30,8 +30,8 @@ class BookRequest extends FormRequest
             'author' => ['required', 'string', 'min: 2', 'max:255', 'regex:/^[a-zA-Z0-9\s\.]+$/'],
             'price' => ['required', 'numeric', 'min:1', 'max:500000'],
             'stock' => ['required', 'numeric', 'min:1', 'max:1000' ],
-            'image_path' => ['string'],
             'file' => ['image', 'mimes:jpeg,bmp,png', 'max:200'],
+            'is_active' => ['nullable', 'in:on,null'],
         ];
     }
 }
