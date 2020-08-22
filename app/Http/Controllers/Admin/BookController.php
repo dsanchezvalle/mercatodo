@@ -123,11 +123,7 @@ class BookController extends Controller
         if (request()->file) {
             $imagePath = $this->get_image_path();
             $this->store_image($imagePath);
-
-            if ($this->has_old_path($book) === false) {
-                unlink(storage_path() . '/app' . $book->image_path);
-            }
-
+            unlink(storage_path() . '/app' . $book->image_path);
         } else {
             $imagePath = $book->image_path;
         }
@@ -170,7 +166,6 @@ class BookController extends Controller
         return request()->file->storeAs('uploads', $this->get_image_name($imagePath));
     }
 
-
     /**
      * @return string
      */
@@ -187,23 +182,9 @@ class BookController extends Controller
      * @param  String $image_path
      * @return string
      */
-    public function get_image_name(string $image_path)
+    public function get_image_name(string $image_path): string
     {
         $trimmed = trim($image_path, "/uploads/.");
         return $trimmed;
     }
-
-    /**
-     * @param  $book
-     * @return bool
-     */
-    public function has_old_path($book)
-    {
-        $oldImagePath = strpos($book->image_path, 'https:');
-        if (false === $oldImagePath) {
-            return false;
-        }
-        return true;
-    }
-
 }
