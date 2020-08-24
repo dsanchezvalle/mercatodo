@@ -6,6 +6,7 @@ use App\Book;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookFilterRequest;
 use App\Http\Requests\BookRequest;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -65,8 +66,8 @@ class BookController extends Controller
                 ->withInput($request->all())
                 ->withErrors(['file' => 'You need to add a book cover image.']);
         }
-
-        $this->store_image();
+        $imagePath = $this->get_image_path();
+        $this->store_image($imagePath);
 
         Book::create(
             [
@@ -75,7 +76,7 @@ class BookController extends Controller
             'author' => $request->input('author'),
             'price' => $request->input('price'),
             'stock' => $request->input('stock'),
-            'image_path' => $this->get_image_path(),
+            'image_path' => $imagePath,
             'is_active' => true,
             ]
         );
@@ -121,15 +122,12 @@ class BookController extends Controller
     {
         if (request()->file) {
             $imagePath = $this->get_image_path();
-            $this->store_image();
-
-            if ($this->has_old_path($book) === false) {
-                unlink(storage_path().'/app'.$book->image_path);
-            }
+            $this->store_image($imagePath);
+            unlink(storage_path() . '/app' . $book->image_path);
         } else {
             $imagePath = $book->image_path;
         }
-        //dd($imagePath);
+
         $book->update(
             [
             'isbn' => $request->input('isbn'),
@@ -160,42 +158,33 @@ class BookController extends Controller
     /**
      * Store book cover image.
      *
+     * @param string $imagePath
      * @return mixed
      */
-    public function store_image()
+    public function store_image(string $imagePath)
     {
-        return request()->file->storeAs('uploads', request()->file->getClientOriginalName());
+        return request()->file->storeAs('uploads', $this->get_image_name($imagePath));
     }
-
 
     /**
      * @return string
      */
-    public function get_image_path()
+    public function get_image_path(): string
     {
-        return '/uploads/'.request()->file->getClientOriginalName();
+        $timeStamp = Carbon::now()->format('YmdHisu');
+        $adminId = auth()->user()->id;
+        $fileExtension = request()->file->extension();
+
+        return '/uploads/' . $timeStamp . '_' .  $adminId . '.' . $fileExtension;
     }
 
     /**
      * @param  String $image_path
      * @return string
      */
-    public function get_image_name(String $image_path)
+    public function get_image_name(string $image_path): string
     {
-        $trimmed = trim($image_path, " /uploads/.");
+        $trimmed = trim($image_path, "/uploads/.");
         return $trimmed;
-    }
-
-    /**
-     * @param  $book
-     * @return bool
-     */
-    public function has_old_path($book)
-    {
-        $oldImagePath = strpos($book->image_path, 'https:');
-        if (false === $oldImagePath) {
-            return false;
-        }
-        return true;
     }
 }
