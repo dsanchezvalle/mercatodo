@@ -25,6 +25,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $book->title }}</h5>
                                 <p class="card-subtitle mb-2 text-muted">Author: {{ $book->author }}</p>
+                                <button href="#" class="btn btn-outline-primary btn-sm" name="addbook" value="addbook" type="submit">Add to Cart</button>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">Price: {{ $book->formattedPrice($book->price) }}</small>
