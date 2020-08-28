@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <div class="container">
         <div class="col-md-12">
             <div class="card">
@@ -25,7 +24,11 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $book->title }}</h5>
                                 <p class="card-subtitle mb-2 text-muted">Author: {{ $book->author }}</p>
-                                <button href="#" class="btn btn-outline-primary btn-sm" name="addbook" value="addbook" type="submit">Add to Cart</button>
+                                <form action="POST">
+                                   <!-- <input type="text" name="bookid" id="bookid" value="{{ $book->id }}"> -->
+                                   <!-- <input type="text" name="items" id="items" value="1"> -->
+                                    <button href="#" class="btn btn-outline-primary btn-sm" name="add_to_cart" value="add_book" type="submit">Add to Cart</button>
+                                </form>
                             </div>
                             <div class="card-footer">
                                 <small class="text-muted">Price: {{ $book->formattedPrice($book->price) }}</small>
