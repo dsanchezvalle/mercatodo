@@ -4,12 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use NumberFormatter;
 
 class Book extends Model
 {
     protected $guarded = [];
 
+    public function shoppingCarts()
+    {
+        return $this->belongsToMany(ShoppingCart::class)->withPivot('quantity', 'unit_price');
+    }
     /**
      * @return string
      */
