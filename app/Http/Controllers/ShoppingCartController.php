@@ -75,30 +75,24 @@ class ShoppingCartController extends Controller
     public function update(Request $request, Book $book)
     {
         $userCart = ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
-        //dd((int)$request->input('items'));
+
         if ((int)$request->input('items')==0)
         {
             $userCart->books()->detach($book->id);
-            dd("Bingo!");
+            return redirect()->route("cart.index");
         }
         if($userCart->books()->get()->contains($book))
         {
-
-            //dd($userCart->books->find($book)->pivot->quantity);
-            //dd((int)$request->input('items'));
-            //dd('Este libro ya lo tienes. Tenías ' . $userCart->books->find($book)->pivot->quantity . ' y ahora tendrás ' . ($userCart->books->find($book)->pivot->quantity + (int)$request->input('items')));
             $userCart->books->find($book)->pivot->quantity +=  (int)$request->input('items');
             $userCart->books->find($book)->pivot->save();
         }
         else
         {
-            //dd('Este libro NO lo tienes');
             $quantity = $request->input('items');
             $userCart->books()->attach($book, ['quantity' => $quantity, 'unit_price' => $book->price]);
         }
 
-
-        dd('Hola llegaste!!');
+        return redirect()->route("bookshelf")->with('message', 'Book added to Cart! :)');
     }
 
     /**
