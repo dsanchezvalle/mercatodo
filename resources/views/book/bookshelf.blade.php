@@ -24,10 +24,11 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ $book->title }}</h5>
                                 <p class="card-subtitle mb-2 text-muted">Author: {{ $book->author }}</p>
-                                <form action="POST">
-                                   <!-- <input type="text" name="bookid" id="bookid" value="{{ $book->id }}"> -->
-                                   <!-- <input type="text" name="items" id="items" value="1"> -->
-                                    <button href="#" class="btn btn-outline-primary btn-sm" name="add_to_cart" value="add_book" type="submit">Add to Cart</button>
+                                <form action="/cart/{{$book->id}}" method="POST">
+                                    @csrf
+
+                                   <input type="number" min="1" name="items" id="items" class="form-control form-control-sm col-4" value="1">
+                                    <button class="btn btn-outline-primary btn-sm" type="submit">Add to Cart</button>
                                 </form>
                             </div>
                             <div class="card-footer">

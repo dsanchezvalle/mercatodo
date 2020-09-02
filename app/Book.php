@@ -2,9 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 use NumberFormatter;
 
 class Book extends Model
@@ -15,6 +14,7 @@ class Book extends Model
     {
         return $this->belongsToMany(ShoppingCart::class)->withPivot('quantity', 'unit_price');
     }
+
     /**
      * @return string
      */

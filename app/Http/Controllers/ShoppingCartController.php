@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
+use App\BookShoppingCart;
 use App\ShoppingCart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
 {
@@ -14,7 +17,9 @@ class ShoppingCartController extends Controller
      */
     public function index()
     {
-        //
+       $userCart = ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+
+       return response()->view('shoppingcart.cart', compact('userCart'));
     }
 
     /**
@@ -63,13 +68,37 @@ class ShoppingCartController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ShoppingCart  $shoppingCart
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param Book $book
+     * @return void
      */
-    public function update(Request $request, ShoppingCart $shoppingCart)
+    public function update(Request $request, Book $book)
     {
-        //
+        $userCart = ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+        //dd((int)$request->input('items'));
+        if ((int)$request->input('items')==0)
+        {
+            $userCart->books()->detach($book->id);
+            dd("Bingo!");
+        }
+        if($userCart->books()->get()->contains($book))
+        {
+
+            //dd($userCart->books->find($book)->pivot->quantity);
+            //dd((int)$request->input('items'));
+            //dd('Este libro ya lo tienes. Tenías ' . $userCart->books->find($book)->pivot->quantity . ' y ahora tendrás ' . ($userCart->books->find($book)->pivot->quantity + (int)$request->input('items')));
+            $userCart->books->find($book)->pivot->quantity +=  (int)$request->input('items');
+            $userCart->books->find($book)->pivot->save();
+        }
+        else
+        {
+            //dd('Este libro NO lo tienes');
+            $quantity = $request->input('items');
+            $userCart->books()->attach($book, ['quantity' => $quantity, 'unit_price' => $book->price]);
+        }
+
+
+        dd('Hola llegaste!!');
     }
 
     /**

@@ -41,7 +41,13 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{ route('cart.index') }}">{{ __('Cart (0)') }}</a>
+                            <a class="nav-link" href="{{ route('cart.index') }}">
+                                @if(Auth::user() and App\ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first() != null)
+                                {{ __('Cart (' . count(App\ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first()->books) . ')')}}
+                                @elseif (Auth::user())
+                                    {{ __('Cart (0)') }}
+                                @endif
+                            </a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">
