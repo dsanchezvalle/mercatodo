@@ -18,7 +18,8 @@ class CreateBookShoppingCartTable extends Migration
             $table->unsignedBigInteger('book_id');
             $table->integer('quantity');
             $table->float('unit_price');
-            //$table->primary(['book_id', 'shopping_cart_id']);
+
+            $table->primary(['book_id', 'shopping_cart_id']);
             $table->foreign('shopping_cart_id')->references('id')->on('shopping_carts');
             $table->foreign('book_id')->references('id')->on('books');
         });
