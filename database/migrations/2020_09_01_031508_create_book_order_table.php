@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBookShoppingCartTable extends Migration
+class CreateBookOrderTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateBookShoppingCartTable extends Migration
      */
     public function up()
     {
-        Schema::create('book_shopping_cart', function (Blueprint $table) {
-            $table->unsignedBigInteger('shopping_cart_id');
+        Schema::create('book_order', function (Blueprint $table) {
+            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('book_id');
             $table->integer('quantity');
             $table->float('unit_price');
 
-            $table->primary(['book_id', 'shopping_cart_id']);
-            $table->foreign('shopping_cart_id')->references('id')->on('shopping_carts');
+            $table->primary(['book_id', 'order_id']);
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('book_id')->references('id')->on('books');
         });
     }

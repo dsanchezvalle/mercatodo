@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use NumberFormatter;
 
-class ShoppingCart extends Model
+class Order extends Model
 {
     protected $guarded = [];
 

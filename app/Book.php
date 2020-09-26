@@ -10,9 +10,9 @@ class Book extends Model
 {
     protected $guarded = [];
 
-    public function shoppingCarts()
+    public function orders()
     {
-        return $this->belongsToMany(ShoppingCart::class)->withPivot('quantity', 'unit_price');
+        return $this->belongsToMany(Order::class)->withPivot('quantity', 'unit_price');
     }
 
     /**

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Book;
-use App\BookShoppingCart;
-use App\ShoppingCart;
+use App\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ShoppingCartController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +16,7 @@ class ShoppingCartController extends Controller
      */
     public function index()
     {
-       $userCart = ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+       $userCart = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
 
        return response()->view('shoppingcart.cart', compact('userCart'));
     }
@@ -46,10 +45,10 @@ class ShoppingCartController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ShoppingCart  $shoppingCart
+     * @param  \App\Order  $shoppingCart
      * @return \Illuminate\Http\Response
      */
-    public function show(ShoppingCart $shoppingCart)
+    public function show(Order $shoppingCart)
     {
         //
     }
@@ -57,10 +56,10 @@ class ShoppingCartController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ShoppingCart  $shoppingCart
+     * @param  \App\Order  $shoppingCart
      * @return \Illuminate\Http\Response
      */
-    public function edit(ShoppingCart $shoppingCart)
+    public function edit(Order $shoppingCart)
     {
         //
     }
@@ -74,7 +73,7 @@ class ShoppingCartController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        $userCart = ShoppingCart::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $userCart = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
 
         if ((int)$request->input('items')==0)
         {
@@ -98,10 +97,10 @@ class ShoppingCartController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ShoppingCart  $shoppingCart
+     * @param  \App\Order  $shoppingCart
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ShoppingCart $shoppingCart)
+    public function destroy(Order $shoppingCart)
     {
         //
     }
