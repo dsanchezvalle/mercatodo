@@ -22,49 +22,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Order  $shoppingCart
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $shoppingCart)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Order  $shoppingCart
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $shoppingCart)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -73,13 +30,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        $userCart = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $userCart = Auth::user()->orders()->firstOrCreate(['status' => 'open']);
 
-        if ((int)$request->input('items')==0)
-        {
-            $userCart->books()->detach($book->id);
-            return redirect()->route("cart.index");
-        }
         if($userCart->books()->get()->contains($book))
         {
             $userCart->books->find($book)->pivot->quantity +=  (int)$request->input('items');
@@ -94,14 +46,9 @@ class OrderController extends Controller
         return redirect()->route("bookshelf")->with('message', 'Book added to Cart! :)');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Order  $shoppingCart
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $shoppingCart)
+    public function remove(Book $book)
     {
-        //
+        Auth::user()->orders()->where('status', 'open')->first()->books()->detach($book->id);
+        return redirect()->route("cart.index");
     }
 }
