@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Book;
 use App\Order;
 use App\Services\PlacetoPayServiceInterface;
+use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +29,7 @@ class OrderController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param Book $book
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Book $book)
     {
@@ -43,13 +45,21 @@ class OrderController extends Controller
             $quantity = $request->input('items');
             $userCart->books()->attach($book, ['quantity' => $quantity, 'unit_price' => $book->price]);
         }
-
+        $userCart->total_amount = $userCart->getSubtotal();
+        $userCart->save();
         return redirect()->route("bookshelf")->with('message', 'Book added to Cart! :)');
     }
 
     public function remove(Book $book)
     {
-        Auth::user()->orders()->where('status', 'open')->first()->books()->detach($book->id);
+        $userCart = Auth::user()->orders()->where('status', 'open')->first();
+        $userCart->books()->detach($book->id);
+        $userCart->total_amount = $userCart->getSubtotal();
+        $userCart->save();
+        if($userCart->books()->get()->isEmpty()){
+            $userCart->delete();
+        }
+
         return redirect()->route("cart.index");
     }
 
@@ -60,70 +70,120 @@ class OrderController extends Controller
 
     public function payment(PlacetoPayServiceInterface $placetoPay)
     {
-        $request = json_decode('{
-    "locale": "es_CO",
-    "buyer": {
-        "name": "Isabella",
-        "surname": "Caro",
-        "email": "isabellacaro@javeriana.edu.co",
-        "address": {
-            "street": "Carrera 6 # 45 - 09 Apto 1016 Edificio Portal de la javeriana II",
-            "city": "Bogota",
-            "phone": "3206515736",
-            "country": "CO"
-        },
-        "mobile": null
-    },
-    "payment": {
-        "reference": "300038996",
-        "description": "Pago en PlacetoPay",
-        "amount": {
-            "taxes": [
-                {
-                    "kind": "valueAddedTax",
-                    "amount": "42635.0000",
-                    "base": 224397
-                }
+        $order = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $reference = $this->getReference();
+        $request = [
+            'locale' => 'es_CO',
+            'buyer' => [
+                'name' => Auth::user()->name,
+                'surname' => Auth::user()->surname,
+                'email' => 'd@d.com',
+                'address' => [
+                    'street' => '703 Dicki Island Apt. 609',
+                    'city' => 'North Randallstad',
+                    'state' => 'Antioquia',
+                    'postalCode' => '46292',
+                    'country' => 'US',
+                    'phone' => '363-547-1441 x383',
+                ],
             ],
-            "details": [
-                {
-                    "kind": "subtotal",
-                    "amount": "224397.0000"
-                },
-                {
-                    "kind": "discount",
-                    "amount": 0
-                },
-                {
-                    "kind": "shipping",
-                    "amount": "0.0000"
-                }
+            'payment' => [
+                'reference' => $reference,
+                'description' => 'PlacetoPay payment',
+                'amount' => [
+                    'taxes' => [
+                        [
+                            'kind' => 'ice',
+                            'amount' => 56.4,
+                            'base' => 470,
+                        ],
+                        [
+                            'kind' => 'valueAddedTax',
+                            'amount' => 89.3,
+                            'base' => 470,
+                        ],
+                    ],
+                    'details' => [
+                        [
+                            'kind' => 'shipping',
+                            'amount' => 47,
+                        ],
+                        [
+                            'kind' => 'tip',
+                            'amount' => 47,
+                        ],
+                        [
+                            'kind' => 'subtotal',
+                            'amount' => 940,
+                        ],
+                    ],
+                    'currency' => 'COP',
+                    'total' => $order->getSubtotal(),
+                ],
+                'items' => [
+                    [
+                        'sku' => 26443,
+                        'name' => 'Qui voluptatem excepturi.',
+                        'category' => 'physical',
+                        'qty' => 1,
+                        'price' => 940,
+                        'tax' => 89.3,
+                    ],
+                ],
+                'shipping' => [
+                    'name' => Auth::user()->name,
+                    'surname' => Auth::user()->surname,
+                    'email' => 'd@d.com',
+                    'documentType' => 'CC',
+                    'document' => '1848839248',
+                    'mobile' => '3006108300',
+                    'address' => [
+                        'street' => '703 Dicki Island Apt. 609',
+                        'city' => 'North Randallstad',
+                        'state' => 'Antioquia',
+                        'postalCode' => '46292',
+                        'country' => 'US',
+                        'phone' => '363-547-1441 x383',
+                    ],
+                ],
+                'allowPartial' => false,
             ],
-            "currency": "COP",
-            "total": "267032.0000"
-        },
-        "shipping": {
-            "name": "Isabella",
-            "surname": "Caro",
-            "email": "isabellacaro@javeriana.edu.co",
-            "address": {
-                "street": "Carrera 6 # 45 - 09 Apto 1016 Edificio Portal de la javeriana II",
-                "city": "Bogota",
-                "phone": "3206515736",
-                "country": "CO"
-            },
-            "mobile": null
-        }
-    },
-    "returnUrl": "https:\/\/www.ciudaddemascotas.com\/Perros\/placetopay\/processing\/response\/?reference=300038996",
-    "expiration": "' . date('c', strtotime('+2 days')) . '",
-    "ipAddress": "190.249.138.19",
-    "userAgent": "Mozilla\/5.0 (X11; Linux x86_64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/55.0.2883.87 Safari\/537.36"
-}', true);
+            'expiration' => date('c', strtotime('+1 hour')),
+            'ipAddress' => '127.0.0.1',
+            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36',
+            'returnUrl' => 'http://mercatodo.test/response/' . $reference,
+            'cancelUrl' => 'http://mercatodo.test/response/' . $reference,
+            'skipResult' => false,
+            'noBuyerFill' => false,
+            'captureAddress' => false,
+            'paymentMethod' => null,
+        ];
+
         $response = $placetoPay->payment($request);
+
         if($response->isSuccessful()){
+
+            Transaction::create(
+            [
+              'reference' => $reference,
+              'order_id' => $order->id,
+              'amount' => $order->getSubtotal(), //Check total or subtotal
+              'request_id' => $response->requestId(),
+              'status' => 'PENDING',
+              'process_url' => $response->processUrl(),
+            ]
+            );
+
             return redirect($response->processUrl());
         }
+    }
+
+    public function getReference()
+    {
+        $timeStamp = Carbon::now()->format('YmdHi');
+        $userId = auth()->user()->id;
+
+        return $userId . $timeStamp;
     }
 
 }
