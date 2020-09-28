@@ -8,7 +8,7 @@ use NumberFormatter;
 class Order extends Model
 {
     protected $guarded = [];
-
+    public $subtotal;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -28,14 +28,18 @@ class Order extends Model
     /**
      * @return string
      */
-    public function getSubtotal():string
+    public function getFormattedSubtotal():string
+    {
+        return $this->formattedPrice($this->getSubtotal());
+    }
+
+    public function getSubtotal()
     {
         $subtotal = 0.0;
         foreach($this->books as $book){
             $subtotal += ($book->pivot->quantity * $book->pivot->unit_price);
         }
-
-        return $this->formattedPrice($subtotal);
+        return $subtotal;
     }
 
     /**
