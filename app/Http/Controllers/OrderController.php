@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Book;
+use App\Http\Requests\CheckoutRequest;
 use App\Order;
 use App\Services\PlacetoPayServiceInterface;
+use App\Services\RedirectRequest;
 use App\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -42,7 +44,7 @@ class OrderController extends Controller
         }
         else
         {
-            $quantity = $request->input('items');
+            $quantity = (int)$request->input('items');
             $userCart->books()->attach($book, ['quantity' => $quantity, 'unit_price' => $book->price]);
         }
         $userCart->total_amount = $userCart->getSubtotal();
@@ -63,114 +65,45 @@ class OrderController extends Controller
         return redirect()->route("cart.index");
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
-        return view('shoppingcart.checkout');
+       //$userOrder = Auth::user()->activeOrder();
+       //dd($request->reference);
+        $userTransaction = Transaction::where('reference', $request->reference)->first();
+        //dd($userTransaction->order);
+        //$orderId = $userTransaction->order_id;
+        $userOrder = $userTransaction->order ?? Auth::user()->activeOrder();
+        $books = $userOrder->books;
+        //$userOrders = Auth::user()->orders()->get();
+        //dd($books);
+        return response()->view('shoppingcart.checkout', compact('userOrder', 'books'));
     }
 
-    public function payment(PlacetoPayServiceInterface $placetoPay)
+    public function list()
+    {
+        $orders = Auth::user()->orders;
+        //dd($orders);
+        return response()->view('order.index', compact('orders'));
+    }
+
+    public function payment(PlacetoPayServiceInterface $placetoPay, CheckoutRequest $request)
     {
         $order = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
-        $reference = $this->getReference();
-        $request = [
-            'locale' => 'es_CO',
-            'buyer' => [
-                'name' => Auth::user()->name,
-                'surname' => Auth::user()->surname,
-                'email' => 'd@d.com',
-                'address' => [
-                    'street' => '703 Dicki Island Apt. 609',
-                    'city' => 'North Randallstad',
-                    'state' => 'Antioquia',
-                    'postalCode' => '46292',
-                    'country' => 'US',
-                    'phone' => '363-547-1441 x383',
-                ],
-            ],
-            'payment' => [
-                'reference' => $reference,
-                'description' => 'PlacetoPay payment',
-                'amount' => [
-                    'taxes' => [
-                        [
-                            'kind' => 'ice',
-                            'amount' => 56.4,
-                            'base' => 470,
-                        ],
-                        [
-                            'kind' => 'valueAddedTax',
-                            'amount' => 89.3,
-                            'base' => 470,
-                        ],
-                    ],
-                    'details' => [
-                        [
-                            'kind' => 'shipping',
-                            'amount' => 47,
-                        ],
-                        [
-                            'kind' => 'tip',
-                            'amount' => 47,
-                        ],
-                        [
-                            'kind' => 'subtotal',
-                            'amount' => 940,
-                        ],
-                    ],
-                    'currency' => 'COP',
-                    'total' => $order->getSubtotal(),
-                ],
-                'items' => [
-                    [
-                        'sku' => 26443,
-                        'name' => 'Qui voluptatem excepturi.',
-                        'category' => 'physical',
-                        'qty' => 1,
-                        'price' => 940,
-                        'tax' => 89.3,
-                    ],
-                ],
-                'shipping' => [
-                    'name' => Auth::user()->name,
-                    'surname' => Auth::user()->surname,
-                    'email' => 'd@d.com',
-                    'documentType' => 'CC',
-                    'document' => '1848839248',
-                    'mobile' => '3006108300',
-                    'address' => [
-                        'street' => '703 Dicki Island Apt. 609',
-                        'city' => 'North Randallstad',
-                        'state' => 'Antioquia',
-                        'postalCode' => '46292',
-                        'country' => 'US',
-                        'phone' => '363-547-1441 x383',
-                    ],
-                ],
-                'allowPartial' => false,
-            ],
-            'expiration' => date('c', strtotime('+1 hour')),
-            'ipAddress' => '127.0.0.1',
-            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.86 Safari/537.36',
-            'returnUrl' => 'http://mercatodo.test/response/' . $reference,
-            'cancelUrl' => 'http://mercatodo.test/response/' . $reference,
-            'skipResult' => false,
-            'noBuyerFill' => false,
-            'captureAddress' => false,
-            'paymentMethod' => null,
-        ];
-
-        $response = $placetoPay->payment($request);
+        $order->update(['status' => 'closed']);
+        $request = new RedirectRequest($order, $request);
+        $response = $placetoPay->payment($request->toArray());
 
         if($response->isSuccessful()){
 
             Transaction::create(
             [
-              'reference' => $reference,
+              'reference' => $request->getReference(),
               'order_id' => $order->id,
               'amount' => $order->getSubtotal(), //Check total or subtotal
               'request_id' => $response->requestId(),
               'status' => 'PENDING',
               'process_url' => $response->processUrl(),
+              'payment_data' => json_encode($request->toArray()),
             ]
             );
 
@@ -178,12 +111,18 @@ class OrderController extends Controller
         }
     }
 
-    public function getReference()
-    {
-        $timeStamp = Carbon::now()->format('YmdHi');
-        $userId = auth()->user()->id;
 
-        return $userId . $timeStamp;
+
+    public function edit(Request $request, Book $book)
+    {
+        $userOrder = Auth::user()->orders()->where('status', 'open')->first();
+        $userOrder->books->find($book)->pivot->quantity =  (int)$request->input('items');
+        $userOrder->books->find($book)->pivot->save();
+
+        $userOrder->total_amount = $userOrder->getSubtotal();
+        $userOrder->save();
+
+        return redirect()->route("cart.index")->with('message', 'Your order has been updated! :)');
     }
 
 }
