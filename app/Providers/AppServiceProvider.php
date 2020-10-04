@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\PlacetoPayService;
 use App\Services\PlacetoPayServiceInterface;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +17,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(PlacetoPayServiceInterface::class, PlacetoPayService::class);
+        $this->app->singleton(Client::class, function (){
+            return new Client();
+        });
     }
 
     /**
