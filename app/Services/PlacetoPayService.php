@@ -8,15 +8,31 @@ use GuzzleHttp\Client;
 
 class PlacetoPayService implements PlacetoPayServiceInterface
 {
+    /**
+     * @var Client
+     */
+    private $client;
+
+    public function __construct(Client $client)
+    {
+        $this->client = $client;
+    }
     public function payment(array $paymentData)
     {
-        $client = new Client();
-        $response = $client->post(env('P2P_ENDPOINT_BASE') . '/api/session', [
+        $response = $this->client->post(env('P2P_ENDPOINT_BASE') . '/api/session', [
             'json' => array_replace_recursive([
                 'auth' => $this->auth()
             ], $paymentData)
         ]);
         return new RedirectResponse(json_decode($response->getBody()->getContents(), true));
+    }
+
+    public function sessionQuery(int $requestId)
+    {
+        $response = $this->client->post(env('P2P_ENDPOINT_BASE') . '/api/session/' . $requestId, [
+            'json' => ['auth' => $this->auth()]
+        ]);
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     private function auth()
