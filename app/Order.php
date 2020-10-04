@@ -9,6 +9,7 @@ class Order extends Model
 {
     protected $guarded = [];
     public $subtotal;
+    public $paymentStatus;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -53,4 +54,27 @@ class Order extends Model
         return $amount->format($price);
     }
 
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function paymentStatus()
+    {
+        $lastTransaction = $this->transactions->sortByDesc('id')->first();
+        if (isset($lastTransaction['status'])){
+            return $lastTransaction['status'];
+        }
+        else{
+            return '(No transaction)';
+        }
+    }
+
+    public function retryPayment()
+    {
+        return ($this->paymentStatus() === 'REJECTED') ?: false;
+    }
+
+
 }
+
