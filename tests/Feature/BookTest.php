@@ -4,13 +4,9 @@ namespace Tests\Feature;
 
 use App\Book;
 use App\User;
-use Faker\Factory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
-use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Storage;
 
 class BookTest extends TestCase
@@ -76,7 +72,7 @@ class BookTest extends TestCase
         $this->assertEquals('1111111111111', $expectedData->isbn);
         $this->assertEquals('Hamlet', $expectedData->title);
         $this->assertEquals('William Shakespeare', $expectedData->author);
-        $this->assertEquals('54543', $expectedData->price);
+        $this->assertEquals('54543.0', $expectedData->price);
         $this->assertEquals('999', $expectedData->stock);
     }
 
@@ -228,6 +224,24 @@ class BookTest extends TestCase
 
         $responseBooks = $response->getOriginalContent()['books'];
         $this->assertTrue($responseBooks->contains($book));
+    }
+
+    /**
+     * @test
+     * @return void
+     */
+    public function client_can_see_bookshelf()
+    {
+        $books = factory(Book::class, 5)->create();
+        $client = factory(User::class)->create();
+
+        $response = $this->actingAs($client)->get(route('bookshelf'))
+            ->assertSuccessful()
+            ->assertViewIs('book.bookshelf');
+
+        foreach ($books as $book) {
+            $response->assertSee($book->title);
+        }
     }
 
     public function searchItemsProvider(): array
