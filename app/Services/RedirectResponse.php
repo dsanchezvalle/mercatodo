@@ -22,8 +22,8 @@ class RedirectResponse
     public function __construct(array $data)
     {
         $this->status = $data['status'];
-        $this->requestId = $data['requestId'];
-        $this->processUrl = $data['processUrl'];
+        $this->requestId = $data['requestId'] ?? null;
+        $this->processUrl = $data['processUrl'] ?? null;
     }
 
     public function processUrl()
