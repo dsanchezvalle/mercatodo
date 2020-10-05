@@ -35,6 +35,7 @@ Route::delete('/cart/{book}', 'OrderController@remove')->middleware('verified')-
 Route::put('/cart/{book}', 'OrderController@edit')->middleware('verified')->name('cart.edit');
 Route::get('/transaction/cancelled/{reference}', 'TransactionController@cancel')->name('transaction.cancel');
 Route::get('/transaction/{reference}', 'TransactionController@status')->name('transaction.status');
+Route::get('/retry/{reference}', 'TransactionController@retry')->name('transaction.retry');
 Route::get('/transaction/result/{reference}', 'TransactionController@result')->name('transaction.result');
 Route::get('/orders', 'OrderController@list')->middleware('verified')->name('order.list');
 Route::get(
