@@ -2,13 +2,18 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use NumberFormatter;
 
 class Book extends Model
 {
     protected $guarded = [];
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class)->withPivot('quantity', 'unit_price');
+    }
 
     /**
      * @return string

@@ -3,9 +3,9 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -38,6 +38,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return string
+     */
     public function isActive(): string
     {
         if ($this->is_active) {
@@ -45,4 +48,21 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return 'No';
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * @return Order
+     */
+    public function activeOrder(): Order
+    {
+        return Auth::user()->orders()->where('status', 'open')->first();
+    }
+
 }

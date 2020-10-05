@@ -20,7 +20,7 @@ class CreateBooksTable extends Migration
                 $table->string('isbn')->unique();
                 $table->string('title');
                 $table->string('author');
-                $table->integer('price');
+                $table->float('price', 10, 2, true);
                 $table->smallInteger('stock');
                 $table->string('image_path');
                 $table->boolean('is_active')->default(true);
