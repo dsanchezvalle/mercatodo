@@ -8,7 +8,6 @@ use App\Order;
 use App\Services\PlacetoPayServiceInterface;
 use App\Services\RedirectRequest;
 use App\Transaction;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,6 +48,7 @@ class OrderController extends Controller
         }
         $userCart->total_amount = $userCart->getSubtotal();
         $userCart->save();
+
         return redirect()->route("bookshelf")->with('message', 'Book added to Cart! :)');
     }
 
@@ -67,33 +67,28 @@ class OrderController extends Controller
 
     public function checkout(Request $request)
     {
-       //$userOrder = Auth::user()->activeOrder();
-       //dd($request->reference);
-        $userTransaction = Transaction::where('reference', $request->reference)->first();
-        //dd($userTransaction->order);
-        //$orderId = $userTransaction->order_id;
-        $userOrder = $userTransaction->order ?? Auth::user()->activeOrder();
+        $userOrder = Transaction::where('reference', $request->reference)->first()->order ?? Auth::user()->activeOrder();
         $books = $userOrder->books;
-        //$userOrders = Auth::user()->orders()->get();
-        //dd($books);
         return response()->view('shoppingcart.checkout', compact('userOrder', 'books'));
     }
 
     public function list()
     {
         $orders = Auth::user()->orders;
-        //dd($orders);
         return response()->view('order.index', compact('orders'));
     }
 
     public function payment(PlacetoPayServiceInterface $placetoPay, CheckoutRequest $request)
     {
+
         $order = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
-        $order->update(['status' => 'closed']);
+
         $request = new RedirectRequest($order, $request);
+
         $response = $placetoPay->payment($request->toArray());
 
         if($response->isSuccessful()){
+            $order->update(['status' => 'closed']);
 
             Transaction::create(
             [
@@ -109,6 +104,9 @@ class OrderController extends Controller
 
             return redirect($response->processUrl());
         }
+
+        return redirect(route('bookshelf'))
+            ->with('message', 'Unfortunately, your transaction could not be processed. Please try again later.');
     }
 
 
