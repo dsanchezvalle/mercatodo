@@ -36,7 +36,7 @@
                                             </td>
                                             @if($order->retryPayment())
                                                 <td style="width: 10%;">
-                                                    <a href="" class="btn btn-primary btn-sm">Try again</a>
+                                                    <a href="{{route('transaction.retry', $order->transactions->first()->reference)}}" class="btn btn-primary btn-sm">Try again</a>
                                                 </td>
                                             @else
                                                 <td style="width: 10%;"></td>
