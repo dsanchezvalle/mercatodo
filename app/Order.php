@@ -75,6 +75,15 @@ class Order extends Model
         return ($this->paymentStatus() === 'REJECTED') ?: false;
     }
 
+    public function isApproved()
+    {
+        return 'APPROVED' == $this->paymentStatus();
+    }
+
+    public function isPending()
+    {
+        return 'PENDING' == $this->paymentStatus();
+    }
 
 }
 
