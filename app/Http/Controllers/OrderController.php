@@ -77,7 +77,6 @@ class OrderController extends Controller
 
     public function payment(PlacetoPayServiceInterface $placetoPay, CheckoutRequest $request)
     {
-
         $order = Order::where('user_id', Auth::user()->id)->where('status', 'open')->first();
 
         $request = new RedirectRequest($order, $request);
