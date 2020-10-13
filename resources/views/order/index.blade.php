@@ -46,7 +46,7 @@
                                             <td class="m-0 p-1" style="width: 25%">
                                                 <div id="collapse{{$order->id}}" class="collapse">
                                                     <div class="card">
-                                                        <div class="card-header p-2">Order summary</div>
+                                                        <div class="card-header p-2"><b>Order summary</b></div>
                                                         <div class="card-body p-2">
 
                                                             @foreach($order->books as $book)
@@ -72,7 +72,7 @@
                                             <td class="m-0 p-1" colspan="4">
                                                 <div id="collapse{{$order->id}}" class="collapse">
                                                     <div class="card">
-                                                        <div class="card-header p-2">Transactions summary</div>
+                                                        <div class="card-header p-2"><b>Transactions summary</b></div>
                                                         <div class="card-body p-1">
                                                             <table class="table table-striped table-hover">
                                                                 <tr>
