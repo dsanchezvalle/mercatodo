@@ -15,7 +15,7 @@
                             <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                         </svg>
                     </h1>
-                    <p class="card-text"> Your transaction with reference: {{$reference}} has been rejected. </p>
+                    <p class="card-text"> Your payment with reference: {{$reference}} has been rejected. </p>
                     <p><b>Don't worry, you can... </b></p>
                     <a href="{{ route('transaction.retry', ['reference' => $reference]) }}" class="btn btn-primary">Retry</a>
                     <a href="{{ route('order.list') }}" class="btn btn-secondary">Check your orders</a>

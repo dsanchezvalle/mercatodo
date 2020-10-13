@@ -61,9 +61,14 @@ class TransactionController extends Controller
             ->with('message', 'Unfortunately, your transaction could not be processed. Please try again later.');
     }
 
-    public function result(int $reference)
+    public function result(int $reference, PlacetoPayServiceInterface $placetoPay)
     {
-        return view('transaction.result', ['reference' => $reference]);
+        $transaction = Transaction::where('reference', $reference)->first();
+        $response = $placetoPay->sessionQuery($transaction->request_id);
+        $transaction->update(['status' => $response['status']['status']]);
+
+        //dd($response['status']['status']);
+        return view('transaction.result', ['reference' => $reference, 'status' => $transaction->status]);
     }
 
     private function getReference()
