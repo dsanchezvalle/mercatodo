@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->job(new CheckTransactionStatusJob())->everyFifteenMinutes()->withoutOverlapping();
+        $schedule->job(new CheckTransactionStatusJob())->everyTenMinutes()->withoutOverlapping();
     }
 
     /**
