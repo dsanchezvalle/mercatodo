@@ -35,14 +35,13 @@ class CheckTransactionStatusJob implements ShouldQueue
     {
         $transactions = Transaction::all()->where('status', '==', 'PENDING');
 
-        foreach($transactions as $transaction){
-            if(($transaction->created_at)->addDay()->greaterThan(Carbon::now())) {
+        foreach ($transactions as $transaction) {
+            if (($transaction->created_at)->addDay()->greaterThan(Carbon::now())) {
                 var_dump(($transaction->created_at)->addDay()->greaterThan(Carbon::now()));
                 var_dump('Ahora: ' . Carbon::now() . ' Creada (+1): ' . ($transaction->created_at)->addDay());
                 $response = $placetoPay->sessionQuery($transaction->request_id);
                 $transaction->update(['status' => $response ['status']['status']]);
-            }
-            else{
+            } else {
                 var_dump(($transaction->created_at)->addDay()->greaterThan(Carbon::now()));
                 var_dump('Ahora: ' . Carbon::now() . ' Creada (+1): ' . ($transaction->created_at)->addDay());
                 $transaction->update(['status' => 'EXPIRED']);

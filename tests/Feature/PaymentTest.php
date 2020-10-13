@@ -30,7 +30,8 @@ class PaymentTest extends TestCase
         $order->save();
 
         $this->actingAs($client)->post(
-            route('cart.payment'), [
+            route('cart.payment'),
+            [
             'street' => '223 Ocean Avenue',
             'city' => 'Medellin',
             'state' => 'Antioquia',
@@ -49,7 +50,8 @@ class PaymentTest extends TestCase
     public function client_is_redirected_to_bookshelf_if_request_failed()
     {
         $this->app->singleton(
-            PlacetoPayServiceInterface::class, function () {
+            PlacetoPayServiceInterface::class,
+            function () {
                 $service = new PlacetoPayServiceMock();
                 $service->setResponse(
                     [
@@ -72,7 +74,8 @@ class PaymentTest extends TestCase
         $order->save();
 
         $this->actingAs($client)->post(
-            route('cart.payment'), [
+            route('cart.payment'),
+            [
             'street' => '223 Ocean Avenue',
             'city' => 'Medellin',
             'state' => 'Antioquia',
@@ -91,7 +94,8 @@ class PaymentTest extends TestCase
     public function when_client_cancel_transaction_in_placetoPay_it_is_updated_in_database()
     {
         $this->app->singleton(
-            PlacetoPayServiceInterface::class, function () {
+            PlacetoPayServiceInterface::class,
+            function () {
                 $service = new PlacetoPayServiceMock();
                 $service->setResponse(
                     [
@@ -130,5 +134,4 @@ class PaymentTest extends TestCase
 
         $this->assertEquals('REJECTED', Transaction::first()->status);
     }
-
 }

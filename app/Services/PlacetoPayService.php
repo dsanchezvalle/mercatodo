@@ -3,7 +3,6 @@
 
 namespace App\Services;
 
-
 use GuzzleHttp\Client;
 
 class PlacetoPayService implements PlacetoPayServiceInterface
@@ -21,11 +20,13 @@ class PlacetoPayService implements PlacetoPayServiceInterface
     {
         try {
             $response = $this->client->post(
-                env('P2P_ENDPOINT_BASE') . '/api/session', [
+                env('P2P_ENDPOINT_BASE') . '/api/session',
+                [
                 'json' => array_replace_recursive(
                     [
                     'auth' => $this->auth()
-                    ], $paymentData
+                    ],
+                    $paymentData
                 )
                 ]
             );
@@ -48,7 +49,8 @@ class PlacetoPayService implements PlacetoPayServiceInterface
     {
         try {
             $response = $this->client->post(
-                env('P2P_ENDPOINT_BASE') . '/api/session/' . $requestId, [
+                env('P2P_ENDPOINT_BASE') . '/api/session/' . $requestId,
+                [
                 'json' => ['auth' => $this->auth()]
                 ]
             );

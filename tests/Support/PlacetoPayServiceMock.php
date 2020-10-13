@@ -3,7 +3,6 @@
 
 namespace Tests\Support;
 
-
 use App\Services\PlacetoPayServiceInterface;
 use App\Services\RedirectResponse;
 

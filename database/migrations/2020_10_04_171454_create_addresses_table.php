@@ -14,7 +14,8 @@ class CreateAddressesTable extends Migration
     public function up()
     {
         Schema::create(
-            'addresses', function (Blueprint $table) {
+            'addresses',
+            function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
                 $table->string('street', 100);

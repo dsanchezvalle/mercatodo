@@ -18,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(PlacetoPayServiceInterface::class, PlacetoPayService::class);
         $this->app->singleton(
-            Client::class, function () {
+            Client::class,
+            function () {
                 return new Client();
             }
         );

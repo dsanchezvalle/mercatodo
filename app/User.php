@@ -64,5 +64,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return Auth::user()->orders()->where('status', 'open')->first();
     }
-
 }

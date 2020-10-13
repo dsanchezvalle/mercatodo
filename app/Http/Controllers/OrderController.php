@@ -36,12 +36,10 @@ class OrderController extends Controller
     {
         $userCart = Auth::user()->orders()->firstOrCreate(['status' => 'open']);
 
-        if($userCart->books()->get()->contains($book)) {
+        if ($userCart->books()->get()->contains($book)) {
             $userCart->books->find($book)->pivot->quantity +=  (int)$request->input('items');
             $userCart->books->find($book)->pivot->save();
-        }
-        else
-        {
+        } else {
             $quantity = (int)$request->input('items');
             $userCart->books()->attach($book, ['quantity' => $quantity, 'unit_price' => $book->price]);
         }
@@ -57,7 +55,7 @@ class OrderController extends Controller
         $userCart->books()->detach($book->id);
         $userCart->total_amount = $userCart->getSubtotal();
         $userCart->save();
-        if($userCart->books()->get()->isEmpty()) {
+        if ($userCart->books()->get()->isEmpty()) {
             $userCart->delete();
         }
 
@@ -86,7 +84,7 @@ class OrderController extends Controller
 
         $response = $placetoPay->payment($request->toArray());
 
-        if($response->isSuccessful()) {
+        if ($response->isSuccessful()) {
             $order->update(['status' => 'closed']);
 
             Transaction::create(
@@ -121,5 +119,4 @@ class OrderController extends Controller
 
         return redirect()->route("cart.index")->with('message', 'Your order has been updated! :)');
     }
-
 }

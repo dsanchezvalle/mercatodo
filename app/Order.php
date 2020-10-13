@@ -37,7 +37,7 @@ class Order extends Model
     public function getSubtotal()
     {
         $subtotal = 0.0;
-        foreach($this->books as $book){
+        foreach ($this->books as $book) {
             $subtotal += ($book->pivot->quantity * $book->pivot->unit_price);
         }
         return $subtotal;
@@ -64,8 +64,7 @@ class Order extends Model
         $lastTransaction = $this->transactions->sortByDesc('id')->first();
         if (isset($lastTransaction['status'])) {
             return $lastTransaction['status'];
-        }
-        else{
+        } else {
             return '(No transaction)';
         }
     }
@@ -84,6 +83,4 @@ class Order extends Model
     {
         return 'PENDING' == $this->paymentStatus();
     }
-
 }
-

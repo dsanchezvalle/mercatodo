@@ -30,7 +30,8 @@ class TransactionController extends Controller
         $data = (array) json_decode($transaction->payment_data);
         $payment = array_replace((array) $data['payment'], ['reference' => $reference]);
         $data = array_replace(
-            $data, [
+            $data,
+            [
             'payment' => $payment,
             'expiration' => date('c', strtotime('+30 minutes')),
             'ipAddress' => $request->ip(),
@@ -41,7 +42,7 @@ class TransactionController extends Controller
         );
 
         $response = $placetoPay->payment($data);
-        if($response->isSuccessful()) {
+        if ($response->isSuccessful()) {
             $transaction->order->update(['status' => 'closed']);
 
             Transaction::create(
@@ -80,6 +81,4 @@ class TransactionController extends Controller
 
         return $userId . $timeStamp;
     }
-
-
 }
