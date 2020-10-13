@@ -21,7 +21,8 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
             return new RedirectResponse($this->response);
         }
 
-        return new RedirectResponse([
+        return new RedirectResponse(
+            [
             'status' => [
                 'status' => 'OK',
                 'reason' => '',
@@ -29,7 +30,8 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
                 'date' => now(),
             ],
             'requestId' => 12345,
-            'processUrl' => 'http://mock.service']);
+            'processUrl' => 'http://mock.service']
+        );
     }
 
     public function sessionQuery(int $requestId)

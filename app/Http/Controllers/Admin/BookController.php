@@ -158,7 +158,7 @@ class BookController extends Controller
     /**
      * Store book cover image.
      *
-     * @param string $imagePath
+     * @param  string $imagePath
      * @return mixed
      */
     public function store_image(string $imagePath)

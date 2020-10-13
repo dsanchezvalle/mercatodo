@@ -20,24 +20,23 @@ class OrderController extends Controller
      */
     public function index()
     {
-       $userCart = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $userCart = Order::where('user_id', Auth::user()->id)->where('status', 'open')->first();
 
-       return response()->view('shoppingcart.cart', compact('userCart'));
+        return response()->view('shoppingcart.cart', compact('userCart'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param Book $book
+     * @param  \Illuminate\Http\Request $request
+     * @param  Book                     $book
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Book $book)
     {
         $userCart = Auth::user()->orders()->firstOrCreate(['status' => 'open']);
 
-        if($userCart->books()->get()->contains($book))
-        {
+        if($userCart->books()->get()->contains($book)) {
             $userCart->books->find($book)->pivot->quantity +=  (int)$request->input('items');
             $userCart->books->find($book)->pivot->save();
         }
@@ -58,7 +57,7 @@ class OrderController extends Controller
         $userCart->books()->detach($book->id);
         $userCart->total_amount = $userCart->getSubtotal();
         $userCart->save();
-        if($userCart->books()->get()->isEmpty()){
+        if($userCart->books()->get()->isEmpty()) {
             $userCart->delete();
         }
 
@@ -81,25 +80,25 @@ class OrderController extends Controller
     public function payment(PlacetoPayServiceInterface $placetoPay, CheckoutRequest $request)
     {
 
-        $order = Order::where ('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $order = Order::where('user_id', Auth::user()->id)->where('status', 'open')->first();
 
         $request = new RedirectRequest($order, $request);
 
         $response = $placetoPay->payment($request->toArray());
 
-        if($response->isSuccessful()){
+        if($response->isSuccessful()) {
             $order->update(['status' => 'closed']);
 
             Transaction::create(
-            [
-              'reference' => $request->getReference(),
-              'order_id' => $order->id,
-              'amount' => $order->getSubtotal(), //Check total or subtotal
-              'request_id' => $response->requestId(),
-              'status' => 'PENDING',
-              'process_url' => $response->processUrl(),
-              'payment_data' => json_encode($request->toArray()),
-            ]
+                [
+                'reference' => $request->getReference(),
+                'order_id' => $order->id,
+                'amount' => $order->getSubtotal(), //Check total or subtotal
+                'request_id' => $response->requestId(),
+                'status' => 'PENDING',
+                'process_url' => $response->processUrl(),
+                'payment_data' => json_encode($request->toArray()),
+                ]
             );
 
             return redirect($response->processUrl());

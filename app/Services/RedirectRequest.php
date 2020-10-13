@@ -74,7 +74,7 @@ class RedirectRequest
         $timeStamp = Carbon::now()->format('YmdHis');
         $userId = auth()->user()->id;
 
-       $this->reference = $userId . $timeStamp;
+        $this->reference = $userId . $timeStamp;
     }
 
     public function getReference()

@@ -20,30 +20,38 @@ class PlacetoPayService implements PlacetoPayServiceInterface
     public function payment(array $paymentData): RedirectResponse
     {
         try {
-            $response = $this->client->post(env('P2P_ENDPOINT_BASE') . '/api/session', [
-                'json' => array_replace_recursive([
+            $response = $this->client->post(
+                env('P2P_ENDPOINT_BASE') . '/api/session', [
+                'json' => array_replace_recursive(
+                    [
                     'auth' => $this->auth()
-                ], $paymentData)
-            ]);
+                    ], $paymentData
+                )
+                ]
+            );
             return new RedirectResponse(json_decode($response->getBody()->getContents(), true));
         } catch (\Exception $exception) {
-            return new  RedirectResponse([
+            return new  RedirectResponse(
+                [
                 'status' => [
                     'status' => 'FAILED',
                     'reason' => '',
                     'message' => '',
                     'date' => now(),
                 ]
-            ]);
+                ]
+            );
         }
     }
 
     public function sessionQuery(int $requestId)
     {
         try {
-            $response = $this->client->post(env('P2P_ENDPOINT_BASE') . '/api/session/' . $requestId, [
+            $response = $this->client->post(
+                env('P2P_ENDPOINT_BASE') . '/api/session/' . $requestId, [
                 'json' => ['auth' => $this->auth()]
-            ]);
+                ]
+            );
             return json_decode($response->getBody()->getContents(), true);
         } catch (\Exception $exception) {
             return json_decode($exception->getMessage());

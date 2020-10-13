@@ -62,7 +62,7 @@ class Order extends Model
     public function paymentStatus()
     {
         $lastTransaction = $this->transactions->sortByDesc('id')->first();
-        if (isset($lastTransaction['status'])){
+        if (isset($lastTransaction['status'])) {
             return $lastTransaction['status'];
         }
         else{

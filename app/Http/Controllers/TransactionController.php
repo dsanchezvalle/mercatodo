@@ -29,17 +29,19 @@ class TransactionController extends Controller
         $reference = $this->getReference();
         $data = (array) json_decode($transaction->payment_data);
         $payment = array_replace((array) $data['payment'], ['reference' => $reference]);
-        $data = array_replace( $data, [
+        $data = array_replace(
+            $data, [
             'payment' => $payment,
             'expiration' => date('c', strtotime('+30 minutes')),
             'ipAddress' => $request->ip(),
             'userAgent' => $request->header('User-Agent'),
             'returnUrl' => 'http://mercatodo.test/transaction/' . $reference,
             'cancelUrl' => 'http://mercatodo.test/transaction/cancelled/' . $reference,
-        ]);
+             ]
+        );
 
         $response = $placetoPay->payment($data);
-        if($response->isSuccessful()){
+        if($response->isSuccessful()) {
             $transaction->order->update(['status' => 'closed']);
 
             Transaction::create(

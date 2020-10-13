@@ -13,16 +13,18 @@ class CreateBookOrderTable extends Migration
      */
     public function up()
     {
-        Schema::create('book_order', function (Blueprint $table) {
-            $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('book_id');
-            $table->integer('quantity');
-            $table->float('unit_price');
+        Schema::create(
+            'book_order', function (Blueprint $table) {
+                $table->unsignedBigInteger('order_id');
+                $table->unsignedBigInteger('book_id');
+                $table->integer('quantity');
+                $table->float('unit_price');
 
-            $table->primary(['book_id', 'order_id']);
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('book_id')->references('id')->on('books');
-        });
+                $table->primary(['book_id', 'order_id']);
+                $table->foreign('order_id')->references('id')->on('orders');
+                $table->foreign('book_id')->references('id')->on('books');
+            }
+        );
     }
 
     /**
