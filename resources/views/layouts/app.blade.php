@@ -38,6 +38,12 @@
                         <li class="nav-item active">
                             <a class="nav-link" href="{{ route ('home') }}">{{ __('Home') }}</a>
                         </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route ('bookshelf') }}">{{ __('Bookshelf') }}</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route ('order.list') }}">{{ __('My orders') }}</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

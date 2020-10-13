@@ -28,11 +28,17 @@
                         </div>
                     @endcan
 
-                        @can('viewAny', \App\Book::class)
-                            <div class="m-2">
-                                <a href="{{ route('bookshelf') }}" class="btn btn-primary">Bookshelf</a>
-                            </div>
-                        @endcan
+                    @can('viewAny', \App\Book::class)
+                        <div class="m-2">
+                            <a href="{{ route('bookshelf') }}" class="btn btn-primary">Bookshelf</a>
+                        </div>
+                    @endcan
+
+                    @can('viewAny', \App\Order::class)
+                        <div class="m-2">
+                            <a href="{{route('order.list')}}" class="btn btn-primary">My orders</a>
+                        </div>
+                    @endcan
 
                 </div>
             </div>
