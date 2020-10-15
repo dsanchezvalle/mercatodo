@@ -34,10 +34,10 @@ class ShoppingTest extends TestCase
      */
     public function client_can_see_shopping_cart()
     {
-        $books = factory(Book::class,3)->create();
+        $books = factory(Book::class, 3)->create();
         $client = factory(User::class)->create();
         $order = Order::create(['user_id' => $client->id, 'status' => 'open']);
-        foreach ($books as $book){
+        foreach ($books as $book) {
             $order->books()->attach($book, ['quantity' => 1, 'unit_price' => $book->price]);
         }
         $order->save();

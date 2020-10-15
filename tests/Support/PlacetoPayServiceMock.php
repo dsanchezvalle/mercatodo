@@ -3,7 +3,6 @@
 
 namespace Tests\Support;
 
-
 use App\Services\PlacetoPayServiceInterface;
 use App\Services\RedirectResponse;
 
@@ -21,7 +20,8 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
             return new RedirectResponse($this->response);
         }
 
-        return new RedirectResponse([
+        return new RedirectResponse(
+            [
             'status' => [
                 'status' => 'OK',
                 'reason' => '',
@@ -29,7 +29,8 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
                 'date' => now(),
             ],
             'requestId' => 12345,
-            'processUrl' => 'http://mock.service']);
+            'processUrl' => 'http://mock.service']
+        );
     }
 
     public function sessionQuery(int $requestId)
@@ -38,20 +39,20 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
             return new RedirectResponse($this->response);
         }
 
-        return array (
+        return array(
                 'requestId' => 412760,
                 'status' =>
-                    array (
+                    array(
                         'status' => 'APPROVED',
                         'reason' => 'PC',
                         'message' => 'La petición se encuentra activa',
                         'date' => '2020-10-04T23:09:39-05:00',
                     ),
                 'request' =>
-                    array (
+                    array(
                         'locale' => 'es_CO',
                         'buyer' =>
-                            array (
+                            array(
                                 'document' => '1040035000',
                                 'documentType' => 'CC',
                                 'name' => 'Cole',
@@ -60,11 +61,11 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
                                 'mobile' => '3006108300',
                             ),
                         'payment' =>
-                            array (
+                            array(
                                 'reference' => 'TEST_20201004_230816',
                                 'description' => 'Ex voluptatibus quibusdam sed molestias.',
                                 'amount' =>
-                                    array (
+                                    array(
                                         'currency' => 'COP',
                                         'total' => 126000,
                                     ),

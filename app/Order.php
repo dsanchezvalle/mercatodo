@@ -18,6 +18,11 @@ class Order extends Model
         return $this->belongsToMany(Book::class)->withPivot('quantity', 'unit_price');
     }
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'address_id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -29,7 +34,7 @@ class Order extends Model
     /**
      * @return string
      */
-    public function getFormattedSubtotal():string
+    public function getFormattedSubtotal(): string
     {
         return $this->formattedPrice($this->getSubtotal());
     }
@@ -37,7 +42,7 @@ class Order extends Model
     public function getSubtotal()
     {
         $subtotal = 0.0;
-        foreach($this->books as $book){
+        foreach ($this->books as $book) {
             $subtotal += ($book->pivot->quantity * $book->pivot->unit_price);
         }
         return $subtotal;
@@ -62,10 +67,9 @@ class Order extends Model
     public function paymentStatus()
     {
         $lastTransaction = $this->transactions->sortByDesc('id')->first();
-        if (isset($lastTransaction['status'])){
+        if (isset($lastTransaction['status'])) {
             return $lastTransaction['status'];
-        }
-        else{
+        } else {
             return '(No transaction)';
         }
     }
@@ -84,6 +88,4 @@ class Order extends Model
     {
         return 'PENDING' == $this->paymentStatus();
     }
-
 }
-

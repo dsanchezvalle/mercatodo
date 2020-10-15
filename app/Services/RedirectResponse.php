@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 class RedirectResponse
 {
@@ -40,5 +38,4 @@ class RedirectResponse
     {
         return $this->status['status'] === 'OK';
     }
-
 }

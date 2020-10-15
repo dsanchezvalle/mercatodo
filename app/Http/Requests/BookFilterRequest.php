@@ -11,7 +11,7 @@ class BookFilterRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +21,7 @@ class BookFilterRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'filter.author' => 'nullable|string|between:2,80|regex:/^[a-zA-Z0-9áéíóúüñÑ\s\.]+$/',

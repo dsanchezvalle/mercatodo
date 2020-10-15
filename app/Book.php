@@ -31,7 +31,7 @@ class Book extends Model
      * @param  string|null $author
      * @return Builder
      */
-    public function scopeAuthor(Builder $query, ? string $author): Builder
+    public function scopeAuthor(Builder $query, ?string $author): Builder
     {
         if (null !== $author) {
             return $this->searchByField($query, 'author', "%$author%", 'like');
@@ -45,7 +45,7 @@ class Book extends Model
      * @param  string|null $title
      * @return Builder
      */
-    public function scopeTitle(Builder $query, ? string $title): Builder
+    public function scopeTitle(Builder $query, ?string $title): Builder
     {
         if (null !== $title) {
             return $this->searchByField($query, 'title', "%$title%", 'like');
@@ -59,7 +59,7 @@ class Book extends Model
      * @param  string|null $isbn
      * @return Builder
      */
-    public function scopeIsbn(Builder $query, ? string $isbn): Builder
+    public function scopeIsbn(Builder $query, ?string $isbn): Builder
     {
         if (null !== $isbn) {
             return $this->searchByField($query, 'isbn', "$isbn");
@@ -73,7 +73,7 @@ class Book extends Model
      * @param  string|null $status
      * @return Builder
      */
-    public function scopeStatus(Builder $query, ? string $status): Builder
+    public function scopeStatus(Builder $query, ?string $status): Builder
     {
         if ("true" == $status) {
             return $this->searchByField($query, 'is_active', true);

@@ -13,17 +13,19 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-            $table->json('payment_data')->nullable();
-            $table->string('reference', 32);
-            $table->float('amount', 20, 2, true);
-            $table->unsignedInteger('request_id')->nullable();
-            $table->string('status', 32);
-            $table->string('process_url');
-            $table->timestamps();
-        });
+        Schema::create(
+            'transactions',
+            function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+                $table->string('reference', 32);
+                $table->float('amount', 20, 2, true);
+                $table->unsignedInteger('request_id')->nullable();
+                $table->string('status', 32);
+                $table->string('process_url');
+                $table->timestamps();
+            }
+        );
     }
 
     /**

@@ -16,12 +16,12 @@ class CreateAddressesTable extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('street', 100);
+            $table->string('street', 150);
             $table->string('city', 100);
-            $table->string('state', 100)->nullable();
-            $table->string('postal_code', 15)->nullable();
-            $table->string('country', 100)->nullable();
-            $table->string('phone', 30)->nullable();
+            $table->string('state', 100);
+            $table->string('country', 100);
+            $table->unsignedBigInteger('postal_code')->nullable();
+            $table->string('mobile', 100);
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateAddressesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('adresses');
     }
 }
