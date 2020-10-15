@@ -18,7 +18,6 @@ class CreateTransactionsTable extends Migration
             function (Blueprint $table) {
                 $table->id();
                 $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
-                $table->json('payment_data')->nullable();
                 $table->string('reference', 32);
                 $table->float('amount', 20, 2, true);
                 $table->unsignedInteger('request_id')->nullable();

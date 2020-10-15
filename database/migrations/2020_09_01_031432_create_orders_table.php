@@ -17,12 +17,12 @@ class CreateOrdersTable extends Migration
             'orders',
             function (Blueprint $table) {
                 $table->id();
-                $table->unsignedBigInteger('user_id');
+                $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
                 $table->float('total_amount', 20, 2)->default(0);
                 $table->string('status', 20);
+                $table->unsignedBigInteger('address_id')->nullable();
+                $table->foreign('address_id')->references('id')->on('addresses');
                 $table->timestamps();
-
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             }
         );
     }
