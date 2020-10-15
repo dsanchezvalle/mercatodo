@@ -14,7 +14,6 @@ use App\{
     Services\PlacetoPayServiceInterface,
     Transaction
 };
-use Carbon\Carbon;
 
 class TransactionController extends Controller
 {
@@ -49,35 +48,20 @@ class TransactionController extends Controller
      */
     public function retry(Request $request, $reference, PlacetoPayServiceInterface $placetoPay)
     {
-        $transaction = Transaction::where('reference', $reference)->first();
-        $reference = $this->getReference();
-        $data = (array) json_decode($transaction->payment_data);
-        $payment = array_replace((array) $data['payment'], ['reference' => $reference]);
-        $data = array_replace(
-            $data,
-            [
-            'payment' => $payment,
-            'expiration' => date('c', strtotime('+30 minutes')),
-            'ipAddress' => $request->ip(),
-            'userAgent' => $request->header('User-Agent'),
-            'returnUrl' => 'http://mercatodo.test/transaction/' . $reference,
-            'cancelUrl' => 'http://mercatodo.test/transaction/cancelled/' . $reference,
-             ]
-        );
+        $order = Transaction::where('reference', $reference)->first()->order;
 
-        $response = $placetoPay->payment($data);
+        $request = new RedirectRequest($order, $request);
+
+        $response = $placetoPay->payment($request->toArray());
         if ($response->isSuccessful()) {
-            $transaction->order->update(['status' => 'closed']);
-
             Transaction::create(
                 [
-                'reference' => $reference,
-                'order_id' => $transaction->order->id,
-                'amount' => $transaction->order->getSubtotal(), //Check total or subtotal
+                'reference' => $request->getReference(),
+                'order_id' => $order->id,
+                'amount' => $order->getSubtotal(), //Check total or subtotal
                 'request_id' => $response->requestId(),
                 'status' => 'PENDING',
                 'process_url' => $response->processUrl(),
-                'payment_data' => json_encode($data),
                 ]
             );
 
@@ -100,16 +84,5 @@ class TransactionController extends Controller
         $transaction->update(['status' => $response['status']['status']]);
 
         return view('transaction.result', ['reference' => $reference, 'status' => $transaction->status]);
-    }
-
-    /**
-     * @return string
-     */
-    private function getReference(): string
-    {
-        $timeStamp = Carbon::now()->format('YmdHis');
-        $userId = auth()->user()->id;
-
-        return $userId . $timeStamp;
     }
 }
