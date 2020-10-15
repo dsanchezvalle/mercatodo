@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\{
-    Book,
-    Http\Requests\BookFilterRequest
-};
-use Illuminate\{
-    Http\Response,
-    Support\Facades\Log,
-};
+use App\Book;
+use App\Http\Requests\BookFilterRequest;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {

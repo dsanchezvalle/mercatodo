@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\{
-    Contracts\Foundation\Application,
-    Contracts\View\Factory,
-    Http\RedirectResponse,
-    Http\Request,
-    Routing\Redirector,
-    View\View
-};
-use App\{
-    Services\PlacetoPayServiceInterface,
-    Transaction
-};
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\View\View;
+use App\Services\PlacetoPayServiceInterface;
+use App\Transaction;
 
 class TransactionController extends Controller
 {

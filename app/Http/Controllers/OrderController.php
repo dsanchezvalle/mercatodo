@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\{
-    Address,
-    Book,
-    Http\Requests\CheckoutRequest,
-    Order,
-    Services\PlacetoPayServiceInterface,
-    Services\RedirectRequest,
-    Transaction
-};
-use Illuminate\{Contracts\Foundation\Application,
-    Http\RedirectResponse,
-    Http\Request,
-    Http\Response,
-    Routing\Redirector,
-    Support\Facades\Auth};
+use App\Address;
+use App\Book;
+use App\Http\Requests\CheckoutRequest;
+use App\Order;
+use App\Services\PlacetoPayServiceInterface;
+use App\Services\RedirectRequest;
+use App\Transaction;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {

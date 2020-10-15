@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\{
-    Foundation\Http\FormRequest,
-    Validation\Rule
-};
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ClientRequest extends FormRequest
 {

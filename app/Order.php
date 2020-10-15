@@ -34,7 +34,7 @@ class Order extends Model
     /**
      * @return string
      */
-    public function getFormattedSubtotal():string
+    public function getFormattedSubtotal(): string
     {
         return $this->formattedPrice($this->getSubtotal());
     }

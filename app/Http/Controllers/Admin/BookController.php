@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Book;
-use App\Http\{Controllers\Controller, Requests\BookFilterRequest, Requests\BookRequest};
+use App\Http\Controllers\Controller;
+use App\Http\Requests\BookFilterRequest;
+use App\Http\Requests\BookRequest;
 use Carbon\Carbon;
-use Illuminate\{
-    Contracts\Foundation\Application,
-    Http\RedirectResponse,
-    Http\Response,
-    Routing\Redirector,
-    Support\Facades\DB,
-    Support\Facades\Log,
-    View\View
-};
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {

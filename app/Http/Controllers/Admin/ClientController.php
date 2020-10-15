@@ -3,15 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
-use App\Http\{
-    Controllers\Controller,
-    Requests\ClientRequest
-};
-use Illuminate\{
-    Http\RedirectResponse,
-    Http\Response,
-    Support\Facades\Log
-};
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ClientRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
