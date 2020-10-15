@@ -17,6 +17,10 @@ class RedirectResponse
      */
     private $processUrl;
 
+    /**
+     * RedirectResponse constructor.
+     * @param array $data
+     */
     public function __construct(array $data)
     {
         $this->status = $data['status'];
@@ -24,17 +28,26 @@ class RedirectResponse
         $this->processUrl = $data['processUrl'] ?? null;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function processUrl()
     {
         return $this->processUrl;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function requestId()
     {
         return $this->requestId;
     }
 
-    public function isSuccessful()
+    /**
+     * @return bool
+     */
+    public function isSuccessful(): bool
     {
         return $this->status['status'] === 'OK';
     }

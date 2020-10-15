@@ -2,19 +2,27 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\{Model, Relations\BelongsTo};
 
 class Address extends Model
 {
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function toArray()
+    /**
+     * @return array
+     */
+    public function toArray(): array
     {
         return [
             'street' => $this->street,

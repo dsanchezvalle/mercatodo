@@ -2,15 +2,20 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\{Eloquent\Builder, Eloquent\Model, Eloquent\Relations\BelongsToMany};
 use NumberFormatter;
 
 class Book extends Model
 {
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    public function orders()
+    /**
+     * @return BelongsToMany
+     */
+    public function orders(): BelongsToMany
     {
         return $this->belongsToMany(Order::class)->withPivot('quantity', 'unit_price');
     }
@@ -83,7 +88,6 @@ class Book extends Model
 
         return $query;
     }
-
 
     /**
      * @param  Builder     $query

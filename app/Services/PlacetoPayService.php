@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class PlacetoPayService implements PlacetoPayServiceInterface
 {
@@ -11,10 +12,20 @@ class PlacetoPayService implements PlacetoPayServiceInterface
      */
     private $client;
 
+    /**
+     * PlacetoPayService constructor.
+     * @param Client $client
+     */
     public function __construct(Client $client)
     {
         $this->client = $client;
     }
+
+    /**
+     * @param array $paymentData
+     * @return RedirectResponse
+     * @throws GuzzleException
+     */
     public function payment(array $paymentData): RedirectResponse
     {
         try {
@@ -44,6 +55,11 @@ class PlacetoPayService implements PlacetoPayServiceInterface
         }
     }
 
+    /**
+     * @param int $requestId
+     * @return mixed
+     * @throws GuzzleException
+     */
     public function sessionQuery(int $requestId)
     {
         try {
@@ -59,7 +75,10 @@ class PlacetoPayService implements PlacetoPayServiceInterface
         }
     }
 
-    private function auth()
+    /**
+     * @return array
+     */
+    private function auth(): array
     {
         $seed = date('c');
         $nonce = mt_rand();

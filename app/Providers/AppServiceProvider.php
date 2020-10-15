@@ -2,8 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\PlacetoPayService;
-use App\Services\PlacetoPayServiceInterface;
+use App\Services\{PlacetoPayService, PlacetoPayServiceInterface};
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,15 +22,5 @@ class AppServiceProvider extends ServiceProvider
                 return new Client();
             }
         );
-    }
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        //
     }
 }

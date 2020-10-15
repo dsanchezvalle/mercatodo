@@ -84,7 +84,7 @@ class OrderController extends Controller
     /**
      * @return Response
      */
-    public function list()
+    public function list(): Response
     {
         $orders = Auth::user()->orders;
         return response()->view('order.index', compact('orders'));

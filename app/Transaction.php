@@ -2,16 +2,19 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{Model, Relations\BelongsTo};
 
 class Transaction extends Model
 {
-    protected $guarded = [];
     /**
-     * @var mixed
+     * @var array
      */
+    protected $guarded = [];
 
-    public function order()
+    /**
+     * @return BelongsTo
+     */
+    public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
