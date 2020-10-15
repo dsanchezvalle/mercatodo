@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\{
+    Address,
     Book,
     Http\Requests\CheckoutRequest,
     Order,
@@ -99,6 +100,7 @@ class OrderController extends Controller
     public function payment(PlacetoPayServiceInterface $placetoPay, CheckoutRequest $request)
     {
         $order = Order::where('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $order->update(['address_id' => Address::create(array_replace($request->all(), ['user_id' => Auth::user()->id]))->id]);
 
         $request = new RedirectRequest($order, $request);
 
@@ -115,7 +117,6 @@ class OrderController extends Controller
                 'request_id' => $response->requestId(),
                 'status' => 'PENDING',
                 'process_url' => $response->processUrl(),
-                'payment_data' => json_encode($request->toArray()),
                 ]
             );
 
