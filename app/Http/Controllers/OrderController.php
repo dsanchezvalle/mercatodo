@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Address;
 use App\Book;
 use App\Http\Requests\CheckoutRequest;
+use App\Http\Requests\QuantityRequest;
 use App\Order;
 use App\Services\PlacetoPayServiceInterface;
 use App\Services\RedirectRequest;
@@ -31,11 +32,11 @@ class OrderController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param QuantityRequest $request
      * @param Book $book
      * @return RedirectResponse
      */
-    public function update(Request $request, Book $book): RedirectResponse
+    public function update(QuantityRequest $request, Book $book): RedirectResponse
     {
         $userCart = Auth::user()->orders()->firstOrCreate(['status' => 'open']);
 
@@ -126,11 +127,11 @@ class OrderController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param QuantityRequest $request
      * @param Book $book
      * @return RedirectResponse
      */
-    public function edit(Request $request, Book $book): RedirectResponse
+    public function edit(QuantityRequest $request, Book $book): RedirectResponse
     {
         $userOrder = Auth::user()->orders()->where('status', 'open')->first();
         $userOrder->books->find($book)->pivot->quantity =  (int) $request->input('items');
