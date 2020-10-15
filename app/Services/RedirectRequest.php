@@ -40,7 +40,7 @@ class RedirectRequest
                 'surname' => Auth::user()->surname,
                 'email' => Auth::user()->email,
                 'document' => Auth::user()->document_number,
-                'address' => $this->getAddress(),
+                'address' => $this->order->address->toArray(),
             ],
             'payment' => [
                 'reference' => $this->getReference(),
@@ -54,8 +54,8 @@ class RedirectRequest
                     'email' => Auth::user()->email,
                     'documentType' => Auth::user()->document_type,
                     'document' => Auth::user()->document_number,
-                    'mobile' => $this->request->input('mobile'),
-                    'address' => $this->getAddress(),
+                    'mobile' => $this->order->address->mobile,
+                    'address' => $this->order->address->toArray(),
                 ],
                 'allowPartial' => false,
             ],
@@ -80,17 +80,5 @@ class RedirectRequest
     public function getReference()
     {
         return $this->reference;
-    }
-
-    private function getAddress()
-    {
-        return [
-            'street' => $this->request->input('street'),
-            'city' => $this->request->input('city'),
-            'state' => $this->request->input('state'),
-            'postalCode' => $this->request->input('postal_code'),
-            'country' => $this->request->input('country'),
-            'phone' => $this->request->input('mobile'),
-        ];
     }
 }
