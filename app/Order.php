@@ -18,6 +18,11 @@ class Order extends Model
         return $this->belongsToMany(Book::class)->withPivot('quantity', 'unit_price');
     }
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class, 'address_id');
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
