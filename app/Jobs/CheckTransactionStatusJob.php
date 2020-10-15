@@ -8,8 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
 
 class CheckTransactionStatusJob implements ShouldQueue
 {
@@ -40,13 +39,9 @@ class CheckTransactionStatusJob implements ShouldQueue
 
         foreach ($transactions as $transaction) {
             if (($transaction->created_at)->addDay()->greaterThan(Carbon::now())) {
-                var_dump(($transaction->created_at)->addDay()->greaterThan(Carbon::now()));
-                var_dump('Ahora: ' . Carbon::now() . ' Creada (+1): ' . ($transaction->created_at)->addDay());
                 $response = $placetoPay->sessionQuery($transaction->request_id);
                 $transaction->update(['status' => $response ['status']['status']]);
             } else {
-                var_dump(($transaction->created_at)->addDay()->greaterThan(Carbon::now()));
-                var_dump('Ahora: ' . Carbon::now() . ' Creada (+1): ' . ($transaction->created_at)->addDay());
                 $transaction->update(['status' => 'EXPIRED']);
             }
         }

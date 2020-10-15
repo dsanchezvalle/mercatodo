@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Address;
 use App\Book;
 use App\Order;
-use App\Services\PlacetoPayService;
 use App\Services\PlacetoPayServiceInterface;
 use App\Transaction;
 use App\User;

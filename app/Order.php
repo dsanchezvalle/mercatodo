@@ -2,7 +2,12 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{
+    Model,
+    Relations\BelongsTo,
+    Relations\BelongsToMany,
+    Relations\HasMany
+};
 use NumberFormatter;
 
 class Order extends Model
@@ -10,23 +15,27 @@ class Order extends Model
     protected $guarded = [];
     public $subtotal;
     public $paymentStatus;
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function books()
+    public function books(): BelongsToMany
     {
         return $this->belongsToMany(Book::class)->withPivot('quantity', 'unit_price');
     }
 
-    public function address()
+    /**
+     * @return BelongsTo
+     */
+    public function address(): BelongsTo
     {
         return $this->belongsTo(Address::class, 'address_id');
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -39,6 +48,9 @@ class Order extends Model
         return $this->formattedPrice($this->getSubtotal());
     }
 
+    /**
+     * @return float|int
+     */
     public function getSubtotal()
     {
         $subtotal = 0.0;
@@ -59,12 +71,18 @@ class Order extends Model
         return $amount->format($price);
     }
 
-    public function transactions()
+    /**
+     * @return HasMany
+     */
+    public function transactions(): HasMany
     {
         return $this->hasMany(Transaction::class);
     }
 
-    public function paymentStatus()
+    /**
+     * @return string
+     */
+    public function paymentStatus(): string
     {
         $lastTransaction = $this->transactions->sortByDesc('id')->first();
         if (isset($lastTransaction['status'])) {
@@ -74,17 +92,26 @@ class Order extends Model
         }
     }
 
-    public function retryPayment()
+    /**
+     * @return bool
+     */
+    public function retryPayment(): bool
     {
         return ($this->paymentStatus() === 'REJECTED') ?: false;
     }
 
-    public function isApproved()
+    /**
+     * @return bool
+     */
+    public function isApproved(): bool
     {
         return 'APPROVED' == $this->paymentStatus();
     }
 
-    public function isPending()
+    /**
+     * @return bool
+     */
+    public function isPending(): bool
     {
         return 'PENDING' == $this->paymentStatus();
     }

@@ -3,10 +3,8 @@
 namespace App\Providers;
 
 use App\Book;
-use App\Policies\BookPolicy;
-use App\Policies\ClientPolicy;
-use App\Policies\OrderPolicy;
 use App\User;
+use App\Policies\{BookPolicy, ClientPolicy, OrderPolicy};
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -20,7 +18,6 @@ class AuthServiceProvider extends ServiceProvider
         User::class => ClientPolicy::class,
         Book::class => BookPolicy::class,
         Order::class => OrderPolicy::class,
-        // 'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -31,7 +28,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }

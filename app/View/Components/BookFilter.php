@@ -7,6 +7,9 @@ use Illuminate\View\View;
 
 class BookFilter extends Component
 {
+    /**
+     * @var
+     */
     public $route;
 
     /**

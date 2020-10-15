@@ -23,6 +23,11 @@ class RedirectRequest
      */
     private $reference;
 
+    /**
+     * RedirectRequest constructor.
+     * @param Order $order
+     * @param Request $request
+     */
     public function __construct(Order $order, Request $request)
     {
         $this->order = $order;
@@ -30,7 +35,10 @@ class RedirectRequest
         $this->createReference();
     }
 
-    public function toArray()
+    /**
+     * @return array
+     */
+    public function toArray(): array
     {
         return [
             'locale' => 'en_US',
@@ -68,6 +76,9 @@ class RedirectRequest
         ];
     }
 
+    /**
+     * Create reference
+     */
     private function createReference()
     {
         $timeStamp = Carbon::now()->format('YmdHis');
@@ -76,7 +87,10 @@ class RedirectRequest
         $this->reference = $userId . $timeStamp;
     }
 
-    public function getReference()
+    /**
+     * @return string
+     */
+    public function getReference(): string
     {
         return $this->reference;
     }
