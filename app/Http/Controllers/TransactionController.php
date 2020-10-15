@@ -2,20 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PlacetoPayServiceInterface;
-use App\Transaction;
+use Illuminate\{
+    Contracts\Foundation\Application,
+    Contracts\View\Factory,
+    Http\RedirectResponse,
+    Http\Request,
+    Routing\Redirector,
+    View\View
+};
+use App\{
+    Services\PlacetoPayServiceInterface,
+    Transaction
+};
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    public function cancel(int $reference, PlacetoPayServiceInterface $placetoPay)
+    /**
+     * @param int $reference
+     * @return Application|Factory|View
+     */
+    public function cancel(int $reference)
     {
         Transaction::where('reference', $reference)->first()->update(['status' => 'REJECTED']);
         return view('transaction.cancel', ['reference' => $reference]);
     }
 
-    public function status(int $reference, PlacetoPayServiceInterface $placetoPay)
+    /**
+     * @param int $reference
+     * @param PlacetoPayServiceInterface $placetoPay
+     * @return RedirectResponse
+     */
+    public function status(int $reference, PlacetoPayServiceInterface $placetoPay): RedirectResponse
     {
         $transaction = Transaction::where('reference', $reference)->first();
         $response = $placetoPay->sessionQuery($transaction->request_id);
@@ -23,6 +41,12 @@ class TransactionController extends Controller
         return redirect()->route("transaction.result", $reference);
     }
 
+    /**
+     * @param Request $request
+     * @param $reference
+     * @param PlacetoPayServiceInterface $placetoPay
+     * @return Application|RedirectResponse|Redirector
+     */
     public function retry(Request $request, $reference, PlacetoPayServiceInterface $placetoPay)
     {
         $transaction = Transaction::where('reference', $reference)->first();
@@ -47,13 +71,13 @@ class TransactionController extends Controller
 
             Transaction::create(
                 [
-                    'reference' => $reference,
-                    'order_id' => $transaction->order->id,
-                    'amount' => $transaction->order->getSubtotal(), //Check total or subtotal
-                    'request_id' => $response->requestId(),
-                    'status' => 'PENDING',
-                    'process_url' => $response->processUrl(),
-                    'payment_data' => json_encode($data),
+                'reference' => $reference,
+                'order_id' => $transaction->order->id,
+                'amount' => $transaction->order->getSubtotal(), //Check total or subtotal
+                'request_id' => $response->requestId(),
+                'status' => 'PENDING',
+                'process_url' => $response->processUrl(),
+                'payment_data' => json_encode($data),
                 ]
             );
 
@@ -64,17 +88,24 @@ class TransactionController extends Controller
             ->with('message', 'Unfortunately, your transaction could not be processed. Please try again later.');
     }
 
+    /**
+     * @param int $reference
+     * @param PlacetoPayServiceInterface $placetoPay
+     * @return Application|Factory|View
+     */
     public function result(int $reference, PlacetoPayServiceInterface $placetoPay)
     {
         $transaction = Transaction::where('reference', $reference)->first();
         $response = $placetoPay->sessionQuery($transaction->request_id);
         $transaction->update(['status' => $response['status']['status']]);
 
-        //dd($response['status']['status']);
         return view('transaction.result', ['reference' => $reference, 'status' => $transaction->status]);
     }
 
-    private function getReference()
+    /**
+     * @return string
+     */
+    private function getReference(): string
     {
         $timeStamp = Carbon::now()->format('YmdHis');
         $userId = auth()->user()->id;

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use App\Http\Requests\ClientRequest;
+use App\Http\{
+    Controllers\Controller,
+    Requests\ClientRequest
+};
+use Illuminate\{
+    Http\RedirectResponse,
+    Http\Response,
+    Support\Facades\Log
+};
 
 class ClientController extends Controller
 {
@@ -20,7 +24,7 @@ class ClientController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of Clients.
      *
      * @return Response
      */
@@ -32,19 +36,19 @@ class ClientController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Client.
      *
      * @param  User $client
      * @return Response
      */
     public function show(User $client): Response
     {
-        Log::info('Showing user profile for user: '.$client->id);
+        Log::info('Showing user profile for user: ' . $client->id);
         return response()->view('admin.client.show', compact('client'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified Client.
      *
      * @param  User $client
      * @return Response
@@ -55,7 +59,7 @@ class ClientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified Client in storage.
      *
      * @param  ClientRequest $request
      * @param  User          $client

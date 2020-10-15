@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Book;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\BookFilterRequest;
-use App\Http\Requests\BookRequest;
+use App\Http\{Controllers\Controller, Requests\BookFilterRequest, Requests\BookRequest};
 use Carbon\Carbon;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
+use Illuminate\{
+    Contracts\Foundation\Application,
+    Http\RedirectResponse,
+    Http\Response,
+    Routing\Redirector,
+    Support\Facades\DB,
+    Support\Facades\Log,
+    View\View
+};
 
 class BookController extends Controller
 {
@@ -32,7 +32,7 @@ class BookController extends Controller
      * @param  BookFilterRequest $request
      * @return Response
      */
-    public function index(BookFilterRequest $request)
+    public function index(BookFilterRequest $request): Response
     {
         $books = Book::author($request->input('filter.author'))
             ->title($request->input('filter.title'))
@@ -44,7 +44,7 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new Book.
      *
      * @return View
      */
@@ -54,9 +54,9 @@ class BookController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created Book.
      *
-     * @param  BookRequest $request
+     * @param BookRequest $request
      * @return Application|RedirectResponse|Redirector
      */
     public function store(BookRequest $request)
@@ -89,7 +89,7 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified Book in storage.
      *
      * @param  Book $book
      * @return Response
@@ -101,18 +101,18 @@ class BookController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified Book.
      *
      * @param  Book $book
      * @return Response
      */
-    public function edit(Book $book)
+    public function edit(Book $book): Response
     {
         return response()->view('admin.book.edit', compact('book'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified Book in storage.
      *
      * @param  BookRequest $request
      * @param  Book        $book
@@ -140,25 +140,13 @@ class BookController extends Controller
             ]
         );
 
-
         return response()->redirectToRoute('books.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  Book $book
-     * @return void
-     */
-    public function destroy(Book $book)
-    {
-        //
     }
 
     /**
      * Store book cover image.
      *
-     * @param  string $imagePath
+     * @param string $imagePath
      * @return mixed
      */
     public function store_image(string $imagePath)
@@ -179,7 +167,7 @@ class BookController extends Controller
     }
 
     /**
-     * @param  String $image_path
+     * @param string $image_path
      * @return string
      */
     public function get_image_name(string $image_path): string

@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\{
+    Foundation\Http\FormRequest,
+    Validation\Rule
+};
 
 class ClientRequest extends FormRequest
 {
@@ -12,7 +14,7 @@ class ClientRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,7 +24,7 @@ class ClientRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'min:2', 'max:50', 'regex:/^[a-zA-Z0-9áéíóúüñÑ\s\.]+$/'],

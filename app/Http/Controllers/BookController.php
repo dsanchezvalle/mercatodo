@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Book;
-use App\Http\Requests\BookFilterRequest;
-use Illuminate\Support\Facades\Log;
+use App\{
+    Book,
+    Http\Requests\BookFilterRequest
+};
+use Illuminate\{
+    Http\Response,
+    Support\Facades\Log,
+};
 
 class BookController extends Controller
 {
-    public function bookshelf(BookFilterRequest $request)
+    /**
+     * @param BookFilterRequest $request
+     * @return Response
+     */
+    public function bookshelf(BookFilterRequest $request): Response
     {
         Log::channel('single')
             ->notice("User with ID " . $request->user()->id . " has arrived at the Bookshelf.");
