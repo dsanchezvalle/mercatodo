@@ -12,15 +12,7 @@
                             {{session('success')}}
                         </div>
                     @endif
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+
                     <form action="{{route('books.import')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row align-content-center">
@@ -36,16 +28,23 @@
                                         "
                                     class="form-control @error('book-import') is-invalid @enderror"
                                 >
-                                @error('book-import')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
                             </div>
                             <div class="col">
                                 <button class="btn btn-primary" type="submit">Import books</button>
                             </div>
                         </div>
+
+                        @if ($errors->any())
+                            <br>
+                            <div class="alert alert-danger pb-0">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                     </form>
                 </div>
             </div>
