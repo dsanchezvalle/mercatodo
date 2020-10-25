@@ -22,8 +22,8 @@ class CreateBookOrderTable extends Migration
                 $table->float('unit_price');
 
                 $table->primary(['book_id', 'order_id']);
-                $table->foreign('order_id')->references('id')->on('orders');
-                $table->foreign('book_id')->references('id')->on('books');
+                $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+                $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             }
         );
     }

@@ -17,6 +17,7 @@
                     @can('viewAny', \App\Book::class)
                         <div class="pb-4">
                             <a href="{{ route('books.create') }}" class="btn btn-primary">Create New Book</a>
+                            <a href="{{ route('books.importer') }}" class="btn btn-primary">Import and Export</a>
                         </div>
                     @endcan
                     <table class="table table-striped table-hover">
