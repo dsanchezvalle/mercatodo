@@ -2,21 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ImportValidationException;
 use App\Http\Requests\ImportBooksRequest;
 use App\Imports\BooksImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
 {
-    public function importForm()
-    {
-        return view('admin.book.importer');
-    }
-
     public function import(ImportBooksRequest $request)
     {
-        Excel::import(new BooksImport, $request->file('book-import'));
+        $import = new BooksImport;
+        try{
+            Excel::import($import, $request->file('book-import'));
+        } catch (ImportValidationException $e){
+            return redirect('books')->withErrors($e->errors());
+        }
 
-        return redirect('importer')->with('success', 'All good!');
+        return redirect('books')->with([
+            'success' => 'All good!',
+            'booksCreated' => $import->getBooksCreated(),
+            'booksUpdated' => $import->getBooksUpdated(),
+            ]);
     }
 }
