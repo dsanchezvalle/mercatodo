@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header h4">Bienvenido a MercaTodo</div>
+                <div class="card-header h4">Welcome to MercaTodo</div>
 
                 <div class="card-body">
                     @if (session('status'))
