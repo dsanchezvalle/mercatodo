@@ -30,7 +30,6 @@ Route::get('/bookshelf', 'BookController@bookshelf')->middleware('verified')->na
 Route::get('/cart', 'OrderController@index')->middleware('verified')->name('cart.index');
 Route::get('/export', 'ExportController@export')->middleware('verified')->name('books.export');
 Route::post('/import', 'ImportController@import')->middleware('verified')->name('books.import');
-Route::get('/importer', 'ImportController@importForm')->middleware('verified')->name('books.importer');
 Route::get('/cart/checkout', 'OrderController@checkout')->middleware('verified')->name('cart.checkout');
 Route::post('/cart/{book}', 'OrderController@update')->middleware('verified')->name('cart.update');
 Route::post('/payment', 'OrderController@payment')->middleware('verified')->name('cart.payment');

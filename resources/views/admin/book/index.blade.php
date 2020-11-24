@@ -15,10 +15,84 @@
                 <div class="card-header h4">Books' dashboard </div>
                 <div class="card-body">
                     @can('viewAny', \App\Book::class)
+
                         <div class="pb-4">
                             <a href="{{ route('books.create') }}" class="btn btn-primary">Create New Book</a>
-                            <a href="{{ route('books.importer') }}" class="btn btn-primary">Import and Export</a>
+                            <a href="{{ route('books.export') }}" class="btn btn-primary">Export all books</a>
+                            <a
+                                class="btn btn-primary"
+                                data-toggle="collapse"
+                                href="#collapse1"
+                                role="button"
+                                aria-expanded="false"
+                                aria-controls="collapse1"
+                            >
+                                Import books
+                            </a>
+
+                            @if(session('success'))
+                                <p>
+                                    <div class="alert alert-success">
+                                        {{
+                                            session('success') .
+                                            " Created: " . session('booksCreated') .
+                                            " Updated: " . session('booksUpdated')
+                                        }}
+                                    </div>
+                                </p>
+                            @endif
+
+                            @if ($errors->any())
+                                <p>
+                                <div class="alert alert-danger pb-0">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                </p>
+                            @endif
+
+                            <div class="collapse" id="collapse1">
+                                <div class="card-body">
+
+
+                                    <form action="{{route('books.import')}}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="row align-content-center">
+                                            <div class="col">
+                                                <input
+                                                    id="book-import"
+                                                    name="book-import"
+                                                    type="file"
+                                                    accept="
+
+                                        application/vnd.ms-excel,
+                                        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                                        "
+                                                    class="form-control @error('book-import') is-invalid @enderror"
+                                                >
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-primary" type="submit">Import</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+
+
+
+
+
+
+
+
+
+
                     @endcan
                     <table class="table table-striped table-hover">
                         <tr>
