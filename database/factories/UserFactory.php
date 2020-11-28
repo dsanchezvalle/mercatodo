@@ -28,7 +28,7 @@ $factory->define(
         'email' => $faker->unique()->safeEmail,
         'document_type' => 'CC',
         'document_number' => $faker->randomNumber(7),
-        'is_admin' => false,
+        'role_id' => '0',
         'phone_number' => $faker->randomNumber(7),
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

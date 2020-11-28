@@ -26,7 +26,7 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::where('is_admin', false)->paginate(10);
+        $clients = User::paginate(10);
 
         return response()->view('admin.client.index', compact('clients'));
     }

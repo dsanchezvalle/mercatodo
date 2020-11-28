@@ -14,6 +14,7 @@
                             <th>Document</th>
                             <th>E-mail</th>
                             <th class="text-center">Phone Number</th>
+                            <th class="text-center">Role</th>
                             <th class="text-center">Active</th>
                             <th></th>
                         </tr>
@@ -23,6 +24,7 @@
                                 <td>{{ $client->document_type }} {{ $client->document_number }}</td>
                                 <td>{{ $client->email }}</td>
                                 <td class="text-center">{{ $client->phone_number }}</td>
+                                <td class="text-center">{{ $client->role_id }}</td>
                                 <td class="text-center @if($client->is_active) text-success @else text-danger @endif">{{ $client->isActive() }}</td>
                                 <td><a href="{{ route('clients.edit', $client) }}">Edit</a></td>
                             </tr>

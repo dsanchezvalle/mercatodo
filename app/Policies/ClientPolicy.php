@@ -17,7 +17,7 @@ class ClientPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id;
     }
 
     /**
@@ -28,7 +28,7 @@ class ClientPolicy
      */
     public function view(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id;
     }
 
     /**
@@ -39,7 +39,7 @@ class ClientPolicy
      */
     public function create(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id;
     }
 
     /**
@@ -50,6 +50,6 @@ class ClientPolicy
      */
     public function update(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id;
     }
 }
