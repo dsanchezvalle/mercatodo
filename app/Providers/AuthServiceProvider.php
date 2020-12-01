@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Book;
 use App\User;
+use App\Order;
 use App\Policies\{BookPolicy, ClientPolicy, OrderPolicy};
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
