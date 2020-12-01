@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -18,7 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'document_type', 'document_number', 'email', 'phone_number', 'password', 'is_active',
+        'name', 'surname', 'document_type', 'document_number', 'email', 'phone_number', 'password', 'is_active', 'role_id'
     ];
 
     /**
@@ -48,6 +49,15 @@ class User extends Authenticatable implements MustVerifyEmail
             return 'Yes';
         }
         return 'No';
+    }
+
+    /**
+     * @return BelongsTo
+     */
+
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
     }
 
     /**

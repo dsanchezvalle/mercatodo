@@ -93,6 +93,19 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
+                            <div class="col-md-6">
+                                <select class="form-control" id="role_id" type="role_id" class="form-control" @error('role_id') is-invalid @enderror name="role_id" >
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}" @if($client->role_id == $role->id) selected="selected" @endif>
+                                            {{ $role->name }}
+                                            </option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="is_active" class="col-md-4 col-form-label text-md-right">{{ __('User status') }}</label>

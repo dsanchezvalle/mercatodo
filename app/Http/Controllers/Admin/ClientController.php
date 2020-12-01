@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use App\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use Illuminate\Http\RedirectResponse;
@@ -26,7 +27,7 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::where('is_admin', false)->paginate(10);
+        $clients = User::paginate(10);
 
         return response()->view('admin.client.index', compact('clients'));
     }
@@ -51,7 +52,8 @@ class ClientController extends Controller
      */
     public function edit(User $client): Response
     {
-        return response()->view('admin.client.edit', compact('client'));
+        $roles = Role::all();
+        return response()->view('admin.client.edit', compact('client', 'roles'));
     }
 
     /**
@@ -71,10 +73,10 @@ class ClientController extends Controller
             'document_number' => $request->input('document_number'),
             'email' => $request->input('email'),
             'phone_number' => $request->input('phone_number'),
+            'role_id' => $request->input('role_id'),
             'is_active' => $request->input('is_active') ? true : false,
             ]
         );
-
         return response()->redirectToRoute('clients.index');
     }
 }

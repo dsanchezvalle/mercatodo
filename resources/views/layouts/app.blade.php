@@ -34,16 +34,21 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{ route ('home') }}">{{ __('Home') }}</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{ route ('bookshelf') }}">{{ __('Bookshelf') }}</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{ route ('order.list') }}">{{ __('My orders') }}</a>
-                        </li>
+                       @auth
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ route ('home') }}">{{ __('Home') }}</a>
+                            </li>
+                            @if(Auth::user()->role_id == 1)
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ route ('bookshelf') }}">{{ __('Bookshelf') }}</a>
+                            </li>
+                            @endif
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ route ('order.list') }}">{{ __('My orders') }}</a>
+                            </li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

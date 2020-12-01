@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             [
             'email' => 'admin@mercatodo.com',
             'password' => Hash::make('admin123'),
-            'is_admin' => true,
+            'role_id' => '1',
             ]
         );
 

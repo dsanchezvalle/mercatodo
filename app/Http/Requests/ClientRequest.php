@@ -31,6 +31,7 @@ class ClientRequest extends FormRequest
             'document_number' => ['required', 'string', 'max:50', 'alpha_num'],
             'email' => ['required', 'string', 'email', 'max:100', Rule::unique('users')->ignore($this->client->id)],
             'phone_number' => ['required', 'string', 'max:50'],
+            'role_id' => ['required', 'numeric', 'in:1,2,3'],
             'is_active' => ['nullable', 'in:on,null'],
         ];
     }

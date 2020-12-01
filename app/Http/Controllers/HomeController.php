@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->is_admin) {
+        if (Auth::user()->role_id == '1' || Auth::user()->role_id == '2') {
             return view('home');
         }
         return response()->redirectToRoute('bookshelf');
