@@ -40,9 +40,11 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ route ('home') }}">{{ __('Home') }}</a>
                             </li>
+                            @if(Auth::user()->role_id == 1)
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ route ('bookshelf') }}">{{ __('Bookshelf') }}</a>
                             </li>
+                            @endif
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ route ('order.list') }}">{{ __('My orders') }}</a>
                             </li>
