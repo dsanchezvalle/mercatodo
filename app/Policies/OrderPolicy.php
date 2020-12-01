@@ -18,6 +18,6 @@ class OrderPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role_id;
+        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
     }
 }
