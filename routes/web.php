@@ -24,27 +24,33 @@ Route::get(
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/bookshelf', 'BookController@bookshelf')->middleware('verified')->name('bookshelf');
+
 Route::resource('clients', 'Admin\ClientController')->middleware('verified');
 Route::resource('books', 'Admin\BookController')->middleware('verified');
 Route::resource('reports', 'Admin\ReportController')->middleware('verified');
-Route::get('/bookshelf', 'BookController@bookshelf')->middleware('verified')->name('bookshelf');
+Route::get('/download/{report}', 'Admin\ReportController@download')->middleware('verified')->name('reports.download');
+
 Route::get('/cart', 'OrderController@index')->middleware('verified')->name('cart.index');
-Route::get('/export', 'ExportController@export')->middleware('verified')->name('books.export');
-Route::post('/import', 'ImportController@import')->middleware('verified')->name('books.import');
 Route::get('/cart/checkout', 'OrderController@checkout')->middleware('verified')->name('cart.checkout');
 Route::post('/cart/{book}', 'OrderController@update')->middleware('verified')->name('cart.update');
-Route::post('/report/generate', 'Admin\ReportController@create')->middleware('verified')->name('report.create');
 Route::post('/payment', 'OrderController@payment')->middleware('verified')->name('cart.payment');
 Route::delete('/cart/{book}', 'OrderController@remove')->middleware('verified')->name('cart.remove');
 Route::put('/cart/{book}', 'OrderController@edit')->middleware('verified')->name('cart.edit');
+Route::get('/orders', 'OrderController@list')->middleware('verified')->name('order.list');
 Route::get('/transaction/cancelled/{reference}', 'TransactionController@cancel')->name('transaction.cancel');
 Route::get('/transaction/{reference}', 'TransactionController@status')->name('transaction.status');
 Route::get('/retry/{reference}', 'TransactionController@retry')->name('transaction.retry');
 Route::get('/transaction/result/{reference}', 'TransactionController@result')->name('transaction.result');
-Route::get('/orders', 'OrderController@list')->middleware('verified')->name('order.list');
+
+Route::get('/export', 'ExportController@export')->middleware('verified')->name('books.export');
+Route::post('/import', 'ImportController@import')->middleware('verified')->name('books.import');
+
 Route::get(
     '/uploads/{file}',
     function ($file) {
         return Storage::response("uploads/$file");
     }
 )->middleware('verified');
+
+
