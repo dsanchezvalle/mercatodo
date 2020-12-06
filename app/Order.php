@@ -15,6 +15,8 @@ class Order extends Model
     protected $guarded = [];
     public $subtotal;
     public $paymentStatus;
+    protected $appends = ['payment_status'];
+
 
     /**
      * @return BelongsToMany
@@ -115,4 +117,19 @@ class Order extends Model
     {
         return 'PENDING' == $this->paymentStatus();
     }
+
+    public function getOrdersSum ($orders){
+        $totalSum = 0;
+        foreach ($orders as $order){
+            $totalSum += $order->total_amount;
+        }
+        return $this->formattedPrice($totalSum);
+
+    }
+
+    public function getPaymentStatusAttribute(): string
+    {
+        return $this->paymentStatus();
+    }
+
 }

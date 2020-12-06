@@ -51,7 +51,6 @@ class BooksImport implements ToCollection, WithHeadingRow
                 ++$this->booksUpdated;
             }
         }
-        //dd($this->booksUpdated, $this->booksCreated);
     }
 
     /**
