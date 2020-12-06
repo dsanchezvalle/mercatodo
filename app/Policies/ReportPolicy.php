@@ -31,4 +31,16 @@ class ReportPolicy
     {
         return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
     }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param User $user
+     * @return mixed
+     */
+    public function view(User $user)
+    {
+        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
+    }
+
 }
