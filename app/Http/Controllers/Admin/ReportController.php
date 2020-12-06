@@ -3,22 +3,27 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DateRangeRequest;
 use App\Order;
 use App\Report;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use phpDocumentor\Reflection\Types\Boolean;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 
 class ReportController extends Controller
 {
 
     private $startDate;
     private $endDate;
+    private $ordersPaymentStatusResume = [];
 
     /**
      * ReportController constructor.
@@ -31,102 +36,96 @@ class ReportController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return void
+     * @return Response
      */
-    public function index()
+    public function index() : Response
     {
-        $reports = Report::all();
+        $reports = Report::paginate(config('view.paginate'));
+
         return response()->view('admin.report.index', compact('reports'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param DateRangeRequest $request
-     * @return RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
      */
-    public function create(Request $request): RedirectResponse
+    public function create(Request $request)
     {
         if(!$this->validateDateRange($request)){
             return redirect('reports')->withErrors(['Invalid date range']);
         };
 
-        $startDateWithTime = Carbon::createFromFormat('d/m/Y', $this->startDate)->setTimeFromTimeString('00:00:00');
-        $endDateWithTime = Carbon::createFromFormat('d/m/Y', $this->endDate)->setTimeFromTimeString('23:59:59')->addMicroseconds(999999);
+        if ($request->input('report_type') == '1') {
+            $fromDate = Carbon::createFromFormat('m/d/Y', $request->input('start_date'))->setTimeFromTimeString('00:00:00');
+            $toDate = Carbon::createFromFormat('m/d/Y', $request->input('end_date'))->setTimeFromTimeString('23:59:59')->addMicroseconds(999999);
 
-        if ($request->input('report_type') == '1'){
-            $ordersInDateRange = Order::where('created_at', '>', $startDateWithTime)
-                ->where('created_at', '<', $endDateWithTime)->get();
-            dd($ordersInDateRange);
+            $orders= Order::where('created_at', '>', $fromDate)
+                ->where('created_at', '<', $toDate)->get();
 
-            Report::create(
-                [
-                    'name' => 'Sales_report_from_' . $this->startDate . '_to_' . $this->endDate,
-                    'report_path' => $this->get_report_path(),
-                    'user_id' => auth()->user()->id,
-                ]
-            );
-            return redirect('reports')->with('success', 'Your report will be created.');
+            $paymentStatusColumn = array_column($orders->toArray(), 'payment_status');
+
+            foreach(array_count_values($paymentStatusColumn) as $payment_status => $occurrences){
+                $this->ordersPaymentStatusResume[$payment_status] = $occurrences;
+            }
         }
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $reportPath = $this->getReportPath();
+        $fromDate = Carbon::createFromFormat('d/m/Y', $this->startDate)->format('m-d-Y');
+        $toDate = Carbon::createFromFormat('d/m/Y', $this->endDate)->format('m-d-Y');
+        $pdf = \PDF::loadView('admin.report.order',
+            [
+                'orders' => $orders,
+                'ordersStatusResume' => $this->ordersPaymentStatusResume,
+                'fromDate' => $fromDate,
+                'toDate' => $toDate
+            ]);
+
+        Report::create(
+            [
+                'name' => 'Orders_Report_(' . $fromDate . '_to_' . $toDate . ')',
+                'report_path' => $reportPath,
+                'user_id' => auth()->user()->id,
+            ]
+        );
+            return $pdf->save(storage_path($reportPath))->stream('result.pdf', array('Attachment'=>0));
+        }
 
     /**
      * Display the specified Report in storage.
      *
      * @param  Report $report
-     * @return Response
+     * @return BinaryFileResponse
      */
-    public function show(Report $report): Response
+    public function show(Report $report): BinaryFileResponse
     {
-        Log::channel('single')->notice("User with ID " . auth()->user()->id . " has accessed to details for report with ID " . $report->id);
-        return response()->view('reports', compact('report'));
+        Log::channel('single')->notice("User with ID " . auth()->user()->id . " has accessed to report with ID " . $report->id);
+
+        return response()->file(storage_path().$report->report_path);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Download the specified Report.
      *
-     * @param  \App\Report  $report
-     * @return Response
+     * @param  Report $report
+     * @return BinaryFileResponse
      */
-    public function edit(Report $report)
+
+    public function download(Report $report): BinaryFileResponse
     {
-        //
+        Log::channel('single')->notice("User with ID " . auth()->user()->id . " has downloaded report with ID " . $report->id);
+
+        return response()->download(storage_path().$report->report_path, $report->name . '.pdf');
     }
 
     /**
-     * Update the specified resource in storage.
+     * Validate the given date range.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Report  $report
-     * @return Response
+     * @param Request $request
+     * @return bool
+     * @throws ValidationException
      */
-    public function update(Request $request, Report $report)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Report  $report
-     * @return Response
-     */
-    public function destroy(Report $report)
-    {
-        //
-    }
 
     protected function validateDateRange(Request $request): bool
     {
@@ -139,12 +138,13 @@ class ReportController extends Controller
         $dates = array_map('trim', explode('-', $dateRange));
         $this->startDate = $dates[0];
         $this->endDate = $dates[1];
+
         $request->request->add([
             'start_date' => Carbon::createFromFormat('d/m/Y', $this->startDate)->format('m/d/Y'),
             'end_date' => Carbon::createFromFormat('d/m/Y', $this->endDate)->format('m/d/Y')
         ]);
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'datefilter' => [
                 'required',
                 'string',
@@ -159,21 +159,23 @@ class ReportController extends Controller
                 'required',
                 'date',
                 'after_or_equal:start_date',
-                'before_or_equal:today'
+                'before_or_equal:today',
             ]
         ])->validate();
+
         return true;
     }
 
     /**
      * @return string
      */
-    protected function get_report_path(): string
+    protected function getReportPath(): string
     {
         $timeStamp = Carbon::now()->format('YmdHisu');
         $adminId = auth()->user()->id;
         $fileExtension = 'pdf';
 
-        return '/reports/' . $timeStamp . '_' .  $adminId . '.' . $fileExtension;
+        return '/app/reports/'. $timeStamp . '_' .  $adminId . '.' . $fileExtension;
     }
+
 }
