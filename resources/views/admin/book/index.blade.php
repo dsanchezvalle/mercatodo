@@ -83,16 +83,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
-
                     @endcan
                     <table class="table table-striped table-hover">
                         <tr>

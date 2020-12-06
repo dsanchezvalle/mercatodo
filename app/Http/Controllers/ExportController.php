@@ -11,7 +11,6 @@ class ExportController extends Controller
     public function export(BooksExport $booksExport)
     {
         return $booksExport->download('books.xlsx');
-        //return view('admin.book.export');
     }
 
 }
