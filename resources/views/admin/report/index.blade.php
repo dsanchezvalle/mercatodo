@@ -53,10 +53,11 @@
                             </div>
                         @endif
 
-                        @if(session()->has('success'))
+                        @if(session()->has('message'))
                             <div class="alert alert-success row-md-4 row-md-offset-4 m-0 p-2">
-                                {{ session()->get('success') }}
+                                {{ session()->get('message') }}
                             </div>
+                            <br>
                         @endif
 
                         <table class="table table-striped table-hover">
@@ -99,6 +100,5 @@
         </div>
     </div>
 </div>
-
 
 @endsection
