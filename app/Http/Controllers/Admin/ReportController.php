@@ -53,7 +53,7 @@ class ReportController extends Controller
             return redirect('reports')->withErrors(['Invalid date range']);
         };
 
-        GenerateReport::dispatch($request->all(), auth()->user()->id);
+        GenerateReport::dispatch($request->all(), auth()->user()->id, auth()->user()->email);
 
         return redirect('reports')->with('message', 'Your report is being generated. You will receive an email once it is ready.');
 

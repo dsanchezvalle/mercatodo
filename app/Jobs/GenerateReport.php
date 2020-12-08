@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\ReportGenerated;
 use App\Order;
 use App\Report;
 use Carbon\Carbon;
@@ -10,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class GenerateReport implements ShouldQueue
 {
@@ -20,17 +22,20 @@ class GenerateReport implements ShouldQueue
     private $endDate;
     private $ordersPaymentStatusResume = [];
     private $authorId;
+    private $authorEmail;
 
     /**
      * Create a new job instance.
      *
      * @param array $request
      * @param $userId
+     * @param $userEmail
      */
-    public function __construct(array $request, $userId)
+    public function __construct(array $request, $userId, $userEmail)
     {
         $this->request = $request;
         $this->authorId = $userId;
+        $this->authorEmail = $userEmail;
     }
 
     /**
@@ -68,14 +73,15 @@ class GenerateReport implements ShouldQueue
                 'toDate' => $toDate
             ]);
 
-        Report::create(
+        $report = Report::create(
             [
                 'name' => 'Orders_Report_(' . $fromDate . '_to_' . $toDate . ')',
                 'report_path' => $reportPath,
                 'user_id' => $this->authorId,
             ]
         );
-        return $pdf->save(storage_path($reportPath));
+        $pdf->save(storage_path($reportPath));
+        Mail::to($this->authorEmail)->send(new ReportGenerated($report));
     }
 
     /**
