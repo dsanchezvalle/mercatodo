@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Order;
+use App\Jobs\GenerateReport;
 use App\Report;
 
 use Carbon\Carbon;
@@ -20,10 +20,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ReportController extends Controller
 {
-
-    private $startDate;
-    private $endDate;
-    private $ordersPaymentStatusResume = [];
 
     /**
      * ReportController constructor.
@@ -57,39 +53,10 @@ class ReportController extends Controller
             return redirect('reports')->withErrors(['Invalid date range']);
         };
 
-        if ($request->input('report_type') == '1') {
-            $fromDate = Carbon::createFromFormat('m/d/Y', $request->input('start_date'))->setTimeFromTimeString('00:00:00');
-            $toDate = Carbon::createFromFormat('m/d/Y', $request->input('end_date'))->setTimeFromTimeString('23:59:59')->addMicroseconds(999999);
+        GenerateReport::dispatch($request->all(), auth()->user()->id, auth()->user()->email);
 
-            $orders= Order::where('created_at', '>', $fromDate)
-                ->where('created_at', '<', $toDate)->get();
+        return redirect('reports')->with('message', 'Your report is being generated. You will receive an email once it is ready.');
 
-            $paymentStatusColumn = array_column($orders->toArray(), 'payment_status');
-
-            foreach(array_count_values($paymentStatusColumn) as $payment_status => $occurrences){
-                $this->ordersPaymentStatusResume[$payment_status] = $occurrences;
-            }
-        }
-
-        $reportPath = $this->getReportPath();
-        $fromDate = Carbon::createFromFormat('d/m/Y', $this->startDate)->format('m-d-Y');
-        $toDate = Carbon::createFromFormat('d/m/Y', $this->endDate)->format('m-d-Y');
-        $pdf = \PDF::loadView('admin.report.order',
-            [
-                'orders' => $orders,
-                'ordersStatusResume' => $this->ordersPaymentStatusResume,
-                'fromDate' => $fromDate,
-                'toDate' => $toDate
-            ]);
-
-        Report::create(
-            [
-                'name' => 'Orders_Report_(' . $fromDate . '_to_' . $toDate . ')',
-                'report_path' => $reportPath,
-                'user_id' => auth()->user()->id,
-            ]
-        );
-            return $pdf->save(storage_path($reportPath))->stream('result.pdf', array('Attachment'=>0));
         }
 
     /**
@@ -136,12 +103,12 @@ class ReportController extends Controller
         }
 
         $dates = array_map('trim', explode('-', $dateRange));
-        $this->startDate = $dates[0];
-        $this->endDate = $dates[1];
+        $startDate = $dates[0];
+        $endDate = $dates[1];
 
         $request->request->add([
-            'start_date' => Carbon::createFromFormat('d/m/Y', $this->startDate)->format('m/d/Y'),
-            'end_date' => Carbon::createFromFormat('d/m/Y', $this->endDate)->format('m/d/Y')
+            'start_date' => Carbon::createFromFormat('d/m/Y', $startDate)->format('m/d/Y'),
+            'end_date' => Carbon::createFromFormat('d/m/Y', $endDate)->format('m/d/Y')
         ]);
 
         $validator = Validator::make($request->all(), [
@@ -164,18 +131,6 @@ class ReportController extends Controller
         ])->validate();
 
         return true;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getReportPath(): string
-    {
-        $timeStamp = Carbon::now()->format('YmdHisu');
-        $adminId = auth()->user()->id;
-        $fileExtension = 'pdf';
-
-        return '/app/reports/'. $timeStamp . '_' .  $adminId . '.' . $fileExtension;
     }
 
 }

@@ -1,20 +1,30 @@
-@extends('layouts.app')
+@extends('layouts.reportstyle')
 
-@section('content')
-<h2>
-    <strong>Mercatodo - Orders Report</strong>
-</h2>
-<p>From {{ $fromDate }} to {{ $toDate }}</p>
+@section('report-content')
+    <body>
+    <h2>
+            <h1>
+                <strong>Mercatodo - Orders Report</strong>
+            </h1>
+    </h2>
+    <p>
+        <strong>From {{ $fromDate }} to {{ $toDate }}</strong>
+        <br><br>
+    </p>
 
-<p>
-    <strong>Order Status Resume</strong>
-</p>
-<table border="1" style="height: 44px; width: 58.7177%; border-collapse: collapse; margin-left: auto; margin-right: auto;" height="44">
-    <tbody>
+    <p>
+        <strong>Orders Status Resume</strong>
+    </p>
+    <div style="line-height: 0.5">
+        <table class="table" border="1" style="width: 58.7177%; border-collapse: collapse; margin-left: auto; margin-right: auto;">
+        <thead class="thead-dark">
         <tr>
-            <td style="width: 50%; text-align: center;"><strong>Order status</strong></td>
-            <td style="width: 50%; text-align: center;"><strong>Orders</strong></td>
+            <th scope="col" style="width: 50%; text-align: center;"><strong>Order status</strong></th>
+            <th scope="col" style="width: 50%; text-align: center;"><strong>Orders</strong></th>
         </tr>
+        </thead>
+        <tbody>
+
         <tr>
             <td style="width: 50%; text-align: center;">{{__('APPROVED')}}</td>
             <td style="width: 50%; text-align: center;">{{$ordersStatusResume['APPROVED'] ?? '0'}}</td>
@@ -27,29 +37,31 @@
             <td style="width: 50%; text-align: center;">{{__('PENDING')}}</td>
             <td style="width: 50%; text-align: center;">{{$ordersStatusResume['PENDING'] ?? '0'}}</td>
         </tr>
-    </tbody>
-</table>
-<br>
-<p>
-    <strong>Orders Details</strong>
-</p>
-<table class="table" border="1" style="border-collapse: collapse; width: 100%; height: 63px;">
-    <thead class="thead-dark">
-        <tr style="height: 21px;">
-            <td scope="col" style="width: 15.268%; height: 21px; text-align: center;"><strong>Order ID</strong></td>
-            <td scope="col" style="width: 25.6993%; text-align: center; height: 21px;"><strong>Date/Time</strong></td>
-            <td scope="col" style="width: 25.6993%; height: 21px; text-align: center;"><strong>Status</strong></td>
-            <td scope="col" style="width: 33.3333%; height: 21px; text-align: center;"><strong>Amount</strong></td>
+        </tbody>
+    </table>
+    </div>
+    <br>
+    <p>
+        <strong>Orders Details</strong>
+    </p>
+    <div style="line-height: 0.5">
+        <table class="table table-striped" style="width: 100%;">
+        <thead>
+        <tr style="height: 15px;">
+            <th scope="col" style="width: 15.268%; text-align: center;"><strong>Order ID</strong></th>
+            <th scope="col" style="width: 25.6993%; text-align: center;"><strong>Date/Time</strong></th>
+            <th scope="col" style="width: 25.6993%; text-align: center;"><strong>Status</strong></th>
+            <th scope="col" style="width: 33.3333%; text-align: center;"><strong>Amount</strong></th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         @if(count($orders)>0)
             @foreach ($orders as $order)
-                <tr style="height: 21px;">
-                    <td style="width: 15.268%; height: 21px; text-align: center;">{{$order->id}}</td>
-                    <td style="width: 25.6993%; height: 21px; text-align: center;">{{$order->created_at}}</td>
-                    <td style="width: 25.6993%; height: 21px; text-align: center;">{{ $order->paymentStatus() }}</td>
-                    <td style="width: 33.3333%; height: 21px; text-align: center;">{{ $order->formattedPrice($order->total_amount) }}</td>
+                <tr>
+                    <th scope="row" style="width: 15.268%; text-align: center;">{{$order->id}}</th>
+                    <td style="width: 25.6993%; text-align: center;">{{$order->created_at}}</td>
+                    <td style="width: 25.6993%; text-align: center;">{{ $order->paymentStatus() }}</td>
+                    <td style="width: 33.3333%; text-align: center;">{{ $order->formattedPrice($order->total_amount) }}</td>
                 </tr>
             @endforeach
         @else
@@ -57,8 +69,8 @@
                 <td colspan="4" style="text-align: center"> There are no orders in this date range. </td>
             </tr>
         @endif
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
+    </div>
+    </body>
 @endsection
-
