@@ -20,3 +20,7 @@ Route::middleware('auth:api')->get(
         return $request->user();
     }
 );
+
+Route::apiResource('books', 'Api\BookController')->middleware('auth:sanctum');
+
+Route::post('login', 'Api\TokenController@login');
