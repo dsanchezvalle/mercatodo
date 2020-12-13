@@ -17,7 +17,7 @@ class ReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->role_id == '1' && $user->is_active;
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
 
     }
 
@@ -29,7 +29,7 @@ class ReportPolicy
      */
     public function create(User $user)
     {
-        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
     }
 
     /**
@@ -40,7 +40,7 @@ class ReportPolicy
      */
     public function view(User $user)
     {
-        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
     }
 
 }
