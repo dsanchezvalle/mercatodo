@@ -13,7 +13,7 @@ class BookPolicy
      * @param User $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
     }
@@ -24,9 +24,9 @@ class BookPolicy
      * @param User $user
      * @return mixed
      */
-    public function view(User $user)
+    public function view(User $user): bool
     {
-        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
     }
 
     /**
@@ -35,9 +35,9 @@ class BookPolicy
      * @param User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
     }
 
     /**
@@ -46,8 +46,31 @@ class BookPolicy
      * @param User $user
      * @return mixed
      */
-    public function update(User $user)
+    public function update(User $user): bool
     {
-        return $user->role_id == '1' || $user->role_id == '2' && $user->is_active;
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
     }
+
+    /**
+     * Determine whether the user can import the model.
+     *
+     * @param User $user
+     * @return mixed
+     */
+    public function import(User $user): bool
+    {
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
+    }
+
+    /**
+     * Determine whether the user can export the model.
+     *
+     * @param User $user
+     * @return mixed
+     */
+    public function export(User $user): bool
+    {
+        return ($user->role_id == '1' || $user->role_id == '2') && $user->is_active;
+    }
+
 }
