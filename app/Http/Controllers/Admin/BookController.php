@@ -149,7 +149,7 @@ class BookController extends Controller
      * @param string $imagePath
      * @return mixed
      */
-    public function store_image(string $imagePath)
+    private function store_image(string $imagePath)
     {
         return request()->file->storeAs('uploads', $this->get_image_name($imagePath));
     }
@@ -157,7 +157,7 @@ class BookController extends Controller
     /**
      * @return string
      */
-    public function get_image_path(): string
+    private function get_image_path(): string
     {
         $timeStamp = Carbon::now()->format('YmdHisu');
         $adminId = auth()->user()->id;
@@ -170,7 +170,7 @@ class BookController extends Controller
      * @param string $image_path
      * @return string
      */
-    public function get_image_name(string $image_path): string
+    private function get_image_name(string $image_path): string
     {
         $trimmed = trim($image_path, "/uploads/.");
         return $trimmed;

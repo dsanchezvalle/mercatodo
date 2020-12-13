@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use App\Exports\BooksExport;
-use App\Imports\BooksImport;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Gate;
 
 class ExportController extends Controller
 {
     public function export(BooksExport $booksExport)
     {
+        Gate::authorize('export', Book::class);
         return $booksExport->download('books.xlsx');
     }
 
