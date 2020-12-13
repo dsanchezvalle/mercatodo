@@ -29,6 +29,7 @@ $factory->define(
         'document_type' => 'CC',
         'document_number' => $faker->randomNumber(7),
         'role_id' => '3',
+        'is_active' => true,
         'phone_number' => $faker->randomNumber(7),
         'email_verified_at' => now(),
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
