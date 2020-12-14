@@ -32,7 +32,6 @@ class BookController extends Controller
      */
     public function store(BookRequest $request) : JsonResponse
     {
-
         $book = Book::create(
             [
                 'isbn' => $request->input('isbn'),
@@ -50,7 +49,6 @@ class BookController extends Controller
             ->notice("A new book with ID " . $idLastBookCreated . " has been created successfully by admin with ID: " . $request->user()->id);
         Log::channel('slack')
             ->notice("A new book has been created successfully. Find it at:  http://mercatodo.test/books/" . $idLastBookCreated);
-
         return (new BookResource($book))->response();
     }
 
