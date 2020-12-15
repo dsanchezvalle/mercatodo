@@ -8,12 +8,15 @@ use App\Services\RedirectResponse;
 
 class PlacetoPayServiceMock implements PlacetoPayServiceInterface
 {
-
     /**
      * @var array
      */
     private $response;
 
+    /**
+     * @param array $paymentData
+     * @return RedirectResponse
+     */
     public function payment(array $paymentData): RedirectResponse
     {
         if ($this->response) {
@@ -33,6 +36,10 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
         );
     }
 
+    /**
+     * @param int $requestId
+     * @return RedirectResponse|array
+     */
     public function sessionQuery(int $requestId)
     {
         if ($this->response) {
@@ -83,7 +90,11 @@ class PlacetoPayServiceMock implements PlacetoPayServiceInterface
             );
     }
 
-    public function setResponse(array $data)
+    /**
+     * @param array $data
+     * @return void
+     */
+    public function setResponse(array $data): void
     {
         $this->response = $data;
     }

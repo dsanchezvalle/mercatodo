@@ -21,6 +21,6 @@ Route::middleware('auth:api')->get(
     }
 );
 
-Route::apiResource('books', 'Api\BookController')->middleware('auth:sanctum');
+Route::name('api')->apiResource('books', 'Api\BookController')->middleware('auth:sanctum');
 
-Route::post('login', 'Api\TokenController@login');
+Route::post('login', 'Api\TokenController@login')->name('api.login');

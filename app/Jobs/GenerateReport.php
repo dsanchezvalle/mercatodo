@@ -17,7 +17,7 @@ class GenerateReport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $request;
+    public $request;
     private $startDate;
     private $endDate;
     private $ordersPaymentStatusResume = [];
@@ -53,7 +53,9 @@ class GenerateReport implements ShouldQueue
             $toDate = $rawToDate->setTimeFromTimeString('23:59:59')->addMicroseconds(999999);
 
             $orders= Order::where('created_at', '>', $fromDate)
-                ->where('created_at', '<', $toDate)->get();
+                ->where('created_at', '<', $toDate)
+                ->where('status', 'closed')
+                ->get();
 
             $paymentStatusColumn = array_column($orders->toArray(), 'payment_status');
 

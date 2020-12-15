@@ -16,13 +16,9 @@ class PaymentTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
-    public function client_is_redirected_to_pay()
+    public function testClientIsRedirectedToPay()
     {
         $this->app->singleton(PlacetoPayServiceInterface::class, PlacetoPayServiceMock::class);
-
         $client = factory(User::class)->create();
         $book = factory(Book::class)->create();
         $order = Order::create(['user_id' => $client->id, 'status' => 'open']);
@@ -44,10 +40,7 @@ class PaymentTest extends TestCase
         $this->assertDatabaseCount('transactions', 1);
     }
 
-    /**
-     * @test
-     */
-    public function client_is_redirected_to_bookshelf_if_request_failed()
+    public function testClientIsRedirectedToBookshelfIfRequestFails()
     {
         $this->app->singleton(
             PlacetoPayServiceInterface::class,
@@ -66,7 +59,6 @@ class PaymentTest extends TestCase
                 return $service;
             }
         );
-
         $client = factory(User::class)->create();
         $book = factory(Book::class)->create();
         $order = Order::create(['user_id' => $client->id, 'status' => 'open']);
@@ -88,10 +80,7 @@ class PaymentTest extends TestCase
         $this->assertDatabaseCount('transactions', 0);
     }
 
-    /**
-     * @test
-     */
-    public function when_client_cancel_transaction_in_placetoPay_it_is_updated_in_database()
+    public function testWhenClientCancelTransactionInPlaceToPayItIsUpdatedInDatabase()
     {
         $this->app->singleton(
             PlacetoPayServiceInterface::class,
@@ -110,7 +99,6 @@ class PaymentTest extends TestCase
                 return $service;
             }
         );
-
         $client = factory(User::class)->create();
         $book = factory(Book::class)->create();
         $order = Order::create([
@@ -138,13 +126,9 @@ class PaymentTest extends TestCase
         $this->assertEquals('REJECTED', Transaction::first()->status);
     }
 
-    /**
-     * @test
-     */
-    public function client_can_retry_rejected_transaction()
+    public function testClientCanRetryRejectedTransactions()
     {
         $this->app->singleton(PlacetoPayServiceInterface::class, PlacetoPayServiceMock::class);
-
         $client = factory(User::class)->create();
         $book = factory(Book::class)->create();
         $order = Order::create([

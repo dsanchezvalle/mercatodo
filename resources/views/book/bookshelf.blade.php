@@ -40,7 +40,8 @@
                             <img class="card-img-top" src="{{$book->image_path}}" alt="book-cover">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $book->title }}</h5>
-                                <p class="card-subtitle mb-2 text-muted">Author: {{ $book->author }}</p>
+                                <p class="card-subtitle text-muted">Author: {{ $book->author }}</p>
+                                <a href="books/{{$book->id}}" class="card-subtitle mb-2">View more...</a>
                                 <form action="/cart/{{$book->id}}" method="POST">
                                     @csrf
                                    <div>

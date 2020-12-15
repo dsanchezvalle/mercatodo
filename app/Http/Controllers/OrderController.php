@@ -26,7 +26,7 @@ class OrderController extends Controller
      */
     public function index(): Response
     {
-        $userCart = Order::where('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $userCart = Auth::user()->activeOrder();
 
         return response()->view('shoppingcart.cart', compact('userCart'));
     }
@@ -38,7 +38,7 @@ class OrderController extends Controller
      */
     public function update(QuantityRequest $request, Book $book): RedirectResponse
     {
-        $userCart = Auth::user()->orders()->firstOrCreate(['status' => 'open']);
+        $userCart = Auth::user()->activeOrder();
 
         if ($userCart->books()->get()->contains($book)) {
             $userCart->books->find($book)->pivot->quantity +=  (int) $request->input('items');
@@ -59,7 +59,7 @@ class OrderController extends Controller
      */
     public function remove(Book $book): RedirectResponse
     {
-        $userCart = Auth::user()->orders()->where('status', 'open')->first();
+        $userCart = Auth::user()->activeOrder();
         $userCart->books()->detach($book->id);
         $userCart->total_amount = $userCart->getSubtotal();
         $userCart->save();
@@ -87,7 +87,7 @@ class OrderController extends Controller
      */
     public function list(): Response
     {
-        $orders = Auth::user()->orders;
+        $orders = Auth::user()->orders->where('status', 'closed');
         return response()->view('order.index', compact('orders'));
     }
 
@@ -98,7 +98,8 @@ class OrderController extends Controller
      */
     public function payment(PlacetoPayServiceInterface $placetoPay, CheckoutRequest $request)
     {
-        $order = Order::where('user_id', Auth::user()->id)->where('status', 'open')->first();
+        $order = Auth::user()->activeOrder();
+
         $order->update(['address_id' => Address::create(array_replace($request->all(), ['user_id' => Auth::user()->id]))->id]);
 
         $request = new RedirectRequest($order, $request);
@@ -133,7 +134,7 @@ class OrderController extends Controller
      */
     public function edit(QuantityRequest $request, Book $book): RedirectResponse
     {
-        $userOrder = Auth::user()->orders()->where('status', 'open')->first();
+        $userOrder = Auth::user()->activeOrder();
         $userOrder->books->find($book)->pivot->quantity =  (int) $request->input('items');
         $userOrder->books->find($book)->pivot->save();
 

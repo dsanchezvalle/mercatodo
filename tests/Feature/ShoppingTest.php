@@ -12,10 +12,7 @@ class ShoppingTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @test
-     */
-    public function client_can_add_book_to_shopping_cart()
+    public function testClientCanAddBookToShoppingCart()
     {
         $book = factory(Book::class)->create();
         $client = factory(User::class)->create();
@@ -29,10 +26,7 @@ class ShoppingTest extends TestCase
         $this->assertCount(1, Order::first()->books);
     }
 
-    /**
-     * @test
-     */
-    public function client_can_see_shopping_cart()
+    public function testClientCanSeeShoppingCart()
     {
         $books = factory(Book::class, 3)->create();
         $client = factory(User::class)->create();
@@ -50,10 +44,7 @@ class ShoppingTest extends TestCase
         $response->assertSee($order->getFormattedSubtotal());
     }
 
-    /**
-     * @test
-     */
-    public function client_can_delete_a_book_from_shopping_cart()
+    public function testClientCanDeleteABookFromShoppingCart()
     {
         $book = factory(Book::class)->create();
         $client = factory(User::class)->create();
@@ -66,10 +57,7 @@ class ShoppingTest extends TestCase
         $this->assertCount(0, $order->books);
     }
 
-    /**
-     * @test
-     */
-    public function client_can_update_shopping_cart()
+    public function testClientCanUpdateShoppingCart()
     {
         $book = factory(Book::class)->create();
         $client = factory(User::class)->create();
@@ -82,10 +70,7 @@ class ShoppingTest extends TestCase
         $this->assertEquals(2, $order->books->find($book->id)->pivot->quantity);
     }
 
-    /**
-     * @test
-     */
-    public function client_can_see_checkout_form()
+    public function testClientCanSeeCheckoutForm()
     {
         $book = factory(Book::class)->create();
         $client = factory(User::class)->create();
@@ -94,6 +79,7 @@ class ShoppingTest extends TestCase
         $order->save();
 
         $response = $this->actingAs($client)->get(route('cart.checkout'))->assertSuccessful();
+
         $response->assertViewIs('shoppingcart.checkout');
         $response->assertSee('form');
     }
