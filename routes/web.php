@@ -37,6 +37,8 @@ Route::group(['middleware' => 'verified', 'prefix' => 'reports'], function () {
     Route::get('/download/{report}', 'Admin\ReportController@download')->name('reports.download');
 });
 
+Route::post('/theme', 'Admin\ThemeController@update')->middleware('verified')->name('theme');
+
 Route::get('/cart', 'OrderController@index')->middleware('verified')->name('cart.index');
 Route::get('/cart/checkout', 'OrderController@checkout')->middleware('verified')->name('cart.checkout');
 Route::post('/cart/{book}', 'OrderController@update')->middleware('verified')->name('cart.update');
