@@ -16,7 +16,7 @@ class UpdateTest extends TestCase
         $user = factory(User::class)->create(['role_id' => '1']);
         $book = factory(Book::class)->create();
 
-       $this->actingAs($user)->put(
+        $this->actingAs($user)->put(
             "/books/$book->id",
             [
                 'isbn' => '1111111111111',

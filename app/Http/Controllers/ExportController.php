@@ -13,5 +13,4 @@ class ExportController extends Controller
         Gate::authorize('export', Book::class);
         return $booksExport->download('books.xlsx');
     }
-
 }

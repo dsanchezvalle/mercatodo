@@ -1,85 +1,85 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+## About Mercatodo
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+<p>Mercatodo es una aplicaci&oacute;n de comercio electr&oacute;nico que permite la creaci&oacute;n, gesti&oacute;n y venta de libros por medio de pago en l&iacute;nea a trav&eacute;s de la pasarela de pagos PlacetoPay de EVERTEC. Adicionalmente Mercatodo permite gestionar productos por medio de una API REST.</p>
 
-## About Laravel
+## Instalación
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Crear una base de datos local llamada <strong>mercatodo</strong>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Descargar composer https://getcomposer.org/download/
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Hacer pull del proyecto en https://github.com/dsanchezvalle/mercatodo
 
-## Learning Laravel
+Reemplazar el archivo .env con el archivo .env.example dentro del directorio raíz de tu proyecto y
+llenar los campos relacionados con la base de datos creada.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Abre la terminal y accede al directorio raíz de tu proyecto.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Ejecuta el comando 'composer install' o 'php composer.phar install'.
 
-## Laravel Sponsors
+Ejecuta 'php artisan key:generate'
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Ejecuta php artisan migrate
 
-### Premium Partners
+Ejecuta 'php artisan db:seed' para que los seeders puedan poblar la base de datos.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
+Ejecuta php artisan serve
 
-### Community Sponsors
+#####Ahora podrás acceder al proyecto en tu navegador accediendo a la dirección que te proporciona el anterior comando.
 
-<a href="https://op.gg"><img src="http://opgg-static.akamaized.net/icon/t.rectangle.png" width="150"></a>
 
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [云软科技](http://www.yunruan.ltd/)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<p></p>
+<div align="center"><b>Principales funcionalidades de la aplicaci&oacute;n y permisos ACL</b></div>
+<p></p>
+<p>La aplicaci&oacute;n cuenta con un usuario administrador con todos los permisos necesarios para operarla y gestionarla. Adicionalmente puede conceder o denegar permisos a los otros usuarios de la aplicaci&oacute;n.</p>
+<p><strong>Datos de acceso:</strong></p>
+<table border="1" style="height: 59px; width: 54.1342%; border-collapse: collapse; margin-left: auto; margin-right: auto;" height="59">
+<tbody>
+<tr>
+<td style="width: 50%; text-align: center;"><strong>e-mail</strong></td>
+<td style="width: 50%; text-align: center;">admin@mercatodo.com</td>
+</tr>
+<tr>
+<td style="width: 50%; text-align: center;"><strong>password</strong></td>
+<td style="width: 50%; text-align: center;">admin123</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>Los dem&aacute;s usuarios deben registrarse en el enlace "Register" disponible en la pantalla de bienvenida. Una vez registrados recibir&aacute;n un correo en el que deber&aacute;n dirigirse al enlace de verificaci&oacute;n suministrado. Luego de este procedimiento contar&aacute;n con acceso a la aplicaci&oacute;n con su e-mail y password.</p>
+<p><strong>Roles y permisos:&nbsp;</strong></p>
+<p><strong></strong></p>
+<table border="1" style="border-collapse: collapse;">
+<tbody>
+<tr style="height: 21px;">
+<td style="width: 16.6%; text-align: center; height: 21px;"><strong>Roles</strong></td>
+<td style="width: 19.6%; height: 21px; text-align: center;"><strong>Libros</strong></td>
+<td style="width: 15.8%; height: 21px; text-align: center;"><strong>&Oacute;rdenes</strong></td>
+<td style="width: 18%; height: 21px; text-align: center;"><strong>Clientes</strong></td>
+<td style="width: 20%; height: 21px; text-align: center;"><strong>Reportes</strong></td>
+</tr>
+<tr style="height: 21px;">
+<td style="width: 16.6%; height: 21px;"><strong>Administrador (Admin)</strong></td>
+<td style="width: 19.6%; height: 21px; text-align: center;">
+<p>Crear, visualizar, editar, actualizar, importar, exportar, desactivar, ver vitrina de libros.</p>
+</td>
+<td style="width: 15.8%; height: 21px; text-align: center;">Crear, visualizar, editar, pagar.</td>
+<td style="width: 18%; height: 21px; text-align: center;">Crear, visualizar, editar, actualizar, desactivar.&nbsp;</td>
+<td style="width: 20%; height: 21px; text-align: center;">Crear, visualizar, descargar.</td>
+</tr>
+<tr style="height: 21px;">
+<td style="width: 16.6%; height: 21px;"><strong>Editor (Editor)</strong></td>
+<td style="width: 19.6%; height: 21px; text-align: center;">Crear, visualizar, editar, actualizar, importar, exportar, desactivar, ver vitrina de libros.</td>
+<td style="width: 15.8%; height: 21px; text-align: center;">Crear, visualizar, editar, pagar</td>
+<td style="width: 18%; height: 21px; text-align: center;">&nbsp;No</td>
+<td style="width: 20%; height: 21px; text-align: center;">Crear, visualizar, descargar.</td>
+</tr>
+<tr style="height: 21px;">
+<td style="width: 16.6%; height: 21px;"><strong>Comprador (Buyer)</strong></td>
+<td style="width: 19.6%; height: 21px; text-align: center;">Ver vitrina de libros (Bookshelf).</td>
+<td style="width: 15.8%; height: 21px; text-align: center;">Agregar libros al carrito de compras, editar carrito de compras, pagar.</td>
+<td style="width: 18%; height: 21px; text-align: center;">No</td>
+<td style="width: 20%; height: 21px; text-align: center;">No</td>
+</tr>
+</tbody>
+</table>

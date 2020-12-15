@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Tests\Support;
 
 use App\Services\PlacetoPayServiceInterface;

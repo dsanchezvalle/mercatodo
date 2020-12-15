@@ -30,7 +30,7 @@ class BookController extends Controller
      * @param BookRequest $request
      * @return JsonResponse
      */
-    public function store(BookRequest $request) : JsonResponse
+    public function store(BookRequest $request): JsonResponse
     {
         $book = Book::create(
             [

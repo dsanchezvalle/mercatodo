@@ -24,8 +24,8 @@ class Role extends Model
     public static function getCachedRoles(): Collection
     {
 
-        return Cache::rememberForever('roles', function(){
-            return Role::select('id','name')->orderBy('id')->get();
+        return Cache::rememberForever('roles', function () {
+            return Role::select('id', 'name')->orderBy('id')->get();
         });
     }
 }

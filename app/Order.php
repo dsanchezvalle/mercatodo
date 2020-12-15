@@ -2,12 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\{
-    Model,
-    Relations\BelongsTo,
-    Relations\BelongsToMany,
-    Relations\HasMany
-};
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use NumberFormatter;
 
 class Order extends Model
@@ -118,18 +116,17 @@ class Order extends Model
         return 'PENDING' == $this->paymentStatus();
     }
 
-    public function getOrdersSum ($orders){
+    public function getOrdersSum($orders)
+    {
         $totalSum = 0;
-        foreach ($orders as $order){
+        foreach ($orders as $order) {
             $totalSum += $order->total_amount;
         }
         return $this->formattedPrice($totalSum);
-
     }
 
     public function getPaymentStatusAttribute(): string
     {
         return $this->paymentStatus();
     }
-
 }

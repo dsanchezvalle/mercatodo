@@ -14,10 +14,10 @@ class ImportController extends Controller
     public function import(ImportBooksRequest $request)
     {
         Gate::authorize('import', Book::class);
-        $import = new BooksImport;
-        try{
+        $import = new BooksImport();
+        try {
             Excel::import($import, $request->file('book-import'));
-        } catch (ImportValidationException $e){
+        } catch (ImportValidationException $e) {
             return redirect('books')->withErrors($e->errors());
         }
 

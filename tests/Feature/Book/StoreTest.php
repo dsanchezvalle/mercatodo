@@ -12,7 +12,8 @@ use Tests\TestCase;
 
 class StoreTest extends TestCase
 {
-    use RefreshDatabase, BookHasDataProvider;
+    use RefreshDatabase;
+    use BookHasDataProvider;
 
     public function testAdminCanCreateNewBook()
     {
@@ -21,8 +22,8 @@ class StoreTest extends TestCase
         Storage::fake('local');
         $file = UploadedFile::fake()->create('file.jpg', 50);
 
-        $response = $this->actingAs($user)->post(route('books.store')
-            ,
+        $response = $this->actingAs($user)->post(
+            route('books.store'),
             [
                 'isbn' => $book->isbn,
                 'title' => $book->title,
@@ -34,10 +35,11 @@ class StoreTest extends TestCase
         );
 
         $response->assertRedirect('books');
-        $this->assertDatabaseHas( 'books',
+        $this->assertDatabaseHas(
+            'books',
             [
                 'isbn' => $book->isbn,
-            ]
+             ]
         );
     }
 
@@ -48,8 +50,8 @@ class StoreTest extends TestCase
         Storage::fake('local');
         $file = UploadedFile::fake()->create('file.jpg', 50);
 
-        $response = $this->actingAs($user)->post(route('books.store')
-            ,
+        $response = $this->actingAs($user)->post(
+            route('books.store'),
             [
                 'isbn' => $book->isbn,
                 'title' => $book->title,
@@ -61,10 +63,11 @@ class StoreTest extends TestCase
         );
 
         $response->assertRedirect('books');
-        $this->assertDatabaseHas( 'books',
+        $this->assertDatabaseHas(
+            'books',
             [
                 'isbn' => $book->isbn,
-            ]
+             ]
         );
     }
 
@@ -75,8 +78,8 @@ class StoreTest extends TestCase
         Storage::fake('local');
         $file = UploadedFile::fake()->create('file.jpg', 50);
 
-        $response = $this->actingAs($user)->post(route('books.store')
-            ,
+        $response = $this->actingAs($user)->post(
+            route('books.store'),
             [
                 'isbn' => $book->isbn,
                 'title' => $book->title,

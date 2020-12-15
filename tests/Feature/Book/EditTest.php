@@ -50,5 +50,4 @@ class EditTest extends TestCase
 
         $this->get(route('books.edit', $book->id))->assertRedirect(route('verification.notice'));
     }
-
 }

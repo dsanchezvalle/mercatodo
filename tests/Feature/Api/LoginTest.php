@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
-   use RefreshDatabase;
+    use RefreshDatabase;
 
     public function testAdminCanLoginAndGenerateToken()
     {
@@ -87,6 +87,4 @@ class LoginTest extends TestCase
             'reason' => 'Invalid password'
         ]);
     }
-
-
 }

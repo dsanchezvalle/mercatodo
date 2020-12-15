@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class BooksExport implements FromCollection, WithHeadings
 {
     use Exportable;
+
     /**
     * @return Collection
     */

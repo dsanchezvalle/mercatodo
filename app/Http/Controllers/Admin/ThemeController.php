@@ -17,10 +17,10 @@ class ThemeController extends Controller
         if ($request->input('app_theme') === '1') {
             $themeFileSource = base_path('resources/sass/themes/normal/_appTheme.scss');
         }
-        if ($request->input('app_theme') === '2'){
+        if ($request->input('app_theme') === '2') {
             $themeFileSource = base_path('resources/sass/themes/light/_appTheme.scss');
         }
-        if ($request->input('app_theme') === '3'){
+        if ($request->input('app_theme') === '3') {
             $themeFileSource = base_path('resources/sass/themes/dark/_appTheme.scss');
         }
 

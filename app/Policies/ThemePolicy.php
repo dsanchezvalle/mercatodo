@@ -18,6 +18,5 @@ class ThemePolicy
     public function viewAny(User $user): bool
     {
         return $user->role_id == '1' && $user->is_active;
-
     }
 }

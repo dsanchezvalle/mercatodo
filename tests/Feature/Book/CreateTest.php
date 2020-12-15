@@ -43,5 +43,4 @@ class CreateTest extends TestCase
     {
         $this->get(route('books.create'))->assertRedirect(route('verification.notice'));
     }
-
 }
