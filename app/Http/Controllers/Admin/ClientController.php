@@ -58,7 +58,7 @@ class ClientController extends Controller
      */
     public function edit(User $client): Response
     {
-        $roles = Role::all();
+        $roles = Role::getCachedRoles();
         return response()->view('admin.client.edit', compact('client', 'roles'));
     }
 
