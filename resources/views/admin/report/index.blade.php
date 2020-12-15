@@ -77,7 +77,7 @@
                                             </a>
                                         </td>
                                         <td class="text-center">
-                                            {{ $report->user->name . ' ' . $report->user->surname }}
+                                            {{ $report->user_name }}
                                         </td>
                                         <td class="text-center">
                                             <a href="{{ route('reports.download', $report) }}" class="btn btn-success btn-sm">

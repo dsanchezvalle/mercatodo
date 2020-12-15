@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Jobs\GenerateReport;
 use App\Report;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -36,7 +38,13 @@ class ReportController extends Controller
      */
     public function index() : Response
     {
-        $reports = Report::paginate(config('view.paginate'));
+        $reports = Report::query()
+            ->addSelect([
+                'user_name' => User::select(DB::raw("CONCAT(name , ' ' , surname) as name"))
+                ->whereColumn('reports.user_id', 'id')
+                ->limit(1)
+            ])
+            ->paginate(config('view.paginate'));
 
         return response()->view('admin.report.index', compact('reports'));
     }

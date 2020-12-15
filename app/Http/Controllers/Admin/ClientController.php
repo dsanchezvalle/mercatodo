@@ -27,7 +27,13 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::paginate(10);
+        $clients = User::query()
+            ->addSelect([
+                'role_name' => Role::select('name')
+                ->whereColumn('users.role_id', 'id')
+                ->limit(1)
+            ])
+            ->paginate(10);
 
         return response()->view('admin.client.index', compact('clients'));
     }
@@ -52,7 +58,7 @@ class ClientController extends Controller
      */
     public function edit(User $client): Response
     {
-        $roles = Role::all();
+        $roles = Role::getCachedRoles();
         return response()->view('admin.client.edit', compact('client', 'roles'));
     }
 
