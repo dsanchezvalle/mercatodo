@@ -15,7 +15,6 @@ class StoreTest extends TestCase
 
     public function testAuthenticatedUserCanCreateABook()
     {
-        $this->withoutExceptionHandling();
         $book = factory(Book::class)->make();
         Sanctum::actingAs(factory(User::class)->create(['role_id' => 1]), ['*']);
 
@@ -30,7 +29,7 @@ class StoreTest extends TestCase
 
         $response->assertSuccessful();
         $book = Book::first();
-        $response->assertJsonFragment([
+        $response->assertExactJson([
             'data' => [
                 'id' => $book->id,
                 'isbn' => $book->isbn,
@@ -45,5 +44,23 @@ class StoreTest extends TestCase
             ],
         ]);
         $this->assertDatabaseCount('books', 1);
+    }
+
+    public function testUnauthenticatedUserCanNotCreateABook()
+    {
+        $book = factory(Book::class)->make();
+
+        $response = $this->postJson(route('api.books.store'), [
+            'isbn' => $book->isbn,
+            'title' => $book->title,
+            'author' => $book->author,
+            'price' => $book->price,
+            'stock' => $book->stock,
+            'image_path' => $book->image_path
+        ]);
+
+        $response->assertUnauthorized();
+        $response->assertExactJson(['message' => 'Unauthenticated.']);
+        $this->assertDatabaseCount('books', 0);
     }
 }
