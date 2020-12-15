@@ -16,7 +16,7 @@
                             </select>
                             <div class="row">
                                 <label class="mr-2 mt-0 mb-0 p-0" for="datefilter">Date range:</label>
-                                <input class="mr-5 pt-0 pb-0" type="text" name="datefilter" value="" />
+                                <input class="mr-5 pt-0 pb-0" type="text" name="datefilter" value="" autocomplete="off"/>
                                 <script type="text/javascript">
                                     $(function() {
                                         $('input[name="datefilter"]').daterangepicker({
