@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Decorators\PriceFormatterContract;
 use Illuminate\Database\{Eloquent\Builder, Eloquent\Model, Eloquent\Relations\BelongsToMany};
 use NumberFormatter;
 
@@ -110,5 +111,15 @@ class Book extends Model
         $amount = new NumberFormatter('es_CO', NumberFormatter::CURRENCY);
 
         return $amount->format($price);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormattedPrice(): string
+    {
+        $formatter = resolve(PriceFormatterContract::class);
+
+        return $formatter->format($this->price);
     }
 }

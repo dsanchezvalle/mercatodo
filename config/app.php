@@ -123,6 +123,8 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'currency' => env('APP_CURRENCY_CODE', 'USD'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

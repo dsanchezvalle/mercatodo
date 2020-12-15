@@ -102,7 +102,7 @@
                                     <td>{{ $book->title }}</td>
                                     <td>{{ $book->author }}</td>
                                     <td class="text-center">{{ $book->stock }}</td>
-                                    <td class="text-center">{{ $book->formattedPrice($book->price) }}</td>
+                                    <td class="text-center">{{ $book->getFormattedPrice() }}</td>
                                     <td class="text-center @if($book->is_active) text-success @else text-danger @endif">{{ $book->isActive() }}</td>
                                     <td><a href="{{ route('books.edit', $book) }}">Edit</a></td>
                                 </tr>

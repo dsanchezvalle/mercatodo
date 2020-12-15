@@ -51,7 +51,7 @@
                                 </form>
                             </div>
                             <div class="card-footer">
-                                <small class="text-muted">Price: {{ $book->formattedPrice($book->price) }}</small>
+                                <small class="text-muted">Price: {{ $book->getFormattedPrice() }}</small>
                             </div>
                         </div>
                     </div>
