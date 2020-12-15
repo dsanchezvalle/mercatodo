@@ -2,6 +2,13 @@
 
 namespace App\Providers;
 
+use App\Decorators\CurrencyCOPDecorator;
+use App\Decorators\CurrencyUSDDecorator;
+use App\Decorators\PriceFormatter;
+use App\Decorators\PriceFormatterContract;
+use App\Services\PlacetoPayService;
+use App\Services\PlacetoPayServiceInterface;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,16 +20,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(PlacetoPayServiceInterface::class, PlacetoPayService::class);
+        $this->app->singleton(
+            Client::class,
+            function () {
+                return new Client();
+            }
+        );
     }
 
     /**
-     * Bootstrap any application services.
      *
-     * @return void
      */
     public function boot()
     {
-        //
+        $this->app->bind(PriceFormatterContract::class, function () {
+            $formatter = new PriceFormatter();
+
+            switch (config('app.currency')) {
+                case 'USD':
+                    return new CurrencyUSDDecorator($formatter);
+                case 'COP':
+                    return new CurrencyCOPDecorator($formatter);
+            }
+
+            return $formatter;
+        });
     }
 }

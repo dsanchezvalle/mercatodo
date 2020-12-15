@@ -3,12 +3,16 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasApiTokens;
     use Notifiable;
 
     /**
@@ -17,7 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'surname', 'document_type', 'document_number', 'email', 'phone_number', 'password', 'is_active',
+        'name', 'surname', 'document_type', 'document_number', 'email', 'phone_number', 'password', 'is_active', 'role_id'
     ];
 
     /**
@@ -38,11 +42,39 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return string
+     */
     public function isActive(): string
     {
-        if($this->is_active){
+        if ($this->is_active) {
             return 'Yes';
         }
         return 'No';
+    }
+
+    /**
+     * @return BelongsTo
+     */
+
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * @return Order
+     */
+    public function activeOrder(): Order
+    {
+        return Auth::user()->orders()->firstOrCreate(['status' => 'open']);
     }
 }

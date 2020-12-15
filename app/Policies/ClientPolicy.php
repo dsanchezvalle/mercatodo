@@ -12,70 +12,44 @@ class ClientPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param User $user
+     * @param  User $user
      * @return boolean
      */
     public function viewAny(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id == '1' && $user->is_active;
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @return mixed
+     * @param  User $user
+     * @return boolean
      */
     public function view(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id == '1' && $user->is_active;
     }
 
     /**
      * Determine whether the user can create models.
      *
-     * @param User $user
-     * @return mixed
+     * @param  User $user
+     * @return boolean
      */
     public function create(User $user): bool
     {
-        return $user->is_admin;
-
+        return $user->role_id == '1' && $user->is_active;
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
-     * @return mixed
+     * @param  User $user
+     * @return boolean
      */
     public function update(User $user): bool
     {
-        return $user->is_admin;
+        return $user->role_id == '1' && $user->is_active;
     }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     * @param User $client
-     * @return mixed
-     */
-    public function delete(User $user, User $client)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param User $client
-     * @return mixed
-     */
-    public function restore(User $user, User $client)
-    {
-        //
-    }
-
 }

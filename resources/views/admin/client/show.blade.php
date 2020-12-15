@@ -26,6 +26,10 @@
                             <td>{{ $client->phone_number }}</td>
                         </tr>
                         <tr>
+                            <td class="font-weight-bold">Role: </td>
+                            <td>{{ $client->role_id }}</td>
+                        </tr>
+                        <tr>
                             <td class="font-weight-bold">User status: </td>
                             <td>{{ $client->is_active ? 'Active':'Inactive' }}</td>
                         </tr>

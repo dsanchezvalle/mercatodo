@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:api')->get(
+    '/user',
+    function (Request $request) {
+        return $request->user();
+    }
+);
+
+Route::name('api')->apiResource('books', 'Api\BookController')->middleware('auth:sanctum');
+
+Route::post('login', 'Api\TokenController@login')->name('api.login');

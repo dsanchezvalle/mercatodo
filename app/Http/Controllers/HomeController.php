@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -19,11 +18,12 @@ class HomeController extends Controller
 
     /**
      * Show the application dashboard.
-     *
-     * @return Renderable
      */
-    public function index(): Renderable
+    public function index()
     {
-        return view('home');
+        if (Auth::user()->role_id == '1' || Auth::user()->role_id == '2') {
+            return view('home');
+        }
+        return response()->redirectToRoute('bookshelf');
     }
 }
