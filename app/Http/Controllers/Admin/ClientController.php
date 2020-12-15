@@ -27,7 +27,13 @@ class ClientController extends Controller
      */
     public function index(): Response
     {
-        $clients = User::paginate(10);
+        $clients = User::query()
+            ->addSelect([
+                'role_name' => Role::select('name')
+                ->whereColumn('users.role_id', 'id')
+                ->limit(1)
+            ])
+            ->paginate(10);
 
         return response()->view('admin.client.index', compact('clients'));
     }
