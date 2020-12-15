@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Decorators;
-
 
 use App\Constants\SupportedCurrencies;
 use NumberFormatter;

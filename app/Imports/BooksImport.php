@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class BooksImport implements ToCollection, WithHeadingRow
 {
     use Importable;
+
     private $errors;
     private $booksCreated;
     private $booksUpdated;
@@ -76,7 +77,7 @@ class BooksImport implements ToCollection, WithHeadingRow
             } catch (ValidationException $e) {
                 $rowErrors = $e->errors();
                 array_walk_recursive($rowErrors, function ($error) use ($rowNumber) {
-                    $this->errors[] = sprintf('[row %s] %s', $rowNumber+2, $error);
+                    $this->errors[] = sprintf('[row %s] %s', $rowNumber + 2, $error);
                 });
             }
         }
@@ -89,12 +90,12 @@ class BooksImport implements ToCollection, WithHeadingRow
     private function verifyRepeatedIsbnInFile(Collection $rows)
     {
         $isbnColumn = array_column($rows->toArray(), 'isbn');
-        foreach(array_count_values($isbnColumn) as $isbn => $occurrences){
-            if($occurrences>1){
+        foreach (array_count_values($isbnColumn) as $isbn => $occurrences) {
+            if ($occurrences > 1) {
                 $this->errors[] = sprintf(
                     '[rows %s] These rows have repeated ISBN',
                     implode(', ', array_map(function ($row) {
-                        return $row+2;
+                        return $row + 2;
                     }, array_keys($isbnColumn, $isbn)))
                 );
             }
@@ -110,5 +111,4 @@ class BooksImport implements ToCollection, WithHeadingRow
     {
         return $this->booksUpdated ?? '0';
     }
-
 }

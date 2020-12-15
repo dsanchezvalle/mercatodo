@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\{RedirectRequest, PlacetoPayServiceInterface} ;
-use Illuminate\Contracts\{
-    Foundation\Application,
-    View\Factory
-};
-use Illuminate\Http\{RedirectResponse, Request};
+use App\Services\RedirectRequest;
+use App\Services\PlacetoPayServiceInterface;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
 use App\Transaction;

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Exceptions;
-
 
 use Throwable;
 
@@ -20,6 +18,4 @@ class ImportValidationException extends \Exception
     {
         return $this->errors;
     }
-
-
 }

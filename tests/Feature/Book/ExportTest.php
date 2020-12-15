@@ -52,6 +52,4 @@ class ExportTest extends TestCase
     {
         $this->get(route('books.export'))->assertRedirect(route('verification.notice'));
     }
-
-
 }

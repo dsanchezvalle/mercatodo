@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Decorators\PriceFormatterContract;
-use Illuminate\Database\{Eloquent\Builder, Eloquent\Model, Eloquent\Relations\BelongsToMany};
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use NumberFormatter;
 
 class Book extends Model

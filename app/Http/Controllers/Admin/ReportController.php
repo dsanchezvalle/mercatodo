@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\GenerateReport;
 use App\Report;
-
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
@@ -18,7 +17,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-
 
 class ReportController extends Controller
 {
@@ -36,7 +34,7 @@ class ReportController extends Controller
      *
      * @return Response
      */
-    public function index() : Response
+    public function index(): Response
     {
         $reports = Report::query()
             ->addSelect([
@@ -57,15 +55,14 @@ class ReportController extends Controller
      */
     public function create(Request $request)
     {
-        if(!$this->validateDateRange($request)){
+        if (!$this->validateDateRange($request)) {
             return redirect('reports')->withErrors(['Invalid date range']);
         };
 
         GenerateReport::dispatch($request->all(), auth()->user()->id, auth()->user()->email);
 
         return redirect('reports')->with('message', 'Your report is being generated. You will receive an email once it is ready.');
-
-        }
+    }
 
     /**
      * Display the specified Report in storage.
@@ -77,7 +74,7 @@ class ReportController extends Controller
     {
         Log::channel('single')->notice("User with ID " . auth()->user()->id . " has accessed to report with ID " . $report->id);
 
-        return response()->file(storage_path().$report->report_path);
+        return response()->file(storage_path() . $report->report_path);
     }
 
     /**
@@ -91,7 +88,7 @@ class ReportController extends Controller
     {
         Log::channel('single')->notice("User with ID " . auth()->user()->id . " has downloaded report with ID " . $report->id);
 
-        return response()->download(storage_path().$report->report_path, $report->name . '.pdf');
+        return response()->download(storage_path() . $report->report_path, $report->name . '.pdf');
     }
 
     /**
@@ -106,7 +103,7 @@ class ReportController extends Controller
     {
         $dateRange = $request->get('datefilter');
         $dateRegex = '/^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4} - ([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/';
-        if(!preg_match($dateRegex, $dateRange)) {
+        if (!preg_match($dateRegex, $dateRange)) {
             return false;
         }
 
@@ -140,5 +137,4 @@ class ReportController extends Controller
 
         return true;
     }
-
 }

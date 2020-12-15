@@ -26,7 +26,7 @@ class ShowTest extends TestCase
                 'isbn' => $book->isbn,
                 'title' => $book->title,
                 'author' => $book->author,
-                'price' => (string) number_format($book->price,1, '.', ''),
+                'price' => (string) number_format($book->price, 1, '.', ''),
                 'stock' => (string) $book->stock,
                 'image_path' => $book->image_path,
                 'is_active' => (string) $book->is_active,

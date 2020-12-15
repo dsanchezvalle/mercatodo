@@ -152,6 +152,5 @@ class PaymentTest extends TestCase
         $this->actingAs($client)->get(route('transaction.retry', 1233789899))->assertRedirect('http://mock.service');
 
         $this->assertDatabaseCount('transactions', 2);
-
     }
 }
